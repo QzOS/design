@@ -1,62 +1,44 @@
 # QzOS design
 
-Temaförslag för QzOS skrivbord: **Glöd** (mörkt) och den ljusa systervarianten **Gryning**.
+Presentationen för QzOS skrivbord: temana **Glöd** (mörkt) och
+**Gryning** (ljust), komponenterna som SVG i logiska enheter och målet
+för hur de ska ersätta NT 4.0 Classic. Börja med [`mal.md`](mal.md).
+
+![Glöd](oversikt/glod.png)
 
 ## Innehåll
 
-`tema/` innehåller källfilerna från Design-ytan:
+| | |
+|---|---|
+| `mal.md` | målet: principer, skalning, lägen, komponenterna, krav på mekaniken, öppna frågor |
+| `tokens/tokens.json` | källan: färgroller för båda temana, mått, radier, typ, skuggor, rörelse och kopplingen till `COL_*` |
+| `tokens/glod.css`, `tokens/gryning.css` | rollerna och måtten som CSS-variabler (genererade) |
+| `svg/glyfer/` | 28 symboler, 16 u, i `currentColor` |
+| `svg/glod/`, `svg/gryning/` | varje komponent i varje läge, en fil per läge |
+| `oversikt/` | alla komponenter per tema, och ett urval vid 100–200 % (genererade) |
+| `docs/dpi.md` | alla mått i bildpunkter vid varje skala (genererad) |
+| `verktyg/` | `bygg.py` bygger SVG, CSS och DPI-tabellen; `oversikt.py` ritar översikterna |
+| `tema/` | de första skisserna från Design-ytan, i formatet `.dc.html` |
 
-| Fil | Innehåll |
-| --- | --- |
-| `Main.dc.html` | Glöd – palett och tokens |
-| `Desktop.dc.html` | Glöd – skrivbord |
-| `Components.dc.html` | Glöd – komponenter |
-| `GryningMain.dc.html` | Gryning – palett och tokens |
-| `GryningDesktop.dc.html` | Gryning – skrivbord |
-| `GryningComponents.dc.html` | Gryning – komponenter |
-| `canvas.json` | Ytans layout: artboardens placering och storlek |
+## Bygga
 
-Filerna är i Design-formatet `.dc.html` och laddar ytans runtime (`./support.js`), så de visas som de är tänkta i Claude Design, inte direkt i en webbläsare.
+```sh
+python3 verktyg/bygg.py
+python3 verktyg/oversikt.py <katalog med manrope-latin-*-normal.woff2>
+```
 
-## Färger
+`bygg.py` behöver bara Python. `oversikt.py` behöver Python-paketet
+playwright med Chromium. Manrope finns till exempel i npm-paketet
+`@fontsource/manrope`.
 
-### Glöd (mörkt)
+## Kort om temana
 
-| Roll | Färg |
-| --- | --- |
-| Bakgrund | `#241B32` |
-| Ytor | `#42314C` |
-| Accent | `#EE7665` |
-| Värme | `#FFA85D` |
-| Text | `#F3F0F5` |
-| Djup | `#1B1426` |
-| Yta upphöjd | `#523E5D` |
-| Kant | `#5A4766` |
-| Dämpad text | `#C2B8CC` |
-| Accent hover / tryck | `#F28A7B` / `#D9604F` |
-| Lyckat | `#8FD5B0` |
-| Fel | `#FF7E9D` |
-
-### Gryning (ljust)
-
-| Roll | Färg |
-| --- | --- |
-| Bakgrund | `#F6F1F4` |
-| Ytor | `#FFFFFF` |
-| Accent (fyllnad) | `#EE7665` |
-| Accent text | `#B03F30` |
-| Värme (fyllnad) | `#FFA85D` |
-| Värme djup (fokus, länkar) | `#A8520F` |
-| Text | `#241B32` |
-| Yta sänkt | `#EFE7EE` |
-| Kant | `#DDD0DC` |
-| Dämpad text | `#6B5A78` |
-| Lyckat | `#237A52` |
-| Fel | `#C2335A` |
-
-## Regler
-
-- Korall betyder *aktivt eller valt*. Bärnsten betyder *titta här*: fokus, länkar, varningar.
-- Text på korall och bärnsten är alltid mörk (`#241B32`). Ljus text på korall klarar inte kontrastkraven.
+- 1 u = 1 bildpunkt vid 96 dpi. Storlekar avrundas, kanter blir hela
+  bildpunkter, se `mal.md`.
+- Korall betyder *aktivt eller valt*, bärnsten *titta här*: fokus,
+  länkar och varningar. Text på korall och bärnsten är alltid mörk.
 - Fel visas alltid med ikon och text, inte bara med färg.
-- Typsnitt: Manrope (gränssnitt), JetBrains Mono (terminal och kod). Hörnradier 8 / 14 / 22 px, rutnät 4 px.
+- Typsnitt: Manrope för gränssnittet, JetBrains Mono för terminal och
+  kod.
+- Radier: 5 u (kryssruta, tips), 8 u (kontroller), 12 u (fönster,
+  menyer, dialoger), 22 u (paneler).
