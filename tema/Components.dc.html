@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Glöd – komponenter</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#FFA85D}a:hover{color:#EE7665}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+input{font:inherit}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1120px; box-sizing: border-box; padding: 64px; background: #241B32; color: #F3F0F5; font-family: 'Manrope', system-ui, sans-serif; font-size: 14px; display: flex; flex-direction: column; gap: 32px">
+
+  <header style="display: flex; justify-content: space-between; align-items: flex-end">
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.12em; color: #C2B8CC">GLÖD · KOMPONENTER</div>
+      <h1 style="margin: 0; font-size: 44px; font-weight: 800; letter-spacing: -0.02em">Kontroller och tillstånd</h1>
+    </div>
+    <p style="margin: 0; max-width: 460px; font-size: 15px; line-height: 1.5; color: #C2B8CC">Korall betyder ”aktivt eller valt”. Bärnsten betyder ”titta här”: fokus, länkar och varningar. Text på korall och bärnsten är alltid mörk.</p>
+  </header>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 20px; flex: 1">
+
+    <section style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700">Knappar</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px">
+        <button style="height: 40px; padding: 0 18px; border-radius: 8px; background: #EE7665; color: #241B32; font-weight: 700">Spara</button>
+        <button style="height: 40px; padding: 0 18px; border-radius: 8px; background: #523E5D; font-weight: 600">Avbryt</button>
+        <button style="height: 40px; padding: 0 18px; border-radius: 8px; border: 1px solid #5A4766; font-weight: 600">Exportera</button>
+        <button style="height: 40px; padding: 0 6px; color: #FFA85D; font-weight: 600; text-decoration: underline; text-underline-offset: 3px">Läs mer</button>
+      </div>
+      <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: #C2B8CC">PRIMÄR · TILLSTÅND</div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; text-align: center; font-size: 12px; color: #C2B8CC">
+        <div style="display: flex; flex-direction: column; gap: 6px"><button style="height: 40px; border-radius: 8px; background: #EE7665; color: #241B32; font-weight: 700">Spara</button>Vila</div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><button style="height: 40px; border-radius: 8px; background: #F28A7B; color: #241B32; font-weight: 700">Spara</button>Hover</div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><button style="height: 40px; border-radius: 8px; background: #D9604F; color: #241B32; font-weight: 700">Spara</button>Tryck</div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><button style="height: 40px; border-radius: 8px; background: #EE7665; color: #241B32; font-weight: 700; outline: 2px solid #FFA85D; outline-offset: 3px">Spara</button>Fokus</div>
+      </div>
+      <div style="display: flex; gap: 10px">
+        <button style="height: 40px; padding: 0 18px; border-radius: 8px; background: #FF7E9D; color: #241B32; font-weight: 700">Radera</button>
+        <button disabled style="height: 40px; padding: 0 18px; border-radius: 8px; background: #3A2B44; color: #8A7D96; font-weight: 600; cursor: not-allowed">Inaktiv</button>
+      </div>
+    </section>
+
+    <section style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700">Reglage</h2>
+      <div style="display: flex; align-items: center; justify-content: space-between"><span>Mörkt läge</span><button role="switch" aria-checked="true" aria-label="Mörkt läge" style="width: 48px; height: 28px; border-radius: 99px; background: #EE7665; position: relative"><span style="position: absolute; top: 3px; left: 23px; width: 22px; height: 22px; border-radius: 99px; background: #241B32"></span></button></div>
+      <div style="display: flex; align-items: center; justify-content: space-between"><span>Animationer</span><button role="switch" aria-checked="false" aria-label="Animationer" style="width: 48px; height: 28px; border-radius: 99px; background: #241B32; border: 1px solid #5A4766; box-sizing: border-box; position: relative"><span style="position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 99px; background: #C2B8CC"></span></button></div>
+      <div style="display: flex; gap: 22px">
+        <label style="display: flex; align-items: center; gap: 10px"><span style="width: 20px; height: 20px; border-radius: 6px; background: #EE7665; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#241B32" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span><input type="checkbox" checked style="position: absolute; opacity: 0; width: 1px; height: 1px">Synka</label>
+        <label style="display: flex; align-items: center; gap: 10px"><span style="width: 20px; height: 20px; border-radius: 6px; border: 2px solid #8A7D96; box-sizing: border-box"></span><input type="checkbox" style="position: absolute; opacity: 0; width: 1px; height: 1px">Dela</label>
+      </div>
+      <div style="display: flex; gap: 22px">
+        <label style="display: flex; align-items: center; gap: 10px"><span style="width: 20px; height: 20px; border-radius: 99px; border: 2px solid #EE7665; box-sizing: border-box; display: flex; align-items: center; justify-content: center"><span style="width: 10px; height: 10px; border-radius: 99px; background: #EE7665"></span></span><input type="radio" name="tema" checked style="position: absolute; opacity: 0; width: 1px; height: 1px">Glöd</label>
+        <label style="display: flex; align-items: center; gap: 10px"><span style="width: 20px; height: 20px; border-radius: 99px; border: 2px solid #8A7D96; box-sizing: border-box"></span><input type="radio" name="tema" style="position: absolute; opacity: 0; width: 1px; height: 1px">Gryning (ljust)</label>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; font-size: 13px"><span>Textstorlek</span><span style="font-family: 'JetBrains Mono', monospace; color: #FFA85D">15 px</span></div>
+        <div style="height: 8px; border-radius: 99px; background: #241B32; position: relative"><div style="width: 40%; height: 100%; border-radius: 99px; background: #EE7665"></div><div style="position: absolute; left: 40%; top: 50%; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 99px; background: #F3F0F5; box-shadow: 0 2px 6px rgba(10,6,16,0.5)"></div></div>
+      </div>
+    </section>
+
+    <section style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700">Fält</h2>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Datornamn<input value="glöd-laptop" style="height: 40px; padding: 0 12px; border-radius: 8px; background: #241B32; border: 1px solid #5A4766; color: #F3F0F5; font-size: 14px; outline: none"></label>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Sök<input placeholder="Skriv för att söka…" style="height: 40px; padding: 0 12px; border-radius: 8px; background: #241B32; border: 1px solid #FFA85D; box-shadow: 0 0 0 3px rgba(255,168,93,0.25); color: #F3F0F5; font-size: 14px; outline: none"></label>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Lösenord<input type="password" value="kort" aria-invalid="true" style="height: 40px; padding: 0 12px; border-radius: 8px; background: #241B32; border: 1px solid #FF7E9D; color: #F3F0F5; font-size: 14px; outline: none"><span style="display: flex; align-items: center; gap: 6px; color: #FF7E9D; font-weight: 500; font-size: 12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6M12 16.5v.5"></path></svg>Minst 8 tecken</span></label>
+    </section>
+
+    <section style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700">Flikar, segment, chips</h2>
+      <div role="tablist" style="display: flex; gap: 22px; border-bottom: 1px solid #5A4766">
+        <button role="tab" aria-selected="true" style="height: 38px; font-weight: 700; box-shadow: inset 0 -3px 0 #EE7665">Allmänt</button>
+        <button role="tab" aria-selected="false" style="height: 38px; color: #C2B8CC; font-weight: 500">Utseende</button>
+        <button role="tab" aria-selected="false" style="height: 38px; color: #C2B8CC; font-weight: 500">Ljud</button>
+        <button role="tab" aria-selected="false" style="height: 38px; color: #C2B8CC; font-weight: 500">Nätverk</button>
+      </div>
+      <div style="display: flex; padding: 4px; border-radius: 10px; background: #241B32; gap: 4px">
+        <button style="flex: 1; height: 32px; border-radius: 7px; color: #C2B8CC; font-weight: 600; font-size: 13px">Dag</button>
+        <button style="flex: 1; height: 32px; border-radius: 7px; background: #EE7665; color: #241B32; font-weight: 700; font-size: 13px">Vecka</button>
+        <button style="flex: 1; height: 32px; border-radius: 7px; color: #C2B8CC; font-weight: 600; font-size: 13px">Månad</button>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <span style="height: 30px; padding: 0 12px; border-radius: 99px; background: rgba(238,118,101,0.18); border: 1px solid #EE7665; display: flex; align-items: center; font-size: 13px; font-weight: 600">Bilder</span>
+        <span style="height: 30px; padding: 0 12px; border-radius: 99px; background: #523E5D; display: flex; align-items: center; font-size: 13px">Dokument</span>
+        <span style="height: 30px; padding: 0 12px; border-radius: 99px; background: #523E5D; display: flex; align-items: center; font-size: 13px">Senaste</span>
+        <span style="height: 22px; min-width: 22px; padding: 0 7px; box-sizing: border-box; border-radius: 99px; background: #FFA85D; color: #241B32; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; align-self: center">3</span>
+      </div>
+    </section>
+
+    <section style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700">Kontextmeny</h2>
+      <div role="menu" style="width: 260px; background: #523E5D; border: 1px solid #6A5676; border-radius: 12px; padding: 6px; box-shadow: 0 8px 24px rgba(10,6,16,0.45); display: flex; flex-direction: column">
+        <button role="menuitem" style="height: 34px; padding: 0 10px; border-radius: 7px; display: flex; align-items: center; justify-content: space-between">Öppna<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">⏎</span></button>
+        <button role="menuitem" style="height: 34px; padding: 0 10px; border-radius: 7px; display: flex; align-items: center; justify-content: space-between; background: #EE7665; color: #241B32; font-weight: 600">Byt namn<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">F2</span></button>
+        <button role="menuitem" style="height: 34px; padding: 0 10px; border-radius: 7px; display: flex; align-items: center; justify-content: space-between">Kopiera<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">Ctrl C</span></button>
+        <span style="height: 1px; background: #6A5676; margin: 5px 6px"></span>
+        <button role="menuitem" style="height: 34px; padding: 0 10px; border-radius: 7px; display: flex; align-items: center; justify-content: space-between; color: #FF9CB3">Flytta till papperskorgen<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px">Del</span></button>
+      </div>
+    </section>
+
+    <section style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700">Dialog</h2>
+      <div role="dialog" aria-label="Töm papperskorgen" style="background: #523E5D; border: 1px solid #6A5676; border-radius: 16px; padding: 20px; box-shadow: 0 24px 64px rgba(10,6,16,0.6); display: flex; flex-direction: column; gap: 10px">
+        <div style="font-size: 18px; font-weight: 800">Töm papperskorgen?</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #D4CBDC">14 objekt raderas permanent. Det går inte att ångra.</div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px">
+          <button style="height: 38px; padding: 0 16px; border-radius: 8px; background: #42314C; font-weight: 600">Avbryt</button>
+          <button style="height: 38px; padding: 0 16px; border-radius: 8px; background: #FF7E9D; color: #241B32; font-weight: 700">Töm</button>
+        </div>
+      </div>
+    </section>
+
+    <section style="grid-column: span 2; background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700">Aviseringar</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+        <div role="status" style="background: #241B32; border-radius: 14px; padding: 14px; display: flex; gap: 12px; align-items: flex-start">
+          <span style="width: 32px; height: 32px; border-radius: 99px; background: #8FD5B0; color: #241B32; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 700">Uppdatering klar</span><span style="font-size: 13px; color: #C2B8CC">Systemet är uppdaterat.</span></span>
+        </div>
+        <div role="status" style="background: #241B32; border-radius: 14px; padding: 14px; display: flex; gap: 12px; align-items: flex-start">
+          <span style="width: 32px; height: 32px; border-radius: 99px; background: #FFA85D; color: #241B32; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 6v8M12 18v.5"></path></svg></span>
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 700">Lågt batteri</span><span style="font-size: 13px; color: #C2B8CC">15 % kvar. Anslut laddare.</span></span>
+        </div>
+        <div role="alert" style="background: #241B32; border-radius: 14px; padding: 14px; display: flex; gap: 12px; align-items: flex-start">
+          <span style="width: 32px; height: 32px; border-radius: 99px; background: #FF7E9D; color: #241B32; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"></path></svg></span>
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 700">Kunde inte ansluta</span><span style="font-size: 13px; color: #C2B8CC">Kontrollera nätverket.</span></span>
+        </div>
+      </div>
+    </section>
+
+    <section style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 700">Förlopp</h2>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; font-size: 13px"><span>Kopierar 214 filer</span><span style="font-family: 'JetBrains Mono', monospace; color: #FFA85D">64 %</span></div>
+        <div role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" aria-label="Kopierar filer" style="height: 8px; border-radius: 99px; background: #241B32; overflow: hidden"><div style="width: 64%; height: 100%; border-radius: 99px; background: #EE7665"></div></div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px">
+        <svg width="36" height="36" viewBox="0 0 36 36" role="img" aria-label="Laddar"><circle cx="18" cy="18" r="14" fill="none" stroke="#241B32" stroke-width="4"></circle><path d="M18 4a14 14 0 0 1 14 14" fill="none" stroke="#FFA85D" stroke-width="4" stroke-linecap="round"></path></svg>
+        <span style="color: #C2B8CC">Söker efter enheter…</span>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1120}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

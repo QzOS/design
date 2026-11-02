@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Glöd – palett och tokens</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#FFA85D}a:hover{color:#EE7665}
+</style>
+</helmet>
+<div style="width: 1440px; height: 960px; box-sizing: border-box; padding: 64px 72px; background: #241B32; color: #F3F0F5; font-family: 'Manrope', system-ui, sans-serif; display: flex; flex-direction: column; gap: 44px">
+
+  <header style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.12em; color: #C2B8CC">TEMAFÖRSLAG · V0.1</div>
+      <div style="display: flex; align-items: center; gap: 20px">
+        <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="27" fill="#42314C"></circle><circle cx="28" cy="32" r="14" fill="#EE7665"></circle><path d="M14 32a14 14 0 0 1 28 0" fill="#FFA85D"></path><rect x="10" y="32" width="36" height="3" rx="1.5" fill="#241B32"></rect></svg>
+        <h1 style="margin: 0; font-size: 72px; line-height: 1; font-weight: 800; letter-spacing: -0.03em">Glöd</h1>
+      </div>
+      <p style="margin: 0; max-width: 640px; font-size: 19px; line-height: 1.5; color: #C2B8CC">Ett mörkt, varmt skrivbordstema. Plommon bär ytorna, korall och bärnsten är ljuset som visar vad som är aktivt.</p>
+    </div>
+    <div style="display: flex; gap: 32px; font-size: 14px; color: #C2B8CC">
+      <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em">TYPSNITT</span><span style="color: #F3F0F5; font-weight: 600; font-size: 16px">Manrope / JetBrains Mono</span></div>
+      <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em">HÖRN</span><span style="color: #F3F0F5; font-weight: 600; font-size: 16px">8 / 14 / 22 px</span></div>
+      <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em">RUTNÄT</span><span style="color: #F3F0F5; font-weight: 600; font-size: 16px">4 px</span></div>
+    </div>
+  </header>
+
+  <section aria-label="Grundfärger" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px">
+    <div style="display: flex; flex-direction: column; border-radius: 22px; overflow: hidden; background: #42314C; border: 1px solid #5A4766">
+      <div style="height: 170px; background: #241B32; border-bottom: 1px solid #5A4766; padding: 18px; box-sizing: border-box; display: flex; align-items: flex-end"><span style="font-size: 13px; color: #C2B8CC">Aa · 14.7:1</span></div>
+      <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-weight: 700; font-size: 20px">Bakgrund</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #FFA85D">#241B32</div>
+        <div style="font-size: 14px; line-height: 1.45; color: #C2B8CC">Skrivbord, appfönstrens bas, låsskärm.</div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; border-radius: 22px; overflow: hidden; background: #42314C; border: 1px solid #5A4766">
+      <div style="height: 170px; background: #42314C; border-bottom: 1px solid #5A4766; padding: 18px; box-sizing: border-box; display: flex; align-items: flex-end"><span style="font-size: 13px; color: #C2B8CC">Aa · 10.5:1</span></div>
+      <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-weight: 700; font-size: 20px">Ytor</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #FFA85D">#42314C</div>
+        <div style="font-size: 14px; line-height: 1.45; color: #C2B8CC">Fönster, paneler, docka, menyer, kort.</div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; border-radius: 22px; overflow: hidden; background: #42314C; border: 1px solid #5A4766">
+      <div style="height: 170px; background: #EE7665; padding: 18px; box-sizing: border-box; display: flex; align-items: flex-end"><span style="font-size: 13px; font-weight: 600; color: #241B32">Aa · 5.9:1 med mörk text</span></div>
+      <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-weight: 700; font-size: 20px">Accent</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #FFA85D">#EE7665</div>
+        <div style="font-size: 14px; line-height: 1.45; color: #C2B8CC">Primärknappar, val, aktiv flik, reglage på.</div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; border-radius: 22px; overflow: hidden; background: #42314C; border: 1px solid #5A4766">
+      <div style="height: 170px; background: #FFA85D; padding: 18px; box-sizing: border-box; display: flex; align-items: flex-end"><span style="font-size: 13px; font-weight: 600; color: #241B32">Aa · 8.7:1 med mörk text</span></div>
+      <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-weight: 700; font-size: 20px">Värme</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #FFA85D">#FFA85D</div>
+        <div style="font-size: 14px; line-height: 1.45; color: #C2B8CC">Fokusring, länkar, aviseringsprick, varning.</div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; border-radius: 22px; overflow: hidden; background: #42314C; border: 1px solid #5A4766">
+      <div style="height: 170px; background: #F3F0F5; padding: 18px; box-sizing: border-box; display: flex; align-items: flex-end"><span style="font-size: 13px; font-weight: 600; color: #241B32">Aa · på bakgrund 14.7:1</span></div>
+      <div style="padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px">
+        <div style="font-weight: 700; font-size: 20px">Text</div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #FFA85D">#F3F0F5</div>
+        <div style="font-size: 14px; line-height: 1.45; color: #C2B8CC">Rubriker, brödtext, ikoner.</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; flex: 1">
+    <div style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+      <h2 style="margin: 0; font-size: 17px; font-weight: 700">Härledda toner</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; font-size: 14px">
+        <div style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: #1B1426; border: 1px solid #5A4766; flex-shrink: 0"></span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Djup</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">#1B1426</span></span></div>
+        <div style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: #523E5D; flex-shrink: 0"></span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Yta upphöjd</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">#523E5D</span></span></div>
+        <div style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: #5A4766; flex-shrink: 0"></span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Kant</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">#5A4766</span></span></div>
+        <div style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: #C2B8CC; flex-shrink: 0"></span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Dämpad text</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">#C2B8CC</span></span></div>
+        <div style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: #F28A7B; flex-shrink: 0"></span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Accent hover</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">#F28A7B</span></span></div>
+        <div style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: #D9604F; flex-shrink: 0"></span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Accent tryck</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">#D9604F</span></span></div>
+        <div style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: #8FD5B0; flex-shrink: 0"></span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Lyckat</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">#8FD5B0</span></span></div>
+        <div style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: #FF7E9D; flex-shrink: 0"></span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Fel</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">#FF7E9D</span></span></div>
+      </div>
+    </div>
+
+    <div style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 17px; font-weight: 700">Typskala</h2>
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid #5A4766; padding-bottom: 10px"><span style="font-size: 34px; font-weight: 800; letter-spacing: -0.02em">Rubrik</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">34 / 800</span></div>
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid #5A4766; padding-bottom: 10px"><span style="font-size: 22px; font-weight: 700">Fönstertitel</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">22 / 700</span></div>
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid #5A4766; padding-bottom: 10px"><span style="font-size: 15px; font-weight: 500">Brödtext och menyer</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">15 / 500</span></div>
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid #5A4766; padding-bottom: 10px"><span style="font-size: 13px; font-weight: 600; color: #C2B8CC">Etikett, sekundär info</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">13 / 600</span></div>
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px"><span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #FFA85D">~/kod $ make</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #C2B8CC">Mono 14</span></div>
+    </div>
+
+    <div style="background: #42314C; border: 1px solid #5A4766; border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+      <h2 style="margin: 0; font-size: 17px; font-weight: 700">Form och djup</h2>
+      <div style="display: flex; gap: 16px; align-items: flex-end">
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center"><div style="width: 64px; height: 64px; background: #523E5D; border-radius: 8px"></div><span style="font-size: 12px; color: #C2B8CC">8 · kontroller</span></div>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center"><div style="width: 64px; height: 64px; background: #523E5D; border-radius: 14px"></div><span style="font-size: 12px; color: #C2B8CC">14 · fönster</span></div>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center"><div style="width: 64px; height: 64px; background: #523E5D; border-radius: 22px"></div><span style="font-size: 12px; color: #C2B8CC">22 · docka</span></div>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: center"><div style="width: 64px; height: 64px; background: #523E5D; border-radius: 999px"></div><span style="font-size: 12px; color: #C2B8CC">pill · chips</span></div>
+      </div>
+      <div style="display: flex; gap: 16px">
+        <div style="flex: 1; height: 72px; background: #523E5D; border-radius: 14px; box-shadow: 0 1px 0 rgba(243,240,245,0.06) inset, 0 8px 24px rgba(10,6,16,0.45); display: flex; align-items: center; justify-content: center; font-size: 13px; color: #C2B8CC">Höjd 1</div>
+        <div style="flex: 1; height: 72px; background: #523E5D; border-radius: 14px; box-shadow: 0 1px 0 rgba(243,240,245,0.08) inset, 0 24px 64px rgba(10,6,16,0.6); display: flex; align-items: center; justify-content: center; font-size: 13px; color: #C2B8CC">Höjd 2</div>
+        <div style="flex: 1; height: 72px; background: #42314C; border-radius: 14px; outline: 2px solid #FFA85D; outline-offset: 3px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #F3F0F5">Fokus</div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
