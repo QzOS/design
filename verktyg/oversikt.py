@@ -43,11 +43,12 @@ def inline(p, prefix):
     return re.sub(r"url\(#([^)]+)\)", lambda m: f"url(#{prefix}-{m.group(1)})", s)
 
 
-def galleri(tema, fonter):
+def galleri(tema, fonter, skal=False):
     bg, fg, dim, yta = FARG[tema]
     delar = []
     n = 0
-    grupper = sorted(p for p in (SVG / tema).iterdir() if p.is_dir())
+    rot = SVG / tema / "skal" if skal else SVG / tema
+    grupper = sorted(p for p in rot.iterdir() if p.is_dir() and p.name != "skal")
     for g in grupper:
         kort = []
         for f in sorted(g.glob("*.svg")):
@@ -55,10 +56,21 @@ def galleri(tema, fonter):
             kort.append(f'<figure><div class=y>{inline(f, f"i{n}")}</div>'
                         f'<figcaption>{f.stem}</figcaption></figure>')
         delar.append(f"<section><h2>{g.name}</h2><div class=rad>{''.join(kort)}</div></section>")
-    glyfer = "".join(
-        f'<figure><span class=g>{inline(f, f"g{i}")}</span><figcaption>{f.stem}</figcaption></figure>'
-        for i, f in enumerate(sorted((SVG / "glyfer").glob("*.svg"))))
-    delar.insert(0, f"<section><h2>glyfer</h2><div class=rad>{glyfer}</div></section>")
+    if skal:
+        appar = "".join(
+            f'<figure>{inline(f, f"a{i}")}<figcaption>{f.stem}</figcaption></figure>'
+            for i, f in enumerate(sorted((SVG / "appikoner").glob("*.svg"))))
+        bild = inline(SVG / "bakgrund" / f"dyner-{tema}.svg", "bg").replace(
+            'width="1920" height="1080"', 'width="768" height="432"', 1)
+        delar.insert(0, f"<section><h2>programikoner</h2><div class=rad>{appar}</div></section>"
+                        f"<section><h2>bakgrund</h2>{bild}</section>")
+        rubrik = f"{tema} · skalet vid 100 %"
+    else:
+        glyfer = "".join(
+            f'<figure><span class=g>{inline(f, f"g{i}")}</span><figcaption>{f.stem}</figcaption></figure>'
+            for i, f in enumerate(sorted((SVG / "glyfer").glob("*.svg"))))
+        delar.insert(0, f"<section><h2>glyfer</h2><div class=rad>{glyfer}</div></section>")
+        rubrik = f"{tema} · alla komponenter vid 100 %, på fönsterytan"
     return f"""<!doctype html><meta charset=utf-8><style>{fonter}
 body{{margin:0;padding:32px;background:{bg};color:{fg};font-family:Manrope,sans-serif;width:1600px}}
 h1{{font-size:28px;margin:0 0 24px}}
@@ -69,7 +81,7 @@ figcaption{{font-size:11px;color:{dim};font-family:monospace}}
 .g{{color:{fg};display:inline-flex;padding:6px;border:1px dashed {dim}55;border-radius:6px}}
 .g svg{{width:32px;height:32px}}
 .y{{background:{yta};padding:8px;border-radius:10px;line-height:0}}
-</style><h1>{tema} · alla komponenter vid 100 %, på fönsterytan</h1>{''.join(delar)}"""
+</style><h1>{rubrik}</h1>{''.join(delar)}"""
 
 
 URVAL = ["knapp/primar-fokus", "knapp/sekundar-vila", "kryssruta/pa-vila", "radioknapp/pa-vila",
@@ -114,10 +126,12 @@ def main():
         for tema in ("glod", "gryning"):
             sida.set_content(galleri(tema, fonter), wait_until="networkidle")
             sida.screenshot(path=str(UT / f"{tema}.png"), full_page=True)
+            sida.set_content(galleri(tema, fonter, skal=True), wait_until="networkidle")
+            sida.screenshot(path=str(UT / f"skal-{tema}.png"), full_page=True)
         sida.set_content(dpi(fonter), wait_until="networkidle")
         sida.screenshot(path=str(UT / "dpi.png"), full_page=True)
         b.close()
-    print("oversikt/glod.png, oversikt/gryning.png, oversikt/dpi.png")
+    print("oversikt/: glod, gryning, skal-glod, skal-gryning och dpi")
 
 
 if __name__ == "__main__":

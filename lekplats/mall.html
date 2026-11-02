@@ -1,0 +1,814 @@
+<title>QzOS skal-lekplats</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<!--
+  Lekplatsen för QzOS skal. Genererad av verktyg/bygg.py ur lekplats/mall.html:
+  färgerna och måtten kommer ur tokens/tokens.json, glyferna, programikonerna
+  och bakgrunden ur samma kod som SVG-filerna i svg/. Ändra mallen, inte index.html.
+-->
+<style>
+/*TOKENS*/
+:root { color-scheme: dark; }
+html, body { height: 100%; }
+body { margin: 0; background: #1B1426; overflow: hidden; font-family: Manrope, Inter, "DejaVu Sans", system-ui, sans-serif; }
+body.tema-gryning { background: #EFE7EE; color-scheme: light; }
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, textarea { font: inherit; color: inherit; }
+svg.g { width: calc(16 * var(--u)); height: calc(16 * var(--u)); flex: none; }
+svg.a { flex: none; }
+.skarm {
+  --u: 1px;
+  position: relative; width: 100%; height: 100%; overflow: hidden;
+  color: var(--text); font-size: calc(14 * var(--u)); font-weight: 500;
+  background: var(--tapet) center / cover no-repeat, var(--bakgrund);
+  user-select: none; -webkit-user-select: none;
+}
+.skarm.enfargad { background: var(--bakgrund); }
+.tema-glod .skarm { --tapet: var(--tapet-glod); }
+.tema-gryning .skarm { --tapet: var(--tapet-gryning); }
+:focus-visible { outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(2 * var(--u)); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* ---- skrivbordsikonerna ---- */
+.ikoner { position: absolute; left: calc(16 * var(--u)); top: calc(16 * var(--u)); display: grid; grid-auto-flow: column; grid-template-rows: repeat(4, calc(100 * var(--u))); gap: calc(8 * var(--u)); }
+.ikon { width: calc(88 * var(--u)); height: calc(100 * var(--u)); border-radius: var(--radie-yta); display: flex; flex-direction: column; align-items: center; gap: calc(6 * var(--u)); padding-top: calc(8 * var(--u)); border: 1px solid transparent; }
+.ikon:hover { background: color-mix(in srgb, var(--text) 10%, transparent); }
+.ikon.vald { background: color-mix(in srgb, var(--accent) 28%, transparent); border-color: color-mix(in srgb, var(--accent) 70%, transparent); }
+.ikon svg { width: calc(48 * var(--u)); height: calc(48 * var(--u)); }
+.ikon span { font-size: calc(12 * var(--u)); font-weight: 600; line-height: calc(15 * var(--u)); text-align: center; max-width: calc(80 * var(--u)); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  text-shadow: 0 0 calc(3 * var(--u)) color-mix(in srgb, var(--bakgrund) 70%, transparent), 0 0 calc(1 * var(--u)) color-mix(in srgb, var(--bakgrund) 80%, transparent); }
+
+/* ---- fönster ---- */
+.fonster { position: absolute; display: flex; flex-direction: column; background: var(--yta); border: 1px solid var(--fonster-kant-inaktiv); border-radius: var(--radie-yta); box-shadow: var(--hojd-2); overflow: hidden; min-width: calc(320 * var(--u)); min-height: calc(200 * var(--u)); transition: box-shadow var(--rorelse-kort), opacity var(--rorelse-medel), transform var(--rorelse-medel); }
+.fonster.aktivt { border-color: var(--fonster-kant-aktiv); box-shadow: var(--hojd-3); }
+.fonster.minimerat { opacity: 0; transform: translateY(calc(40 * var(--u))) scale(.92); pointer-events: none; }
+.fonster.maximerat { border-radius: 0; border-width: 0 0 1px 0; }
+.titelrad { height: var(--matt-titelrad-h); display: flex; align-items: center; gap: calc(8 * var(--u)); padding-left: calc(12 * var(--u)); background: var(--titel-inaktiv); border-bottom: 1px solid var(--kant); flex: none; cursor: default; }
+.aktivt .titelrad { background: var(--yta); }
+.titelrad .a { width: calc(16 * var(--u)); height: calc(16 * var(--u)); }
+.titelrad .titel { flex: 1; min-width: 0; font-size: calc(13 * var(--u)); font-weight: 700; color: var(--text-dampad); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.aktivt .titelrad .titel { color: var(--text); }
+.tknappar { display: flex; gap: var(--matt-titelradsknapp-avstand); padding-right: var(--matt-titelradsknapp-avstand); }
+.tknapp { width: var(--matt-titelradsknapp); height: var(--matt-titelradsknapp); border-radius: var(--radie-kontroll); display: grid; place-items: center; color: var(--text-dampad); }
+.aktivt .tknapp { color: var(--text); }
+.tknapp:hover { background: var(--yta-hover); }
+.tknapp:active { background: var(--yta-tryck); }
+.tknapp.stang:hover { background: var(--accent); color: var(--pa-accent); }
+.tknapp.stang:active { background: var(--accent-tryck); color: var(--pa-accent); }
+.innehall { flex: 1; min-height: 0; overflow: auto; position: relative; }
+
+/* ---- kontrollerna, ur svg/ ---- */
+.knapp { height: var(--matt-kontroll-h); min-width: var(--matt-knapp-min-b); padding: 0 var(--matt-knapp-utfyllnad-x); border-radius: var(--radie-kontroll); background: var(--knapp); font-size: calc(14 * var(--u)); font-weight: 600; white-space: nowrap; }
+.knapp:hover { background: var(--knapp-hover); } .knapp:active { background: var(--knapp-tryck); }
+.knapp.primar { background: var(--accent); color: var(--pa-accent); font-weight: 700; }
+.knapp.primar:hover { background: var(--accent-hover); } .knapp.primar:active { background: var(--accent-tryck); }
+.segment { display: inline-flex; padding: calc(3 * var(--u)); gap: calc(3 * var(--u)); border-radius: calc(10 * var(--u)); background: var(--yta-sankt); }
+.tema-gryning .segment { background: var(--knapp); }
+.segment button { height: calc(28 * var(--u)); padding: 0 calc(10 * var(--u)); border-radius: calc(7 * var(--u)); font-size: calc(12 * var(--u)); font-weight: 600; color: var(--text-dampad); }
+.segment button:hover { color: var(--text); }
+.segment button[aria-pressed="true"] { background: var(--accent); color: var(--pa-accent); font-weight: 700; }
+.vaxel { display: flex; align-items: center; justify-content: space-between; gap: calc(12 * var(--u)); min-height: calc(32 * var(--u)); width: 100%; text-align: left; }
+.vaxel i { flex: none; position: relative; width: var(--matt-vaxel-b); height: var(--matt-vaxel-h); border-radius: 999px; background: var(--falt); border: 1px solid var(--kant-kontroll); transition: background var(--rorelse-kort); }
+.vaxel i::after { content: ""; position: absolute; top: 50%; left: calc(3 * var(--u)); width: var(--matt-vaxel-knopp); height: var(--matt-vaxel-knopp); margin-top: calc(-7 * var(--u)); border-radius: 50%; background: var(--text-dampad); transition: left var(--rorelse-kort); }
+.vaxel[aria-checked="true"] i { background: var(--accent); border-color: var(--accent); }
+.vaxel[aria-checked="true"] i::after { left: calc(100% - 17 * var(--u)); background: var(--pa-accent); }
+.falt-in { height: var(--matt-kontroll-h); border-radius: var(--radie-kontroll); background: var(--falt); border: 1px solid var(--kant-kontroll); padding: 0 var(--matt-falt-utfyllnad-x); outline: none; }
+.falt-in:focus { border-color: var(--fokus); }
+
+/* ---- aktivitetsfältet ---- */
+.falt { position: absolute; z-index: 5000; height: calc(56 * var(--u)); display: flex; align-items: center; gap: calc(4 * var(--u)); padding: 0 calc(6 * var(--u));
+  background: color-mix(in srgb, var(--yta) 90%, transparent); backdrop-filter: blur(calc(24 * var(--u))); -webkit-backdrop-filter: blur(calc(24 * var(--u)));
+  border: 1px solid var(--kant); border-radius: var(--radie-panel); box-shadow: var(--hojd-2);
+  bottom: calc(8 * var(--u)); left: 50%; transform: translateX(-50%); transition: left var(--rorelse-medel), transform var(--rorelse-medel); }
+.falt.vanster { left: calc(8 * var(--u)); transform: none; }
+.falt.dockat { left: 0; right: 0; bottom: 0; transform: none; border-radius: 0; border-width: 1px 0 0 0; display: grid; grid-template-columns: 1fr auto 1fr; padding: 0 calc(12 * var(--u)); }
+.falt.dockat.vanster { grid-template-columns: 0 auto 1fr; }
+.falt .tom { display: none; }
+.falt.dockat .tom { display: block; }
+.falt .grupp { display: flex; align-items: center; gap: calc(4 * var(--u)); }
+.falt.dockat .bricka-grupp { justify-self: end; }
+.sep { width: 1px; height: calc(24 * var(--u)); background: var(--kant); margin: 0 calc(4 * var(--u)); flex: none; }
+.cell { position: relative; width: calc(44 * var(--u)); height: calc(44 * var(--u)); border-radius: var(--radie-yta); display: grid; place-items: center; flex: none; }
+.cell:hover, .cell.aktiv { background: var(--yta-hover); }
+.cell:active, .cell.oppen-panel { background: var(--yta-tryck); }
+.cell > svg.a { width: calc(32 * var(--u)); height: calc(32 * var(--u)); margin-top: calc(-4 * var(--u)); transition: transform var(--rorelse-kort); }
+.cell:active > svg.a { transform: translateY(calc(1 * var(--u))); }
+.cell > svg.g { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+.cell .logo { width: calc(28 * var(--u)); height: calc(28 * var(--u)); }
+.cell .mark { position: absolute; bottom: calc(1 * var(--u)); left: 50%; height: calc(3 * var(--u)); width: calc(6 * var(--u)); margin-left: calc(-3 * var(--u)); border-radius: 2px; background: var(--text-dampad); opacity: 0; transition: width var(--rorelse-kort), margin var(--rorelse-kort); }
+.cell.kor .mark { opacity: 1; }
+.cell.aktiv .mark { width: calc(16 * var(--u)); margin-left: calc(-8 * var(--u)); background: var(--accent); opacity: 1; }
+.cell.uppmarksamhet { background: color-mix(in srgb, var(--varme) 28%, transparent); }
+.cell.uppmarksamhet .mark { width: calc(16 * var(--u)); margin-left: calc(-8 * var(--u)); background: var(--varme); opacity: 1; animation: puls 1.2s ease-in-out infinite; }
+@keyframes puls { 50% { opacity: .35; } }
+.bricka { height: calc(44 * var(--u)); padding: 0 calc(10 * var(--u)); border-radius: var(--radie-yta); display: flex; align-items: center; gap: calc(8 * var(--u)); }
+.bricka:hover { background: var(--yta-hover); } .bricka.oppen-panel { background: var(--yta-tryck); }
+.klocka { height: calc(44 * var(--u)); padding: 0 calc(8 * var(--u)); border-radius: var(--radie-yta); display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.klocka:hover { background: var(--yta-hover); }
+.klocka b { font-size: calc(13 * var(--u)); } .klocka small { font-size: calc(11 * var(--u)); color: var(--text-dampad); }
+.prick { position: absolute; top: calc(9 * var(--u)); right: calc(9 * var(--u)); width: calc(8 * var(--u)); height: calc(8 * var(--u)); border-radius: 50%; background: var(--varme); box-shadow: 0 0 0 calc(2 * var(--u)) var(--yta); }
+
+/* ---- paneler ---- */
+.panel { position: absolute; z-index: 6000; background: color-mix(in srgb, var(--yta) 96%, transparent); backdrop-filter: blur(calc(24 * var(--u))); -webkit-backdrop-filter: blur(calc(24 * var(--u)));
+  border: 1px solid var(--kant); border-radius: var(--radie-panel); box-shadow: var(--hojd-3); max-width: calc(100% - 16px);
+  transition: opacity var(--rorelse-medel), transform var(--rorelse-medel) cubic-bezier(.2, 0, 0, 1); }
+.panel.dold { opacity: 0; transform: translateY(calc(16 * var(--u))); pointer-events: none; visibility: hidden; }
+.ovanfor { bottom: calc(72 * var(--u)); }
+.dockat-lage .ovanfor { bottom: calc(64 * var(--u)); }
+.start { width: calc(640 * var(--u)); left: 50%; margin-left: calc(-320 * var(--u)); display: flex; flex-direction: column; overflow: hidden; max-height: calc(100% - 88 * var(--u)); }
+.start.oversikt { width: calc(880 * var(--u)); margin-left: calc(-440 * var(--u)); }
+.vanster-lage .start { left: calc(8 * var(--u)); margin-left: 0; }
+.start .kropp { display: flex; min-height: 0; flex: 1; }
+.start .huvud { width: calc(640 * var(--u)); flex: none; padding: calc(24 * var(--u)); display: flex; flex-direction: column; gap: calc(20 * var(--u)); min-height: 0; overflow: auto; }
+.start .sida { display: none; flex: 1; border-left: 1px solid var(--kant); margin: calc(24 * var(--u)) 0; padding: 0 calc(24 * var(--u)); flex-direction: column; gap: calc(12 * var(--u)); }
+.start.oversikt .sida { display: flex; }
+.sok { display: flex; align-items: center; gap: calc(12 * var(--u)); height: calc(40 * var(--u)); padding: 0 calc(14 * var(--u)); border-radius: 999px; background: var(--falt); border: 1px solid var(--kant-kontroll); color: var(--text-dampad); flex: none; }
+.sok:focus-within { border-color: var(--fokus); outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(2 * var(--u)); }
+.sok input { flex: 1; min-width: 0; border: 0; background: none; outline: none; color: var(--text); font-size: calc(14 * var(--u)); }
+.sok input::placeholder { color: var(--text-dampad); }
+.rubrik { display: flex; justify-content: space-between; align-items: center; font-size: calc(13 * var(--u)); font-weight: 700; }
+.liten-knapp { height: calc(24 * var(--u)); padding: 0 calc(10 * var(--u)); border-radius: 999px; background: var(--knapp); font-size: calc(12 * var(--u)); font-weight: 600; display: inline-flex; align-items: center; gap: calc(4 * var(--u)); }
+.liten-knapp:hover { background: var(--knapp-hover); }
+.liten-knapp svg.g { width: calc(12 * var(--u)); height: calc(12 * var(--u)); }
+.rutnat { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: calc(4 * var(--u)) 0; }
+.prog { height: calc(80 * var(--u)); border-radius: var(--radie-yta); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(6 * var(--u)); margin: 0 calc(4 * var(--u)); font-size: calc(12 * var(--u)); }
+.prog:hover { background: var(--yta-hover); }
+.prog svg.a { width: calc(40 * var(--u)); height: calc(40 * var(--u)); }
+.senaste { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(4 * var(--u)); }
+.rad { display: flex; align-items: center; gap: calc(12 * var(--u)); min-height: calc(48 * var(--u)); padding: 0 calc(8 * var(--u)); border-radius: var(--radie-kontroll); text-align: left; min-width: 0; }
+.rad:hover, .rad.forst { background: var(--yta-hover); }
+.rad svg.a { width: calc(32 * var(--u)); height: calc(32 * var(--u)); }
+.rad span { display: flex; flex-direction: column; min-width: 0; }
+.rad b { font-size: calc(13 * var(--u)); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rad small { font-size: calc(12 * var(--u)); color: var(--text-dampad); }
+.alla { display: flex; flex-direction: column; gap: calc(2 * var(--u)); }
+.alla .bokstav { font-size: calc(12 * var(--u)); font-weight: 700; color: var(--accent-text); padding: calc(8 * var(--u)) calc(8 * var(--u)) calc(2 * var(--u)); }
+.tomt { color: var(--text-dampad); font-size: calc(13 * var(--u)); padding: calc(8 * var(--u)); }
+.fot { height: calc(64 * var(--u)); flex: none; display: flex; align-items: center; gap: calc(10 * var(--u)); padding: 0 calc(24 * var(--u)); background: color-mix(in srgb, var(--yta-sankt) 50%, transparent); border-top: 1px solid var(--kant); }
+.avatar { width: calc(36 * var(--u)); height: calc(36 * var(--u)); border-radius: 50%; background: var(--varme); color: var(--pa-accent); display: grid; place-items: center; font-weight: 800; font-size: calc(15 * var(--u)); }
+.fot .namn { flex: 1; font-weight: 700; }
+.ikonknapp { width: calc(40 * var(--u)); height: calc(40 * var(--u)); border-radius: var(--radie-yta); display: grid; place-items: center; }
+.ikonknapp:hover { background: var(--yta-hover); } .ikonknapp:active, .ikonknapp.oppen-panel { background: var(--yta-tryck); }
+.ikonknapp svg.g { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+.kort { border-radius: var(--radie-yta); background: color-mix(in srgb, var(--yta-sankt) 50%, transparent); padding: calc(14 * var(--u)) calc(16 * var(--u)); display: flex; flex-direction: column; gap: calc(6 * var(--u)); }
+.kort .dag { font-size: calc(12 * var(--u)); font-weight: 700; color: var(--accent-text); }
+.kort .datum { font-size: calc(18 * var(--u)); font-weight: 800; }
+.handelse { border-left: calc(3 * var(--u)) solid var(--accent); padding-left: calc(9 * var(--u)); margin-top: calc(4 * var(--u)); }
+.handelse b { display: block; font-size: calc(13 * var(--u)); } .handelse small { color: var(--text-dampad); font-size: calc(12 * var(--u)); }
+.matare { display: flex; flex-direction: column; gap: calc(6 * var(--u)); font-size: calc(12 * var(--u)); }
+.matare div { display: flex; justify-content: space-between; color: var(--text-dampad); font-weight: 600; } .matare div b { color: var(--text); }
+.spar { height: calc(4 * var(--u)); border-radius: 2px; background: var(--spar); overflow: hidden; } .spar i { display: block; height: 100%; background: var(--varme); border-radius: 2px; }
+.sida .rubrik { margin-bottom: calc(-2 * var(--u)); }
+
+.snabb { width: calc(360 * var(--u)); right: calc(8 * var(--u)); padding: calc(18 * var(--u)); display: flex; flex-direction: column; gap: calc(16 * var(--u)); }
+.vanster-lage.flytande-lage .snabb, .vanster-lage.flytande-lage .avis { left: calc(8 * var(--u)); right: auto; }
+.rutor { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: calc(10 * var(--u)); }
+.ruta { height: calc(72 * var(--u)); border-radius: var(--radie-yta); background: var(--knapp); padding: calc(12 * var(--u)); text-align: left; display: flex; flex-direction: column; justify-content: space-between; }
+.ruta:hover { background: var(--knapp-hover); }
+.ruta[aria-pressed="true"] { background: var(--accent); color: var(--pa-accent); }
+.ruta[aria-pressed="true"]:hover { background: var(--accent-hover); }
+.ruta b { font-size: calc(13 * var(--u)); line-height: 1.2; } .ruta small { font-size: calc(11 * var(--u)); opacity: .85; display: block; }
+.reglage { display: flex; align-items: center; gap: calc(14 * var(--u)); color: var(--text-dampad); }
+.reglage svg.g { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+input[type=range] { flex: 1; -webkit-appearance: none; appearance: none; height: calc(18 * var(--u)); background: transparent; }
+input[type=range]::-webkit-slider-runnable-track { height: calc(4 * var(--u)); border-radius: 2px; background: linear-gradient(var(--accent), var(--accent)) 0 / var(--v, 50%) 100% no-repeat, var(--spar); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: calc(18 * var(--u)); height: calc(18 * var(--u)); margin-top: calc(-7 * var(--u)); border-radius: 50%; background: var(--reglage-tumme); border: 1px solid var(--kant-kontroll); }
+input[type=range]::-moz-range-track { height: calc(4 * var(--u)); border-radius: 2px; background: var(--spar); }
+input[type=range]::-moz-range-progress { height: calc(4 * var(--u)); border-radius: 2px; background: var(--accent); }
+input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(18 * var(--u)); border-radius: 50%; background: var(--reglage-tumme); border: 1px solid var(--kant-kontroll); }
+.snabb .fot2 { display: flex; align-items: center; gap: calc(8 * var(--u)); border-top: 1px solid var(--kant); margin: 0 calc(-18 * var(--u)) calc(-18 * var(--u)); padding: calc(8 * var(--u)) calc(18 * var(--u)); color: var(--text-dampad); font-size: calc(12 * var(--u)); }
+.snabb .fot2 span { flex: 1; }
+
+.avis { width: calc(360 * var(--u)); right: calc(8 * var(--u)); padding: calc(16 * var(--u)); display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
+.avisering { border-radius: calc(16 * var(--u)); background: var(--yta); border: 1px solid var(--kant); padding: calc(14 * var(--u)) calc(16 * var(--u)); display: flex; flex-direction: column; gap: calc(4 * var(--u)); }
+.avis .avisering { background: color-mix(in srgb, var(--yta-sankt) 50%, transparent); }
+.avisering .app { display: flex; align-items: center; gap: calc(8 * var(--u)); font-size: calc(12 * var(--u)); color: var(--text-dampad); font-weight: 600; }
+.avisering .app svg.a { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
+.avisering .app span { flex: 1; }
+.avisering b { font-size: calc(14 * var(--u)); } .avisering p { margin: 0; font-size: calc(13 * var(--u)); color: var(--text-dampad); }
+.avisering .knappar { display: flex; gap: calc(8 * var(--u)); margin-top: calc(8 * var(--u)); }
+.toast { position: absolute; z-index: 6500; right: calc(8 * var(--u)); width: calc(360 * var(--u)); box-shadow: var(--hojd-2); transition: opacity var(--rorelse-medel), transform var(--rorelse-medel) cubic-bezier(.2, 0, 0, 1); max-width: calc(100% - 16px); }
+.toast.dold { opacity: 0; transform: translateX(calc(24 * var(--u))); pointer-events: none; }
+
+.meny { position: absolute; z-index: 7000; min-width: calc(220 * var(--u)); padding: var(--matt-meny-utfyllnad); border-radius: var(--radie-yta); background: var(--yta-upphojd); border: 1px solid var(--kant); box-shadow: var(--hojd-2); display: flex; flex-direction: column; }
+.meny button { height: var(--matt-menyobjekt-h); border-radius: calc(6 * var(--u)); display: flex; align-items: center; gap: calc(10 * var(--u)); padding: 0 calc(10 * var(--u)); text-align: left; }
+.meny button svg.g { color: var(--text-dampad); }
+.meny button:hover, .meny button:focus-visible { background: var(--accent); color: var(--pa-accent); outline: none; }
+.meny button:hover svg.g, .meny button:focus-visible svg.g { color: var(--pa-accent); }
+.meny hr { border: 0; height: 1px; background: var(--kant); margin: calc(4 * var(--u)) calc(6 * var(--u)); }
+
+.forhand { position: absolute; z-index: 5500; width: calc(240 * var(--u)); border-radius: var(--radie-yta); background: var(--yta); border: 1px solid var(--kant); box-shadow: var(--hojd-2); padding: calc(8 * var(--u)) calc(12 * var(--u)) calc(12 * var(--u)); transition: opacity var(--rorelse-kort); }
+.forhand.dold { opacity: 0; pointer-events: none; }
+.forhand .topp { display: flex; align-items: center; gap: calc(8 * var(--u)); height: calc(32 * var(--u)); font-size: calc(12 * var(--u)); font-weight: 600; }
+.forhand .topp span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.forhand .topp svg.a { width: calc(16 * var(--u)); height: calc(16 * var(--u)); }
+.forhand .mini { height: calc(118 * var(--u)); margin-top: calc(4 * var(--u)); border-radius: calc(6 * var(--u)); border: 1px solid var(--kant); background: var(--bakgrund); display: grid; place-items: center; }
+.forhand .mini svg.a { width: calc(48 * var(--u)); height: calc(48 * var(--u)); }
+
+/* ---- programmen ---- */
+.filer { display: flex; height: 100%; }
+.filer nav { width: calc(184 * var(--u)); flex: none; padding: calc(12 * var(--u)) calc(8 * var(--u)); background: color-mix(in srgb, var(--yta-sankt) 40%, transparent); border-right: 1px solid var(--kant); display: flex; flex-direction: column; gap: calc(2 * var(--u)); }
+.filer nav button { height: var(--matt-listrad-h); border-radius: calc(6 * var(--u)); display: flex; align-items: center; gap: calc(8 * var(--u)); padding: 0 calc(8 * var(--u)); text-align: left; }
+.filer nav button svg.g { color: var(--ikon); }
+.filer nav button:hover { background: var(--yta-hover); }
+.filer nav button[aria-current="true"] { background: var(--markering); color: var(--markering-text); font-weight: 700; }
+.filer .lista { flex: 1; padding: calc(16 * var(--u)); display: grid; grid-template-columns: repeat(auto-fill, minmax(calc(96 * var(--u)), 1fr)); align-content: start; gap: calc(6 * var(--u)); }
+.post { height: calc(96 * var(--u)); border-radius: var(--radie-yta); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(6 * var(--u)); font-size: calc(12 * var(--u)); }
+.post:hover { background: var(--yta-hover); }
+.post.vald { background: var(--markering); color: var(--markering-text); }
+.post svg { width: calc(48 * var(--u)); height: calc(48 * var(--u)); }
+.terminal { height: 100%; background: var(--yta-sankt); color: var(--text); font-family: "JetBrains Mono", monospace; font-size: calc(13 * var(--u)); line-height: 1.6; padding: calc(12 * var(--u)) calc(16 * var(--u)); overflow: auto; user-select: text; }
+.tema-gryning .terminal { background: #FBF8FA; }
+.terminal .p { color: var(--lyckat); } .terminal .v { color: var(--lank); } .terminal .d { color: var(--text-dampad); }
+.terminal form { display: flex; gap: .6em; } .terminal input { flex: 1; border: 0; background: none; outline: none; font: inherit; color: var(--text); caret-color: var(--accent); }
+.anteckningar { width: 100%; height: 100%; border: 0; resize: none; outline: none; background: var(--yta); color: var(--text); padding: calc(16 * var(--u)) calc(20 * var(--u)); font-size: calc(14 * var(--u)); line-height: 1.6; user-select: text; }
+.installningar { padding: calc(20 * var(--u)) calc(24 * var(--u)); display: flex; flex-direction: column; gap: calc(18 * var(--u)); }
+.installningar h3 { margin: 0; font-size: calc(12 * var(--u)); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-dampad); }
+.installningar section { display: flex; flex-direction: column; gap: calc(10 * var(--u)); padding: calc(14 * var(--u)) calc(16 * var(--u)); border-radius: var(--radie-yta); border: 1px solid var(--kant); }
+.installningar .val { display: flex; justify-content: space-between; align-items: center; gap: calc(12 * var(--u)); flex-wrap: wrap; }
+.kalender { padding: calc(20 * var(--u)); display: flex; flex-direction: column; gap: calc(12 * var(--u)); }
+.kalender h2 { margin: 0; font-size: calc(18 * var(--u)); font-weight: 800; text-transform: capitalize; }
+.manad { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: calc(4 * var(--u)); text-align: center; font-variant-numeric: tabular-nums; }
+.manad .vd { font-size: calc(11 * var(--u)); font-weight: 700; color: var(--text-dampad); padding: calc(4 * var(--u)) 0; }
+.manad .d { height: calc(36 * var(--u)); border-radius: var(--radie-kontroll); display: grid; place-items: center; font-size: calc(13 * var(--u)); }
+.manad .d.utanfor { color: var(--text-inaktiv); }
+.manad .d.idag { background: var(--accent); color: var(--pa-accent); font-weight: 800; }
+.kalk { padding: calc(16 * var(--u)); display: flex; flex-direction: column; gap: calc(12 * var(--u)); height: 100%; }
+.kalk output { display: block; text-align: right; font-size: calc(32 * var(--u)); font-weight: 700; padding: calc(8 * var(--u)) calc(4 * var(--u)); font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; }
+.kalk .tangenter { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: calc(8 * var(--u)); flex: 1; }
+.kalk .tangenter button { border-radius: var(--radie-kontroll); background: var(--knapp); font-size: calc(16 * var(--u)); font-weight: 600; min-height: calc(40 * var(--u)); }
+.kalk .tangenter button:hover { background: var(--knapp-hover); }
+.kalk .tangenter .op { background: var(--yta-tryck); }
+.kalk .tangenter .lika { background: var(--accent); color: var(--pa-accent); }
+.saknas { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(12 * var(--u)); text-align: center; padding: calc(24 * var(--u)); color: var(--text-dampad); }
+.saknas svg.a { width: calc(72 * var(--u)); height: calc(72 * var(--u)); }
+.saknas b { color: var(--text); font-size: calc(18 * var(--u)); }
+.saknas p { margin: 0; max-width: calc(360 * var(--u)); font-size: calc(13 * var(--u)); line-height: 1.5; }
+
+/* ---- lås och start ---- */
+.overlagg { position: absolute; inset: 0; z-index: 9000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(8 * var(--u)); transition: opacity var(--rorelse-lang); }
+.overlagg.dold { opacity: 0; pointer-events: none; }
+.las { background: var(--tapet) center / cover no-repeat, var(--bakgrund); }
+.las::before { content: ""; position: absolute; inset: 0; backdrop-filter: blur(calc(18 * var(--u))); -webkit-backdrop-filter: blur(calc(18 * var(--u))); background: color-mix(in srgb, var(--bakgrund) 35%, transparent); }
+.las > * { position: relative; }
+.las .tid { font-size: calc(96 * var(--u)); font-weight: 800; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+.las .dat { font-size: calc(20 * var(--u)); font-weight: 600; text-transform: capitalize; }
+.las .tips { margin-top: calc(48 * var(--u)); font-size: calc(13 * var(--u)); color: var(--text-dampad); }
+.svart { background: #0E0A14; color: #C2B8CC; font-size: calc(14 * var(--u)); }
+.svart .logo { width: calc(72 * var(--u)); height: calc(72 * var(--u)); }
+.dimma { position: absolute; inset: 0; z-index: 8500; background: #000; pointer-events: none; opacity: 0; }
+
+/* ---- lekplatsens reglage ---- */
+.lek { position: fixed; z-index: 9500; top: 12px; right: 12px; width: 268px; --u: 1px; background: color-mix(in srgb, var(--yta) 94%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--kant); border-radius: 16px; box-shadow: var(--hojd-2); color: var(--text); font-size: 13px; overflow: hidden; }
+.lek > button { width: 100%; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; font-weight: 800; }
+.lek > button .logo { width: 20px; height: 20px; }
+.lek > button span { flex: 1; text-align: left; }
+.lek > button svg.g { transition: transform var(--rorelse-kort); }
+.lek[data-oppen="false"] > button svg.g { transform: rotate(180deg); }
+.lek .reg { display: flex; flex-direction: column; gap: 10px; padding: 4px 14px 14px; }
+.lek[data-oppen="false"] .reg { display: none; }
+.lek label, .lek .etik { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-dampad); display: block; margin-bottom: 4px; }
+.lek .segment { display: flex; } .lek .segment button { flex: 1; padding: 0 4px; }
+.lek p { margin: 2px 0 0; font-size: 12px; line-height: 1.45; color: var(--text-dampad); }
+@media (max-width: 640px) { .lek { left: 12px; right: 12px; width: auto; } }
+</style>
+
+<body class="tema-glod">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><!--SYMBOLER--></svg>
+
+<div class="skarm flytande-lage mitten-lage" id="skarm">
+  <div class="ikoner" id="ikoner" role="listbox" aria-label="Skrivbordet"></div>
+  <div id="fonsterlager"></div>
+
+  <section class="panel start ovanfor dold" id="start" aria-label="Start" role="dialog">
+    <div class="kropp">
+      <div class="huvud">
+        <label class="sok" for="sokfalt"><svg class="g"><use href="#g-sok"/></svg>
+          <input id="sokfalt" autocomplete="off" placeholder="Sök program, dokument och inställningar"></label>
+        <div id="startinnehall" style="display:flex;flex-direction:column;gap:calc(20 * var(--u));min-height:0"></div>
+      </div>
+      <aside class="sida" aria-label="Översikt">
+        <div class="rubrik">I dag</div>
+        <div class="kort"><span class="dag" id="ov-dag"></span><span class="datum" id="ov-datum"></span>
+          <div class="handelse"><b>Temagenomgång</b><small>15:00–15:30</small></div></div>
+        <div class="rubrik">Spelas nu</div>
+        <div class="kort" style="flex-direction:row;align-items:center;gap:calc(12 * var(--u))">
+          <svg class="a" style="width:calc(40 * var(--u));height:calc(40 * var(--u))"><use href="#a-musik"/></svg>
+          <span style="display:flex;flex-direction:column;flex:1;min-width:0"><b style="font-size:calc(13 * var(--u))">[Låttitel]</b><small style="color:var(--text-dampad);font-size:calc(12 * var(--u))">[Artist]</small></span></div>
+        <div class="rubrik">Systemet</div>
+        <div class="kort matare">
+          <div>Disk <b>62 %</b></div><span class="spar"><i style="width:62%"></i></span>
+          <div>Minne <b id="ov-minne">41 %</b></div><span class="spar"><i id="ov-minne-s" style="width:41%"></i></span>
+        </div>
+      </aside>
+    </div>
+    <div class="fot">
+      <span class="avatar" aria-hidden="true">A</span><span class="namn">Användare</span>
+      <button class="ikonknapp" data-oppna="filer" aria-label="Dokument"><svg class="g"><use href="#g-fil"/></svg></button>
+      <button class="ikonknapp" data-oppna="installningar" aria-label="Inställningar"><svg class="g"><use href="#g-reglage"/></svg></button>
+      <button class="ikonknapp" id="stromknapp" aria-label="Ström" aria-haspopup="menu"><svg class="g"><use href="#g-strom"/></svg></button>
+    </div>
+  </section>
+
+  <section class="panel snabb ovanfor dold" id="snabb" aria-label="Snabbinställningar" role="dialog">
+    <div class="rutor" id="rutor"></div>
+    <div class="reglage"><svg class="g" aria-hidden="true"><use href="#g-sol"/></svg><input type="range" id="ljus" min="30" max="100" value="100" aria-label="Ljusstyrka"></div>
+    <div class="reglage"><svg class="g" aria-hidden="true"><use href="#g-volym"/></svg><input type="range" id="volym" min="0" max="100" value="45" aria-label="Volym"></div>
+    <div class="fot2"><svg class="g" aria-hidden="true"><use href="#g-batteri"/></svg><span>82 % · 5 h 10 min</span>
+      <button class="ikonknapp" id="snabb-strom" aria-label="Ström"><svg class="g"><use href="#g-strom"/></svg></button>
+      <button class="ikonknapp" data-oppna="installningar" aria-label="Inställningar"><svg class="g"><use href="#g-reglage"/></svg></button></div>
+  </section>
+
+  <section class="panel avis ovanfor dold" id="avis" aria-label="Aviseringar" role="dialog">
+    <div class="rubrik"><span>Aviseringar</span><button class="liten-knapp" id="rensa">Rensa alla</button></div>
+    <div id="avislista" style="display:flex;flex-direction:column;gap:calc(10 * var(--u))"></div>
+  </section>
+
+  <div class="toast dold ovanfor" id="toast" role="status"></div>
+  <div class="forhand dold" id="forhand"><div class="topp"><svg class="a"><use href="#a-filer"/></svg><span></span>
+    <button class="tknapp stang" aria-label="Stäng fönstret"><svg class="g"><use href="#g-stang"/></svg></button></div><div class="mini"><svg class="a"><use href="#a-filer"/></svg></div></div>
+  <div class="meny" id="strommeny" role="menu" hidden>
+    <button role="menuitem" data-strom="las"><svg class="g"><use href="#g-las"/></svg>Lås</button>
+    <button role="menuitem" data-strom="ut"><svg class="g"><use href="#g-logga-ut"/></svg>Logga ut</button>
+    <hr>
+    <button role="menuitem" data-strom="om"><svg class="g"><use href="#g-starta-om"/></svg>Starta om</button>
+    <button role="menuitem" data-strom="av"><svg class="g"><use href="#g-strom"/></svg>Stäng av</button>
+  </div>
+  <div class="meny" id="faltmeny" role="menu" hidden></div>
+
+  <nav class="falt" id="falt" aria-label="Aktivitetsfältet">
+    <span class="tom"></span>
+    <div class="grupp" id="faltgrupp">
+      <button class="cell" id="startknapp" aria-label="Start" aria-haspopup="dialog"><svg class="logo"><use href="#logo"/></svg></button>
+      <button class="cell" id="sokknapp" aria-label="Sök"><svg class="g"><use href="#g-sok"/></svg></button>
+      <span class="sep"></span>
+      <div class="grupp" id="appknappar"></div>
+    </div>
+    <div class="grupp bricka-grupp">
+      <span class="sep"></span>
+      <button class="bricka" id="bricka" aria-label="Snabbinställningar: Wi-Fi, volym, batteri">
+        <svg class="g"><use href="#g-wifi"/></svg><svg class="g"><use href="#g-volym"/></svg><svg class="g"><use href="#g-batteri"/></svg></button>
+      <button class="klocka" id="klocka" aria-label="Kalender"><b id="tid">--:--</b><small id="datum"></small></button>
+      <button class="cell" id="klockknapp" aria-label="Aviseringar"><svg class="g"><use href="#g-avisering"/></svg><span class="prick" id="prick" hidden></span></button>
+    </div>
+  </nav>
+
+  <div class="overlagg las dold" id="las" tabindex="-1"><div class="tid" id="las-tid"></div><div class="dat" id="las-dat"></div><div class="tips">Klicka eller tryck på en tangent för att låsa upp</div></div>
+  <div class="overlagg svart dold" id="svart"><svg class="logo"><use href="#logo"/></svg><div id="svart-text"></div></div>
+  <div class="dimma" id="dimma"></div>
+</div>
+
+<aside class="lek" id="lek" data-oppen="true" aria-label="Lekplatsens reglage">
+  <button id="lek-knapp" aria-expanded="true"><svg class="logo"><use href="#logo"/></svg><span>Lekplatsen</span><svg class="g"><use href="#g-chevron-upp"/></svg></button>
+  <div class="reg">
+    <div><span class="etik">Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button></div></div>
+    <div><span class="etik">Skala</span><div class="segment" data-val="skala"><button data-v="0.75">75</button><button data-v="1">100</button><button data-v="1.25">125</button><button data-v="1.5">150</button><button data-v="2">200</button></div></div>
+    <div><span class="etik">Aktivitetsfältet</span><div class="segment" data-val="falt"><button data-v="flytande">Flytande</button><button data-v="dockat">Dockat</button></div></div>
+    <div><span class="etik">Placering</span><div class="segment" data-val="just"><button data-v="mitten">Mitten</button><button data-v="vanster">Vänster</button></div></div>
+    <div><span class="etik">Start</span><div class="segment" data-val="start"><button data-v="kompakt">Kompakt</button><button data-v="oversikt">Med översikt</button></div></div>
+    <div><span class="etik">Bakgrund</span><div class="segment" data-val="tapet"><button data-v="dyner">Dyner</button><button data-v="enfargad">Enfärgad</button></div></div>
+    <p>Klicka på ikonerna, öppna Start, dra fönster i titelraden. Komponenterna och färgerna är de i QzOS/design.</p>
+  </div>
+</aside>
+
+<script>
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const skarm = $("#skarm");
+const APPAR = /*APPAR*/;
+const FAST_I_FALTET = ["filer", "terminal", "webb", "text", "kalender", "musik", "installningar"];
+const FAST_I_START = ["filer", "terminal", "text", "webb", "kalender", "musik", "bilder", "rita", "kalkylator", "farger", "loggar", "installningar"];
+const EXEMPEL = { filer: "examples/filemgr/", terminal: "examples/term/", text: "examples/notepad.c", kalkylator: "examples/calc.c",
+  bilder: "examples/pngview/", rita: "examples/paint.c", farger: "examples/colors.c", loggar: "examples/logview.c", installningar: "examples/sysprop.c, schemes.c" };
+const SENASTE = [["text", "anteckningar.md", "14:02"], ["bilder", "dyner.png", "i dag"], ["loggar", "session.log", "i går"],
+  ["text", "mal.md", "i går"], ["kalkylator", "budget.ods", "28 okt"], ["rita", "logga.svg", "27 okt"]];
+const INSTALLNINGAR = [["Tema", "Utseende"], ["Skala", "Skärm"], ["Aktivitetsfältet", "Skalet"], ["Bakgrund", "Utseende"], ["Nattljus", "Skärm"]];
+const svgA = (a, cls = "a") => `<svg class="${cls}" aria-hidden="true"><use href="#a-${a}"/></svg>`;
+const svgG = (g) => `<svg class="g" aria-hidden="true"><use href="#g-${g}"/></svg>`;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ---------- tillstånd ---------- */
+const S = { tema: null, skala: 1, falt: "flytande", just: "mitten", start: "kompakt", tapet: "dyner" };
+let harSparat = false;
+try { const s = localStorage.getItem("qzos-lek"); if (s) { Object.assign(S, JSON.parse(s)); harSparat = true; } } catch (e) {}
+if (!S.tema) {
+  const v = document.documentElement.getAttribute("data-theme");
+  S.tema = v === "light" ? "gryning" : v === "dark" ? "glod" : (matchMedia("(prefers-color-scheme: light)").matches ? "gryning" : "glod");
+}
+if (innerWidth < 700 && !harSparat) S.skala = 0.75;
+function spara() { try { localStorage.setItem("qzos-lek", JSON.stringify(S)); } catch (e) {} }
+
+function tillampa() {
+  document.body.className = "tema-" + S.tema;
+  skarm.style.setProperty("--u", S.skala + "px");
+  skarm.classList.toggle("enfargad", S.tapet === "enfargad");
+  skarm.classList.toggle("dockat-lage", S.falt === "dockat");
+  skarm.classList.toggle("flytande-lage", S.falt !== "dockat");
+  skarm.classList.toggle("vanster-lage", S.just === "vanster");
+  const f = $("#falt");
+  f.classList.toggle("dockat", S.falt === "dockat");
+  f.classList.toggle("vanster", S.just === "vanster");
+  $("#start").classList.toggle("oversikt", S.start === "oversikt");
+  $$(".segment[data-val]").forEach((seg) => seg.querySelectorAll("button").forEach((b) =>
+    b.setAttribute("aria-pressed", String(String(S[seg.dataset.val]) === b.dataset.v))));
+  $$("[data-binder]").forEach((el) => {
+    const [k, v] = el.dataset.binder.split("=");
+    el.setAttribute("aria-checked", String(String(S[k]) === v));
+  });
+  ritaRutor();
+  spara();
+}
+function satt(k, v) { S[k] = k === "skala" ? Number(v) : v; tillampa(); }
+document.addEventListener("click", (e) => {
+  const b = e.target.closest(".segment[data-val] button");
+  if (b) satt(b.closest(".segment").dataset.val, b.dataset.v);
+});
+$("#lek-knapp").addEventListener("click", () => {
+  const l = $("#lek"), o = l.dataset.oppen !== "true";
+  l.dataset.oppen = String(o); $("#lek-knapp").setAttribute("aria-expanded", String(o));
+});
+
+/* ---------- klockan ---------- */
+const DAGAR = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
+const MANADER = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+function tick() {
+  const d = new Date(), hh = String(d.getHours()).padStart(2, "0"), mm = String(d.getMinutes()).padStart(2, "0");
+  $("#tid").textContent = `${hh}:${mm}`;
+  $("#datum").textContent = `${DAGAR[d.getDay()].slice(0, 3)} ${d.getDate()} ${MANADER[d.getMonth()].slice(0, 3)}`;
+  $("#las-tid").textContent = `${hh}:${mm}`;
+  $("#las-dat").textContent = `${DAGAR[d.getDay()]} ${d.getDate()} ${MANADER[d.getMonth()]}`;
+  $("#ov-dag").textContent = DAGAR[d.getDay()];
+  $("#ov-datum").textContent = `${d.getDate()} ${MANADER[d.getMonth()]}`;
+}
+tick(); setInterval(tick, 1000);
+
+/* ---------- fönster ---------- */
+let FONSTER = [], AKTIV = null, Z = 100, NASTA = 1;
+const lager = $("#fonsterlager");
+function skalaPx() { return S.skala; }
+function oppna(app, opt = {}) {
+  if (!APPAR[app]) return;
+  const finns = FONSTER.find((f) => f.app === app && !opt.nytt);
+  if (finns && !opt.dok) { aktivera(finns); return finns; }
+  const n = FONSTER.length;
+  const f = { id: NASTA++, app, titel: opt.titel || APPAR[app].namn, x: 120 + (n % 6) * 36, y: 40 + (n % 6) * 30,
+    w: { terminal: 640, text: 620, kalkylator: 320, kalender: 420, installningar: 520 }[app] || 720,
+    h: { terminal: 400, kalkylator: 460, kalender: 420, installningar: 560 }[app] || 460, min: false, max: false, dok: opt.dok };
+  const el = document.createElement("section");
+  el.className = "fonster"; el.setAttribute("aria-label", f.titel);
+  el.innerHTML = `<div class="titelrad">${svgA(app)}<span class="titel">${esc(f.titel)}</span><div class="tknappar">
+    <button class="tknapp" data-g="min" aria-label="Minimera">${svgG("minimera")}</button>
+    <button class="tknapp" data-g="max" aria-label="Maximera">${svgG("maximera")}</button>
+    <button class="tknapp stang" data-g="stang" aria-label="Stäng">${svgG("stang")}</button></div></div><div class="innehall"></div>`;
+  f.el = el; lager.appendChild(el);
+  innehall(f, $(".innehall", el));
+  el.addEventListener("pointerdown", () => aktivera(f));
+  $(".titelrad", el).addEventListener("pointerdown", (e) => dra(e, f));
+  $(".titelrad", el).addEventListener("dblclick", (e) => { if (!e.target.closest("button")) maxa(f); });
+  el.querySelectorAll(".tknapp").forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation(); const g = b.dataset.g;
+    if (g === "min") minimera(f); else if (g === "max") maxa(f); else stang(f);
+  }));
+  FONSTER.push(f); placera(f); aktivera(f); ritaFalt();
+  return f;
+}
+function placera(f) {
+  const s = f.el.style;
+  if (f.max) { s.left = "0"; s.top = "0"; s.width = "100%"; s.height = S.falt === "dockat" ? "calc(100% - 56 * var(--u))" : "calc(100% - 72 * var(--u))"; }
+  else { s.left = `calc(${f.x} * var(--u))`; s.top = `calc(${f.y} * var(--u))`; s.width = `calc(${f.w} * var(--u))`; s.height = `calc(${f.h} * var(--u))`; }
+  f.el.classList.toggle("maximerat", f.max);
+  const mb = f.el.querySelector('[data-g="max"]');
+  mb.innerHTML = svgG(f.max ? "aterstall" : "maximera"); mb.setAttribute("aria-label", f.max ? "Återställ" : "Maximera");
+}
+function aktivera(f) {
+  if (f.min) { f.min = false; f.el.classList.remove("minimerat"); }
+  AKTIV = f; f.el.style.zIndex = ++Z;
+  FONSTER.forEach((x) => x.el.classList.toggle("aktivt", x === f));
+  if (f.app === "kalender") { const k = $('#appknappar [data-app="kalender"]'); k && k.classList.remove("uppmarksamhet"); UPPMARKSAMHET.delete("kalender"); }
+  ritaFalt();
+}
+function minimera(f) {
+  f.min = true; f.el.classList.add("minimerat"); f.el.classList.remove("aktivt");
+  if (AKTIV === f) { AKTIV = null; const n = FONSTER.filter((x) => !x.min).sort((a, b) => b.el.style.zIndex - a.el.style.zIndex)[0]; if (n) aktivera(n); }
+  ritaFalt();
+}
+function maxa(f) { f.max = !f.max; placera(f); }
+function stang(f) {
+  f.el.remove(); FONSTER = FONSTER.filter((x) => x !== f);
+  if (AKTIV === f) { AKTIV = null; const n = FONSTER.filter((x) => !x.min).sort((a, b) => b.el.style.zIndex - a.el.style.zIndex)[0]; if (n) aktivera(n); }
+  ritaFalt(); dolj("#forhand");
+}
+function dra(e, f) {
+  if (e.target.closest("button") || f.max || e.button !== 0) return;
+  const sx = e.clientX, sy = e.clientY, ox = f.x, oy = f.y, k = skalaPx();
+  const flytt = (ev) => { f.x = ox + (ev.clientX - sx) / k; f.y = Math.max(0, oy + (ev.clientY - sy) / k); placera(f); };
+  const slapp = () => { removeEventListener("pointermove", flytt); removeEventListener("pointerup", slapp); };
+  addEventListener("pointermove", flytt); addEventListener("pointerup", slapp);
+}
+
+/* ---------- programmens innehåll ---------- */
+const TEXT_LEK = `# Lekplatsen
+
+Det här är skalet ur QzOS/design att prova på: aktivitetsfältet, Start, snabbinställningarna, aviseringarna och skrivbordet, i temana Glöd och Gryning.
+
+Det som redan finns i generic_gdi (examples/shell):
+- en knapp per fönster i fältet, klick växlar, minimerar och återställer
+- Start med program, dokument, inställningar, Kör och Avsluta
+- skrivbordets ikoner ur ~/Desktop, markera, öppna, döp om
+- klockan
+
+Det som är nytt här och saknar mekanik:
+- sök i Start, snabbinställningar, aviseringar, förhandsvisning av fönster
+- programikoner i fältet (protokollet bär inga ikoner än)
+- skuggor, oskärpa och genomskinlighet (kräver alfa i kompositören)
+`;
+const MAPPAR = { Hem: [["mapp", "Dokument"], ["mapp", "Bilder"], ["mapp", "Musik"], ["mapp", "Projekt"], ["mapp", "Hämtade filer"], ["fil", "anteckningar.md"], ["fil", "budget.ods"], ["fil", "dyner.png"]],
+  Dokument: [["fil", "mal.md"], ["fil", "skal.md"], ["fil", "budget.ods"]], Bilder: [["fil", "dyner.png"], ["fil", "logga.svg"]], Musik: [], Projekt: [["mapp", "design"], ["mapp", "generic_gdi"], ["mapp", "libshell"]], "Hämtade filer": [["fil", "manrope.zip"]] };
+function innehall(f, el) {
+  const a = f.app;
+  if (a === "filer") {
+    let plats = f.dok && MAPPAR[f.dok] ? f.dok : "Hem";
+    const rita = () => {
+      el.innerHTML = `<div class="filer"><nav aria-label="Platser">${Object.keys(MAPPAR).map((m) =>
+        `<button aria-current="${m === plats}" data-m="${esc(m)}">${svgG(m === "Hem" ? "anvandare" : "mapp")}${esc(m)}</button>`).join("")}</nav>
+        <div class="lista" role="listbox" aria-label="${esc(plats)}">${MAPPAR[plats].length ? MAPPAR[plats].map(([t, n]) =>
+        `<button class="post" data-t="${t}" data-n="${esc(n)}"><svg aria-hidden="true"><use href="#${t === "mapp" ? "mapp-stor" : "fil-stor"}"/></svg><span>${esc(n)}</span></button>`).join("")
+        : `<p class="tomt">Mappen är tom.</p>`}</div></div>`;
+      f.el.querySelector(".titel").textContent = `Filer — ${plats}`;
+      el.querySelectorAll("nav button").forEach((b) => b.onclick = () => { plats = b.dataset.m; rita(); });
+      el.querySelectorAll(".post").forEach((b) => {
+        b.onclick = () => { el.querySelectorAll(".post").forEach((x) => x.classList.toggle("vald", x === b)); };
+        b.ondblclick = () => { if (b.dataset.t === "mapp" && MAPPAR[b.dataset.n]) { plats = b.dataset.n; rita(); } else oppnaDok(b.dataset.n); };
+      });
+    };
+    rita();
+  } else if (a === "terminal") {
+    el.innerHTML = `<div class="terminal"><div class="ut"><div class="d">QzOS terminal · skriv hjälp</div></div><form><span><span class="p">användare@qzos</span> <span class="v">~</span> $</span><input aria-label="Kommando" autocomplete="off" spellcheck="false"></form></div>`;
+    const ut = $(".ut", el), inp = $("input", el), t = $(".terminal", el);
+    t.onclick = () => inp.focus();
+    $("form", el).onsubmit = (e) => {
+      e.preventDefault(); const k = inp.value.trim(); inp.value = "";
+      const rad = (h) => { const d = document.createElement("div"); d.innerHTML = h; ut.appendChild(d); };
+      rad(`<span class="p">användare@qzos</span> <span class="v">~</span> $ ${esc(k)}`);
+      const [c, ...arg] = k.split(/\s+/);
+      if (!c) {}
+      else if (c === "hjälp" || c === "help") rad(`<span class="d">ls · datum · rensa · tema glod|gryning · skala 75|100|125|150|200 · öppna &lt;program&gt;</span>`);
+      else if (c === "ls") rad(MAPPAR.Hem.map(([, n]) => esc(n)).join("  "));
+      else if (c === "datum" || c === "date") rad(new Date().toLocaleString("sv-SE"));
+      else if (c === "rensa" || c === "clear") ut.innerHTML = "";
+      else if (c === "tema" && ["glod", "gryning"].includes(arg[0])) { satt("tema", arg[0]); rad(`tema: ${arg[0]}`); }
+      else if (c === "skala" && Number(arg[0]) >= 50 && Number(arg[0]) <= 300) { satt("skala", Number(arg[0]) / 100); rad(`skala: ${arg[0]} %`); }
+      else if ((c === "öppna" || c === "open") && arg[0]) { const p = Object.keys(APPAR).find((x) => x.startsWith(arg[0].toLowerCase()) || APPAR[x].namn.toLowerCase().startsWith(arg[0].toLowerCase())); p ? (oppna(p), rad(`startar ${APPAR[p].namn}`)) : rad(`${esc(arg[0])}: hittar inget sådant program`); }
+      else rad(`${esc(c)}: kommandot finns inte i lekplatsen`);
+      t.scrollTop = t.scrollHeight;
+    };
+    setTimeout(() => inp.focus(), 50);
+  } else if (a === "text") {
+    el.innerHTML = `<textarea class="anteckningar" aria-label="Text" spellcheck="false"></textarea>`;
+    $("textarea", el).value = f.dok && f.dok !== "anteckningar.md" ? `# ${f.dok}\n\nEn fil i lekplatsen.\n` : TEXT_LEK;
+  } else if (a === "installningar") {
+    const vx = (k, v, e) => `<button class="vaxel" role="switch" data-binder="${k}=${v}" data-satt="${k}" data-pa="${v}" data-av="${{ falt: "dockat", just: "vanster", start: "kompakt", tapet: "enfargad" }[k]}"><span>${e}</span><i></i></button>`;
+    el.innerHTML = `<div class="installningar">
+      <section><h3>Utseende</h3>
+        <div class="val"><span>Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button></div></div>
+        <div class="val"><span>Skala</span><div class="segment" data-val="skala"><button data-v="1">100 %</button><button data-v="1.25">125 %</button><button data-v="1.5">150 %</button><button data-v="1.75">175 %</button><button data-v="2">200 %</button></div></div>
+        ${vx("tapet", "dyner", "Bakgrundsbild")}</section>
+      <section><h3>Aktivitetsfältet</h3>${vx("falt", "flytande", "Flytande")}${vx("just", "mitten", "Centrerat")}</section>
+      <section><h3>Start</h3>${vx("start", "oversikt", "Visa översikten")}</section></div>`;
+    el.querySelectorAll(".vaxel").forEach((b) => b.onclick = () => satt(b.dataset.satt, S[b.dataset.satt] === b.dataset.pa ? b.dataset.av : b.dataset.pa));
+    tillampa();
+  } else if (a === "kalender") {
+    const d = new Date(), y = d.getFullYear(), m = d.getMonth(), forsta = (new Date(y, m, 1).getDay() + 6) % 7, dagar = new Date(y, m + 1, 0).getDate(), fore = new Date(y, m, 0).getDate();
+    let c = "";
+    for (let i = 0; i < 42; i++) {
+      const n = i - forsta + 1;
+      if (n < 1) c += `<span class="d utanfor">${fore + n}</span>`;
+      else if (n > dagar) c += `<span class="d utanfor">${n - dagar}</span>`;
+      else c += `<span class="d${n === d.getDate() ? " idag" : ""}">${n}</span>`;
+    }
+    el.innerHTML = `<div class="kalender"><h2>${MANADER[m]} ${y}</h2><div class="manad">${["mån", "tis", "ons", "tor", "fre", "lör", "sön"].map((x) => `<span class="vd">${x}</span>`).join("")}${c}</div>
+      <div class="handelse"><b>Temagenomgång</b><small>i dag 15:00–15:30</small></div></div>`;
+  } else if (a === "kalkylator") {
+    let visat = "0", forra = null, op = null, ny = true;
+    el.innerHTML = `<div class="kalk"><output aria-live="polite">0</output><div class="tangenter">${["C", "±", "%", "÷", "7", "8", "9", "×", "4", "5", "6", "−", "1", "2", "3", "+", "0", ",", "⌫", "="].map((k) =>
+      `<button class="${"÷×−+".includes(k) ? "op" : k === "=" ? "lika" : ""}">${k}</button>`).join("")}</div></div>`;
+    const o = $("output", el), num = () => Number(visat.replace(",", ".")), visa = (v) => { visat = String(+v.toPrecision(12)).replace(".", ","); o.textContent = visat; };
+    const rakna = (a2, b2, p) => p === "+" ? a2 + b2 : p === "−" ? a2 - b2 : p === "×" ? a2 * b2 : b2 === 0 ? NaN : a2 / b2;
+    el.querySelectorAll(".tangenter button").forEach((b) => b.onclick = () => {
+      const k = b.textContent;
+      if (/\d/.test(k)) { visat = ny || visat === "0" ? k : visat + k; ny = false; o.textContent = visat; }
+      else if (k === ",") { if (ny) { visat = "0"; ny = false; } if (!visat.includes(",")) visat += ","; o.textContent = visat; }
+      else if (k === "C") { visat = "0"; forra = op = null; ny = true; o.textContent = visat; }
+      else if (k === "⌫") { visat = visat.length > 1 ? visat.slice(0, -1) : "0"; o.textContent = visat; }
+      else if (k === "±") visa(-num());
+      else if (k === "%") visa(num() / 100);
+      else if (k === "=") { if (op !== null) { visa(rakna(forra, num(), op)); op = null; ny = true; } }
+      else { if (op !== null && !ny) visa(rakna(forra, num(), op)); forra = num(); op = k; ny = true; }
+    });
+  } else {
+    el.innerHTML = `<div class="saknas">${svgA(a)}<b>${esc(APPAR[a].namn)}</b><p>${EXEMPEL[a] ? `Finns i generic_gdi som <code>${esc(EXEMPEL[a])}</code>, men inte i lekplatsen.` : "Ett program som skalet behöver plats för, men som inte finns i generic_gdi än."}</p></div>`;
+  }
+}
+function oppnaDok(n) {
+  const a = n.endsWith(".png") || n.endsWith(".svg") ? "bilder" : n.endsWith(".ods") ? "kalkylator" : "text";
+  oppna(a, { titel: `${n} — ${APPAR[a].namn}`, dok: n, nytt: true });
+}
+
+/* ---------- aktivitetsfältet ---------- */
+const UPPMARKSAMHET = new Set();
+function ritaFalt() {
+  const lista = [...FAST_I_FALTET, ...FONSTER.map((f) => f.app).filter((a, i, l) => !FAST_I_FALTET.includes(a) && l.indexOf(a) === i)];
+  const box = $("#appknappar");
+  box.innerHTML = lista.map((a) => {
+    const fl = FONSTER.filter((f) => f.app === a), aktiv = AKTIV && AKTIV.app === a;
+    const k = ["cell", fl.length ? "kor" : "", aktiv ? "aktiv" : "", UPPMARKSAMHET.has(a) ? "uppmarksamhet" : ""].join(" ");
+    const lbl = APPAR[a].namn + (fl.length ? (aktiv ? ", aktivt" : fl.every((f) => f.min) ? ", minimerat" : ", öppet") : "");
+    return `<button class="${k}" data-app="${a}" aria-label="${esc(lbl)}">${svgA(a)}<span class="mark"></span></button>`;
+  }).join("");
+}
+$("#appknappar").addEventListener("click", (e) => {
+  const b = e.target.closest(".cell"); if (!b) return;
+  const a = b.dataset.app, fl = FONSTER.filter((f) => f.app === a);
+  dolj("#forhand"); stangPaneler();
+  if (!fl.length) { oppna(a); return; }
+  const f = fl.sort((x, y) => y.el.style.zIndex - x.el.style.zIndex)[0];
+  if (AKTIV === f) minimera(f); else aktivera(f);
+});
+$("#appknappar").addEventListener("contextmenu", (e) => {
+  const b = e.target.closest(".cell"); if (!b) return; e.preventDefault();
+  const a = b.dataset.app, fl = FONSTER.filter((f) => f.app === a), m = $("#faltmeny");
+  m.innerHTML = `<button role="menuitem" data-m="ny">${svgA(a, "g")}${esc(APPAR[a].namn)}</button>` + (fl.length ? `<hr><button role="menuitem" data-m="stang">${svgG("stang")}Stäng ${fl.length > 1 ? "alla fönster" : "fönstret"}</button>` : "");
+  m.hidden = false; placeraOver(m, b);
+  m.onclick = (ev) => { const x = ev.target.closest("button"); if (!x) return; m.hidden = true;
+    if (x.dataset.m === "ny") oppna(a, { nytt: true }); else fl.forEach(stang); };
+});
+let forhandTimer;
+$("#appknappar").addEventListener("pointerover", (e) => {
+  const b = e.target.closest(".cell"); clearTimeout(forhandTimer);
+  if (!b) return;
+  const f = FONSTER.filter((x) => x.app === b.dataset.app).sort((x, y) => y.el.style.zIndex - x.el.style.zIndex)[0];
+  if (!f) { dolj("#forhand"); return; }
+  forhandTimer = setTimeout(() => {
+    const p = $("#forhand");
+    p.querySelector(".topp span").textContent = f.el.querySelector(".titel").textContent;
+    p.querySelectorAll("use").forEach((u) => u.setAttribute("href", "#a-" + f.app));
+    p.querySelector(".stang").onclick = () => stang(f);
+    p.classList.remove("dold"); placeraOver(p, b);
+  }, 420);
+});
+$("#falt").addEventListener("pointerleave", () => { clearTimeout(forhandTimer); setTimeout(() => { if (!$("#forhand:hover")) dolj("#forhand"); }, 200); });
+$("#forhand").addEventListener("pointerleave", () => dolj("#forhand"));
+function placeraOver(el, ankare) {
+  const r = ankare.getBoundingClientRect(), s = skarm.getBoundingClientRect(), w = el.offsetWidth;
+  el.style.left = Math.max(8, Math.min(s.width - w - 8, r.left - s.left + r.width / 2 - w / 2)) + "px";
+  el.style.bottom = (s.bottom - r.top + 8) + "px"; el.style.top = "auto";
+}
+function dolj(sel) { $(sel).classList.add("dold"); }
+
+/* ---------- paneler ---------- */
+const PANELER = { start: ["#start", "#startknapp"], snabb: ["#snabb", "#bricka"], avis: ["#avis", "#klockknapp"] };
+let OPPEN = null;
+function vaxla(namn, fokus) {
+  const var_oppen = OPPEN === namn; stangPaneler();
+  if (var_oppen) return;
+  OPPEN = namn; const [p, k] = PANELER[namn]; $("#toast").classList.add("dold");
+  $(p).classList.remove("dold"); $(k).classList.add("oppen-panel"); $(k).setAttribute("aria-expanded", "true");
+  if (namn === "start") { ritaStart(); setTimeout(() => (fokus || $("#sokfalt")).focus({ preventScroll: true }), 30); }
+  if (namn === "avis") { ritaAvis(); $("#prick").hidden = true; }
+}
+function stangPaneler() {
+  Object.entries(PANELER).forEach(([, [p, k]]) => { $(p).classList.add("dold"); $(k).classList.remove("oppen-panel"); $(k).setAttribute("aria-expanded", "false"); });
+  OPPEN = null; $("#strommeny").hidden = true; $("#faltmeny").hidden = true; $("#sokfalt").value = ""; ALLA = false;
+}
+$("#startknapp").onclick = () => vaxla("start");
+$("#sokknapp").onclick = () => vaxla("start");
+$("#bricka").onclick = () => vaxla("snabb");
+$("#klockknapp").onclick = () => vaxla("avis");
+$("#klocka").onclick = () => { stangPaneler(); oppna("kalender"); };
+document.addEventListener("pointerdown", (e) => {
+  if (!e.target.closest(".panel, .falt, .meny, .forhand, .lek")) stangPaneler();
+  if (!e.target.closest(".meny") && !e.target.closest("#stromknapp, #snabb-strom")) { $("#strommeny").hidden = true; $("#faltmeny").hidden = true; }
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") { if (!$("#strommeny").hidden || !$("#faltmeny").hidden) { $("#strommeny").hidden = $("#faltmeny").hidden = true; } else stangPaneler(); }
+});
+
+/* Start */
+let ALLA = false;
+function ritaStart() {
+  const q = $("#sokfalt").value.trim().toLowerCase(), box = $("#startinnehall");
+  if (q) {
+    const appar = Object.keys(APPAR).filter((a) => APPAR[a].namn.toLowerCase().includes(q) || a.includes(q));
+    const dok = SENASTE.filter(([, n]) => n.toLowerCase().includes(q));
+    const inst = INSTALLNINGAR.filter(([n]) => n.toLowerCase().includes(q));
+    const rader = [...appar.map((a) => ({ a, n: APPAR[a].namn, u: "Program", g: () => oppna(a) })),
+      ...dok.map(([a, n, t]) => ({ a, n, u: `Dokument · ${t}`, g: () => oppnaDok(n) })),
+      ...inst.map(([n, d]) => ({ a: "installningar", n, u: `Inställningar > ${d}`, g: () => oppna("installningar") }))];
+    box.innerHTML = rader.length ? `<div class="rubrik">Träffar</div><div class="alla">${rader.map((r, i) =>
+      `<button class="rad${i === 0 ? " forst" : ""}" data-i="${i}">${svgA(r.a)}<span><b>${esc(r.n)}</b><small>${esc(r.u)}</small></span></button>`).join("")}</div>`
+      : `<p class="tomt">Inget heter ”${esc(q)}”. Prova ett programnamn, ett dokument eller en inställning.</p>`;
+    box.querySelectorAll(".rad").forEach((b) => b.onclick = () => { rader[b.dataset.i].g(); stangPaneler(); });
+    box._forst = rader[0];
+    return;
+  }
+  box._forst = null;
+  if (ALLA) {
+    const sort = Object.keys(APPAR).sort((a, b) => APPAR[a].namn.localeCompare(APPAR[b].namn, "sv"));
+    let bok = "", h = "";
+    sort.forEach((a) => { const f = APPAR[a].namn[0].toUpperCase(); if (f !== bok) { bok = f; h += `<div class="bokstav">${f}</div>`; }
+      h += `<button class="rad" data-app="${a}">${svgA(a)}<span><b>${esc(APPAR[a].namn)}</b></span></button>`; });
+    box.innerHTML = `<div class="rubrik">Alla program<button class="liten-knapp" id="tillbaka">${svgG("chevron-vanster")}Tillbaka</button></div><div class="alla">${h}</div>`;
+    $("#tillbaka").onclick = () => { ALLA = false; ritaStart(); };
+  } else {
+    box.innerHTML = `<div class="rubrik">Fästa<button class="liten-knapp" id="allaknapp">Alla program${svgG("chevron-hoger")}</button></div>
+      <div class="rutnat">${FAST_I_START.map((a) => `<button class="prog" data-app="${a}">${svgA(a)}<span>${esc(APPAR[a].namn)}</span></button>`).join("")}</div>
+      <div class="rubrik">Senaste</div>
+      <div class="senaste">${SENASTE.map(([a, n, t]) => `<button class="rad" data-dok="${esc(n)}">${svgA(a)}<span><b>${esc(n)}</b><small>${esc(t)}</small></span></button>`).join("")}</div>`;
+    $("#allaknapp").onclick = () => { ALLA = true; ritaStart(); };
+  }
+  box.querySelectorAll("[data-app]").forEach((b) => b.onclick = () => { oppna(b.dataset.app); stangPaneler(); });
+  box.querySelectorAll("[data-dok]").forEach((b) => b.onclick = () => { oppnaDok(b.dataset.dok); stangPaneler(); });
+}
+$("#sokfalt").addEventListener("input", ritaStart);
+$("#sokfalt").addEventListener("keydown", (e) => { if (e.key === "Enter" && $("#startinnehall")._forst) { $("#startinnehall")._forst.g(); stangPaneler(); } });
+$$("[data-oppna]").forEach((b) => b.addEventListener("click", () => { stangPaneler(); oppna(b.dataset.oppna); }));
+
+/* ström */
+function stromMeny(ankare) {
+  const m = $("#strommeny"); m.hidden = !m.hidden;
+  if (!m.hidden) { placeraOver(m, ankare); m.querySelector("button").focus(); }
+}
+$("#stromknapp").onclick = (e) => stromMeny(e.currentTarget);
+$("#snabb-strom").onclick = (e) => stromMeny(e.currentTarget);
+$("#strommeny").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-strom]"); if (!b) return; const v = b.dataset.strom; stangPaneler();
+  if (v === "las") las();
+  else if (v === "ut") { [...FONSTER].forEach(stang); las(); }
+  else if (v === "om") { svart("Startar om …"); [...FONSTER].forEach(stang); setTimeout(() => $("#svart").classList.add("dold"), 1400); }
+  else if (v === "av") { [...FONSTER].forEach(stang); svart("Avstängd. Klicka för att starta."); $("#svart").onclick = () => { $("#svart-text").textContent = "Startar …"; setTimeout(() => $("#svart").classList.add("dold"), 900); $("#svart").onclick = null; }; }
+});
+function las() { const l = $("#las"); l.classList.remove("dold"); l.focus(); }
+function las_upp() { $("#las").classList.add("dold"); }
+$("#las").addEventListener("click", las_upp);
+$("#las").addEventListener("keydown", las_upp);
+function svart(t) { $("#svart-text").textContent = t; $("#svart").classList.remove("dold"); }
+
+/* snabbinställningar */
+const RUTOR = [["wifi", "Wi-Fi", "Hemma-5G", true], ["bluetooth", "Bluetooth", "2 enheter", true], ["flygplan", "Flygläge", null, false],
+  ["fokus", "Fokus", null, false], ["mane", "Nattljus", "Från 21:00", false], ["tema", "Mörkt tema", null, null]];
+function ritaRutor() {
+  $("#rutor").innerHTML = RUTOR.map(([g, n, u, pa], i) => {
+    const p = g === "tema" ? S.tema === "glod" : pa;
+    const under = g === "tema" ? (p ? "Glöd" : "Gryning") : (u && p !== false ? u : p ? "På" : "Av");
+    return `<button class="ruta" aria-pressed="${p}" data-i="${i}">${svgG(g === "tema" ? "mane" : g)}<span><b>${n}</b><small>${under}</small></span></button>`;
+  }).join("");
+}
+$("#rutor").addEventListener("click", (e) => {
+  const b = e.target.closest(".ruta"); if (!b) return; const r = RUTOR[b.dataset.i];
+  if (r[0] === "tema") { satt("tema", S.tema === "glod" ? "gryning" : "glod"); return; }
+  r[3] = !r[3]; if (r[0] === "mane") skarm.style.filter = r[3] ? "sepia(.35) saturate(1.2)" : ""; ritaRutor();
+});
+function reglage(inp) { inp.style.setProperty("--v", ((inp.value - inp.min) / (inp.max - inp.min) * 100) + "%"); }
+$$('input[type=range]').forEach((i) => { reglage(i); i.addEventListener("input", () => reglage(i)); });
+$("#ljus").addEventListener("input", (e) => { $("#dimma").style.opacity = String((100 - e.target.value) / 100 * .7); });
+
+/* aviseringar */
+let AVIS = [];
+function ritaAvis() {
+  $("#avislista").innerHTML = AVIS.length ? AVIS.map((a, i) => `<div class="avisering">${avisHtml(a)}</div>`).join("") : `<p class="tomt">Inga nya aviseringar.</p>`;
+  kopplaAvis($("#avislista"));
+}
+const avisHtml = (a) => `<div class="app">${svgA(a.app)}<span>${esc(APPAR[a.app].namn)}</span>${esc(a.nar)}</div><b>${esc(a.titel)}</b><p>${esc(a.text)}</p>
+  <div class="knappar"><button class="knapp primar" data-avis="oppna">${esc(a.knapp)}</button><button class="knapp" data-avis="senare">Påminn senare</button></div>`;
+function kopplaAvis(r) {
+  r.querySelectorAll("[data-avis]").forEach((b) => b.onclick = () => {
+    if (b.dataset.avis === "oppna") oppna("kalender");
+    AVIS = []; $("#prick").hidden = true; $("#toast").classList.add("dold"); stangPaneler();
+  });
+}
+$("#rensa").onclick = () => { AVIS = []; ritaAvis(); };
+setTimeout(() => {
+  const a = { app: "kalender", nar: "nu", titel: "Temagenomgång om 10 min", text: "Videosamtal · 15:00–15:30", knapp: "Öppna" };
+  AVIS.push(a); $("#prick").hidden = false; UPPMARKSAMHET.add("kalender"); ritaFalt();
+  const t = $("#toast"); t.innerHTML = `<div class="avisering">${avisHtml(a)}</div>`; kopplaAvis(t);
+  t.classList.remove("dold"); setTimeout(() => t.classList.add("dold"), 7000);
+}, 2500);
+
+/* skrivbordet */
+const IKONER = [["mapp-stor", "Hem", () => oppna("filer", { dok: "Hem", nytt: true, titel: "Filer — Hem" })],
+  ["mapp-stor", "Projekt", () => oppna("filer", { dok: "Projekt", nytt: true, titel: "Filer — Projekt" })],
+  ["fil-stor", "anteckningar.md", () => oppnaDok("anteckningar.md")],
+  ["a-terminal", "Terminal", () => oppna("terminal")], ["a-installningar", "Inställningar", () => oppna("installningar")]];
+$("#ikoner").innerHTML = IKONER.map(([s, n], i) => `<button class="ikon" role="option" aria-selected="false" data-i="${i}"><svg aria-hidden="true"><use href="#${s}"/></svg><span>${esc(n)}</span></button>`).join("");
+$("#ikoner").addEventListener("click", (e) => { const b = e.target.closest(".ikon"); $$(".ikon").forEach((x) => { x.classList.toggle("vald", x === b); x.setAttribute("aria-selected", String(x === b)); }); });
+$("#ikoner").addEventListener("dblclick", (e) => { const b = e.target.closest(".ikon"); if (b) IKONER[b.dataset.i][2](); });
+$("#ikoner").addEventListener("keydown", (e) => { const b = e.target.closest(".ikon"); if (b && e.key === "Enter") IKONER[b.dataset.i][2](); });
+skarm.addEventListener("pointerdown", (e) => { if (e.target === skarm || e.target.id === "ikoner") $$(".ikon").forEach((x) => { x.classList.remove("vald"); x.setAttribute("aria-selected", "false"); }); });
+
+tillampa(); ritaFalt();
+setTimeout(() => oppna("text", { dok: "anteckningar.md", titel: "Lekplatsen — Anteckningar" }), 300);
+</script>

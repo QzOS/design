@@ -142,9 +142,9 @@ i hörnen. Storleksgreppet i statusraden är valfritt.
 
 ## Glyferna
 
-`svg/glyfer/` har 28 symboler på ett rutnät om 16 u: 12 u levande yta,
-streck 1,5 u med runda ändar, ritade i `currentColor`. De ersätter
-Retro98-typsnittets 27 tecken (`U+E100`–`U+E11A`) och kan byggas till
+`svg/glyfer/` har 59 symboler på ett rutnät om 16 u: 12 u levande yta,
+streck 1,5 u med runda ändar, ritade i `currentColor`. 28 av dem är för
+kontrollerna och ersätter Retro98-typsnittets 27 tecken (`U+E100`–`U+E11A`) och kan byggas till
 ett typsnitt på samma sätt som Retro98 byggs med `build.py`. Då hintar
 libtt dem i varje storlek, som all annan text.
 
@@ -188,26 +188,23 @@ görs nu. Ordningen följer beroendena i #393.
 
 ## Utanför det här
 
-- **Skalets layout.** Förslaget på Design-ytan har ett toppfält och en
-  docka. generic_gdi #223 har Shell95 som målbild för skalet, med
-  aktivitetsfält och Start-meny. Det måste bestämmas innan skalet
-  designas här.
-- Programikoner och filtypsikoner utöver mapp och fil.
+- **Skalet** har ett eget dokument, `skal.md`, med färdriktningen:
+  ett flytande aktivitetsfält och en Start-panel, och lekplatsen.
+- Filtypsikoner utöver mapp och fil.
 - Markörer.
 
 ## Öppna frågor
 
-1. Toppfält och docka, eller aktivitetsfält och Start-meny?
-2. Behövs ett tema med hög kontrast utöver Glöd och Gryning?
-3. Behövs en tätare variant (kontrollhöjd 28 u) för listor och
+1. Behövs ett tema med hög kontrast utöver Glöd och Gryning?
+2. Behövs en tätare variant (kontrollhöjd 28 u) för listor och
    verktyg, eller en glesare (40 u) för pekskärm?
-4. Ska accentfärgen kunna väljas av användaren? Rollerna tillåter det,
+3. Ska accentfärgen kunna väljas av användaren? Rollerna tillåter det,
    men kontrasten måste då kontrolleras för varje val.
 
 ## Bygga om
 
 ```sh
-python3 verktyg/bygg.py                  # svg/, tokens/*.css, docs/dpi.md
+python3 verktyg/bygg.py                  # svg/, tokens/*.css, docs/dpi.md, lekplats/index.html
 python3 verktyg/oversikt.py <typsnitt>   # oversikt/*.png, kräver playwright
 ```
 

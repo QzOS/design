@@ -2,7 +2,9 @@
 
 Presentationen för QzOS skrivbord: temana **Glöd** (mörkt) och
 **Gryning** (ljust), komponenterna som SVG i logiska enheter och målet
-för hur de ska ersätta NT 4.0 Classic. Börja med [`mal.md`](mal.md).
+för hur de ska ersätta NT 4.0 Classic. Börja med [`mal.md`](mal.md), och
+[`skal.md`](skal.md) för skalet. `lekplats/index.html` är skalet att prova
+i en webbläsare.
 
 ![Glöd](oversikt/glod.png)
 
@@ -11,13 +13,16 @@ för hur de ska ersätta NT 4.0 Classic. Börja med [`mal.md`](mal.md).
 | | |
 |---|---|
 | `mal.md` | målet: principer, skalning, lägen, komponenterna, krav på mekaniken, öppna frågor |
+| `skal.md` | skalets färdriktning: komponenterna, måtten, vad mekaniken behöver |
+| `lekplats/` | skalet att använda i en webbläsare; `index.html` byggs ur `mall.html` |
 | `tokens/tokens.json` | källan: färgroller för båda temana, mått, radier, typ, skuggor, rörelse och kopplingen till `COL_*` |
 | `tokens/glod.css`, `tokens/gryning.css` | rollerna och måtten som CSS-variabler (genererade) |
-| `svg/glyfer/` | 28 symboler, 16 u, i `currentColor` |
-| `svg/glod/`, `svg/gryning/` | varje komponent i varje läge, en fil per läge |
-| `oversikt/` | alla komponenter per tema, och ett urval vid 100–200 % (genererade) |
+| `svg/glyfer/` | 59 symboler, 16 u, i `currentColor` |
+| `svg/appikoner/`, `svg/logo.svg`, `svg/bakgrund/` | programikoner, QzOS-märket och bakgrundsbilden Dyner |
+| `svg/glod/`, `svg/gryning/` | varje komponent i varje läge, en fil per läge; skalets under `skal/` |
+| `oversikt/` | kontrollerna och skalet per tema, och ett urval vid 100–200 % (genererade) |
 | `docs/dpi.md` | alla mått i bildpunkter vid varje skala (genererad) |
-| `verktyg/` | `bygg.py` bygger SVG, CSS och DPI-tabellen; `oversikt.py` ritar översikterna |
+| `verktyg/` | `bygg.py` bygger SVG, CSS, DPI-tabellen och lekplatsen; `oversikt.py` ritar översikterna |
 | `tema/` | de första skisserna från Design-ytan, i formatet `.dc.html` |
 
 ## Bygga
