@@ -1316,7 +1316,7 @@ def dpi_md():
         v = M[k]
         rader.append(f"| {k} | {v} | " + " | ".join(str(max(1, math.floor(v * s))) for s in sk) + " |")
     rader += ["", "## Glyfstreck", "", huvud, linje,
-              "| glyfstreck | 1.5 | " + " | ".join(fmt(round(1.5 * s * 2) / 2) for s in sk) + " |"]
+              "| glyfstreck | 1.5 | " + " | ".join(fmt(rund(1.5 * s * 2) / 2) for s in sk) + " |"]
     rader += ["", "## Text", "", huvud, linje]
     for k, st in TYP.items():
         rader.append(f"| {k} | {st['storlek']} | " + " | ".join(str(rund(st['storlek'] * s)) for s in sk) + " |")

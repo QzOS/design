@@ -619,7 +619,10 @@ function tillampa() {
   ritaRutor();
   spara();
 }
-function satt(k, v) { S[k] = k === "skala" ? Number(v) : v; tillampa(); }
+function satt(k, v) {
+  S[k] = k === "skala" ? Number(v) : v; tillampa();
+  FONSTER.filter((f) => f.max).forEach(placera);  /* arbetsytan följer fältets form */
+}
 document.addEventListener("click", (e) => {
   const b = e.target.closest(".segment[data-val] button");
   if (b) satt(b.closest(".segment").dataset.val, b.dataset.v);
