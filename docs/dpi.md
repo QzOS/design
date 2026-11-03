@@ -60,7 +60,7 @@ Genererad av `verktyg/bygg.py` ur `tokens/tokens.json`. Regeln står i
 
 | Mått | u | 100 % | 125 % | 150 % | 175 % | 200 % | 250 % | 300 % |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| glyfstreck | 1.5 | 1.5 | 2 | 2 | 2.5 | 3 | 4 | 4.5 |
+| glyfstreck | 1.5 | 1.5 | 2 | 2.5 | 2.5 | 3 | 4 | 4.5 |
 
 ## Text
 
