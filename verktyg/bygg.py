@@ -1226,6 +1226,19 @@ def skal_komponenter(t):
         k, d = programknapp(t, 6, 6, lage, "filer")
         fil(f"programknapp/{lage}", f"Programknapp, {lage}", CELL + 12, CELL + 12,
             rekt(0, 0, CELL + 12, CELL + 12, 0, bg) + k, d)
+    for lage in ("vila", "oppen", "uppmarksamhet"):
+        # överflödet: program som inte ryms i fältet, bakom en Mer-knapp sist
+        s = rekt(0, 0, CELL + 12, CELL + 12, 0, bg)
+        if lage == "oppen":
+            s += rekt(6, 6, CELL, CELL, R["yta"], t["yta-tryck"])
+        elif lage == "uppmarksamhet":
+            s += rekt(6, 6, CELL, CELL, R["yta"], t["varme"], extra=' fill-opacity=".28"')
+        s += glyf("mer", 6 + (CELL - 20) / 2, 6 + (CELL - 20) / 2 - 2, 20, t["text"])
+        if lage == "uppmarksamhet":
+            s += rekt(6 + CELL / 2 - 8, 6 + CELL - 4, 16, 3, 1.5, t["varme"])
+        else:
+            s += rekt(6 + CELL / 2 - 3, 6 + CELL - 4, 6, 3, 1.5, t["text-dampad"])
+        fil(f"overflode/{lage}", f"Fler program, {lage}", CELL + 12, CELL + 12, s)
     for lage in ("vila", "hover", "oppen"):
         k, d = startknapp(t, 6, 6, lage)
         fil(f"startknapp/{lage}", f"Start-knapp, {lage}", CELL + 12, CELL + 12,
