@@ -1,88 +1,133 @@
 # QzOS design
 
-Presentationen för QzOS skrivbord: temana **Glöd** (mörkt) och
-**Gryning** (ljust), komponenterna som SVG i logiska enheter och målet
-för hur de ska ersätta NT 4.0 Classic. Börja med [`mal.md`](mal.md), och
-[`skal.md`](skal.md) för skalet. `lekplats/index.html` är skalet att prova
-i en webbläsare.
+Målbilden för QzOS skrivbord efter NT 4.0 Classic: temana **Glöd** (mörkt)
+och **Gryning** (ljust), gemensamma färgroller och komponentmått, samt
+ett nytt skal. NT 3.1-mekaniken för fönster, meddelanden, fokus och
+kontroller behålls; presentationen byts.
 
-![Glöd](oversikt/glod.png)
+Läs [målet](mal.md) för designprinciper och regler, [skalets färdriktning](skal.md)
+för idéerna om aktivitetsfält och Start-panel, eller prova
+[lekplatsen](lekplats/index.html) i en webbläsare.
 
-## Syfte
+![Glöd – komponenterna](oversikt/glod.png)
 
-Det här repot definierar hur QzOS skrivbord ska se ut och bete sig. Det
-är målet för område 1 i generic_gdi #393. NT 3.1 är grunden för
-mekaniken: fönster, meddelanden, fokus och kontrollernas funktion
-behålls. Det som byts är presentationen.
+[Komponenter i Gryning](oversikt/gryning.png) ·
+[Skalet i Glöd](oversikt/skal-glod.png) ·
+[Skalet i Gryning](oversikt/skal-gryning.png)
 
-Repot är ett presentationskontrakt, inte en implementation. Inget här
-körs i QzOS. Implementationen hör till libui, libgdi, libsvg och
-kompositören.
+## Status och ansvar
 
-Delarna används på olika sätt:
+Det här är **designkällor och visuella referenser**, inte en implementation
+av QzOS skrivbord. `mal.md` beskriver målet för presentationen;
+`skal.md` är en utforskande skiss där bland annat fältets form,
+Start-panelens innehåll och gruppering av program ännu inte är låsta.
+Webblekplatsen simulerar fönster och skalbeteende i HTML, CSS och
+JavaScript. Den är inte ett embryo till det riktiga skalet.
 
-| Del | Används som |
-|---|---|
-| `tokens/tokens.json` | Den auktoritativa källan. libui och skalet ska läsa samma färgroller, mått, typ, skuggor och rörelse, och samma koppling till `COL_*`. |
-| `svg/glyfer/`, `svg/appikoner/`, `svg/logo.svg` | Ikoner som kan användas direkt genom libsvg. |
-| `svg/glod/`, `svg/gryning/` | Visuella referenser för ritlagret, inte kontroller att ladda. De innehåller exempeltext och skuggfilter, som ligger utanför QzOS SVG-ikonprofil. En riktig kontroll ritar sin geometri, tar texten ur sina egna data genom libtt och får sitt läge från libui. |
-| `lekplats/` | En miljö för att snabbt pröva designbeslut, särskilt skalets layout och arbetsflöden. Dess JavaScript är inte början på det riktiga skalet och ska inte flyttas över. |
-
-Ansvaret delas så här:
+Den faktiska implementationen hör till
+[QzOS/generic_gdi](https://github.com/QzOS/generic_gdi)
+och följer den tekniska riktningen i
+[issue #393](https://github.com/QzOS/generic_gdi/issues/393).
 
 | Lager | Ansvar |
 |---|---|
-| QzOS/design | tokens, komponentmått, lägen och visuella referenser |
-| libui, ett gemensamt ritlager | kontrollgeometri, text genom libtt, lägen och träffytor |
-| libgdi, libsvg och kompositören | banor, täckning, lutningar, alfa, ikoner och fönsterskuggor |
+| **QzOS/design** | Tema, logiska mått, komponenttillstånd och visuella referenser |
+| **libui och skalet** | Kontrollernas geometri och beteende, text via libtt, fokus, hover, träffytor och inmatning |
+| **libgdi** | Banor, täckning, gradienter och komposition |
+| **libsvg** | Tolkar och ritar ikoner genom GDI, utan en egen rastermotor |
+| **Fönsterserver och kompositör** | Fönsterytor, genomskinlighet, skuggor och eventuell bakgrundsoskärpa |
 
-Hover, fokus och andra lägen hör till libui och dess meddelandemodell.
-Skuggor och oskärpa hör till fönsterkompositionen. Träffytan för att
-ändra ett fönsters storlek är ett kontrakt mellan fönstret och
-inmatningen, inte en fråga om grafik.
+Det är viktigt att skilja mellan två typer av SVG:
 
-Nästa steg är ett litet temalager i libui med några få komponenter,
-till exempel knapp, textfält, meny och titelrad. Det prövar kedjan
-tokens → logiska mått → libui → libgdi och libtt → bildpunkter i båda
-temana vid 100, 125, 150 och 200 %. Först när den fungerar flyttas mer
-över till den nya presentationen.
+- **Ikoner** i `svg/glyfer/`, `svg/appikoner/` och `svg/logo.svg`
+  kan ritas genom [QzOS SVG Icon Profile](https://github.com/QzOS/generic_gdi/blob/main/docs/svg.md).
+- **Komponenter** i `svg/glod/` och `svg/gryning/` är
+  designreferenser, inte kompletta kontroller att ladda. De kan innehålla
+  exempeltext och SVG-filter utanför ikonprofilen. I QzOS får en kontroll
+  sin text och sina tillstånd från libui och ritas av ett gemensamt
+  presentationslager.
 
-## Innehåll
+Tillstånd som *vald*, *hover* och *tangentbordsfokus* behöver kunna
+kombineras. Fokusringen och komponentens synliga gräns är inte samma sak
+som dess träffyta; exempelvis måste fönstrets osynliga storlekszon
+hanteras av inmatningen.
 
-| | |
+## Prova lekplatsen
+
+`lekplats/index.html` är en genererad, fristående webbsida. Öppna filen
+lokalt i en webbläsare, eller kör från repots rot:
+
+```sh
+python3 -m http.server 8000
+```
+
+Öppna sedan `http://localhost:8000/lekplats/`.
+
+Här kan du öppna och dra fönster, minimera och maximera dem, prova Start
+med sökning, programknappar, förhandsvisningar, snabbinställningar och
+aviseringar. Reglagen ändrar tema, skala (75–200 %), flytande eller
+dockat fält, placering, Start-variant och bakgrund. Terminalens kommandon
+är exempelkommandon; fönster, filer, systemstatus och tjänster är
+simulerade.
+
+**Lekplatsen använder webbläsarens layout och rendering.** Den visar
+designbeslut, inte ett pixeltest av libui, libtt, GDI eller kompositören.
+Den använder samma genererade ikoner och tokens som SVG-referenserna,
+men resultatet måste senare verifieras på QzOS. Webbsidan fungerar
+lokalt; de avsedda webbfonterna hämtas från Google Fonts när nät finns.
+
+## Källor och genererat material
+
+`tokens/tokens.json` är den auktoritativa källan för roller, mått,
+radier, typografi, skuggor, rörelse och kopplingen till `COL_*`.
+Det betyder att QzOS:s framtida temalager ska **utgå från samma
+värden**; det innebär inte att libui måste läsa JSON vid körning.
+
+| Sökväg | Innehåll |
 |---|---|
-| `mal.md` | målet: principer, skalning, lägen, komponenterna, krav på mekaniken, öppna frågor |
-| `skal.md` | skalets färdriktning: komponenterna, måtten, vad mekaniken behöver |
-| `lekplats/` | skalet att använda i en webbläsare; `index.html` byggs ur `mall.html` |
-| `tokens/tokens.json` | källan: färgroller för båda temana, mått, radier, typ, skuggor, rörelse och kopplingen till `COL_*` |
-| `tokens/glod.css`, `tokens/gryning.css` | rollerna och måtten som CSS-variabler (genererade) |
-| `svg/glyfer/` | 59 symboler, 16 u, i `currentColor` |
-| `svg/appikoner/`, `svg/logo.svg`, `svg/bakgrund/` | programikoner, QzOS-märket och bakgrundsbilden Dyner |
-| `svg/glod/`, `svg/gryning/` | varje komponent i varje läge, en fil per läge; skalets under `skal/` |
-| `oversikt/` | kontrollerna och skalet per tema, och ett urval vid 100–200 % (genererade) |
-| `docs/dpi.md` | alla mått i bildpunkter vid varje skala (genererad) |
-| `verktyg/` | `bygg.py` bygger SVG, CSS, DPI-tabellen och lekplatsen; `oversikt.py` ritar översikterna |
-| `tema/` | de första skisserna från Design-ytan, i formatet `.dc.html` |
+| [`mal.md`](mal.md) | Designprinciper, tillstånd, DPI-regler, komponenter och krav på mekaniken |
+| [`skal.md`](skal.md) | Skalets idéer, komponenter, mått och öppna frågor |
+| [`tokens/tokens.json`](tokens/tokens.json) | Källvärden för Glöd och Gryning |
+| `tokens/glod.css`, `tokens/gryning.css` | Genererade CSS-variabler |
+| `svg/glyfer/` | 59 symboler i 16 u, med `currentColor` |
+| `svg/appikoner/`, `svg/logo.svg`, `svg/bakgrund/` | Programikoner, QzOS-märket och bakgrunden Dyner |
+| `svg/glod/`, `svg/gryning/` | Komponentreferenser i båda teman och deras olika lägen |
+| `oversikt/` | Genererade bilder över komponenter, skal och DPI-exempel |
+| [`docs/dpi.md`](docs/dpi.md) | Genererade bildpunktsmått vid 100–300 % |
+| `lekplats/mall.html` | Handredigerad källa för webblekplatsen |
+| `lekplats/index.html` | Genererad webblekplats |
+| `verktyg/` | Generatorerna `bygg.py` och `oversikt.py` |
+| `tema/` | Tidiga `.dc.html`-skisser, inte auktoritativa |
 
-## Bygga
+En logisk enhet, **1 u**, motsvarar en bildpunkt vid 96 DPI.
+Målbilden specificerar skalor från **100 till 300 %**. Storlekar
+avrundas till bildpunkter, kanter hålls på hela bildpunkter och
+glyfstreck kan ligga på halva bildpunkter. De exakta avrundningsreglerna
+finns i [`mal.md`](mal.md); tabellerna genereras till
+[`docs/dpi.md`](docs/dpi.md).
+
+Korall markerar aktivt eller valt, medan fokus och varning har egna
+färgroller som anpassas efter tema och kontrast. Tillstånd visas inte
+enbart med färg. Gränssnittet använder Manrope och terminal/kod
+JetBrains Mono.
+
+## Bygg om referenserna
+
+Kör från repots rot:
 
 ```sh
 python3 verktyg/bygg.py
 python3 verktyg/oversikt.py <katalog med manrope-latin-*-normal.woff2>
 ```
 
-`bygg.py` behöver bara Python. `oversikt.py` behöver Python-paketet
-playwright med Chromium. Manrope finns till exempel i npm-paketet
-`@fontsource/manrope`.
+`bygg.py` behöver bara Python och genererar SVG, CSS, DPI-tabellen
+och `lekplats/index.html` ur `tokens/tokens.json` och
+`lekplats/mall.html`. `oversikt.py` använder Playwright med
+Chromium samt Manrope-fontfiler för att rita översikterna. Manrope finns
+bland annat i npm-paketet `@fontsource/manrope`.
 
-## Kort om temana
-
-- 1 u = 1 bildpunkt vid 96 dpi. Storlekar avrundas, kanter blir hela
-  bildpunkter, se `mal.md`.
-- Korall betyder *aktivt eller valt*, bärnsten *titta här*: fokus,
-  länkar och varningar. Text på korall och bärnsten är alltid mörk.
-- Fel visas alltid med ikon och text, inte bara med färg.
-- Typsnitt: Manrope för gränssnittet, JetBrains Mono för terminal och
-  kod.
-- Radier: 5 u (kryssruta, tips), 8 u (kontroller), 12 u (fönster,
-  menyer, dialoger), 22 u (paneler).
+**Redigera källorna, inte genererade SVG-, CSS-, HTML- eller
+översiktsfiler för hand.** Nästa test i den verkliga implementationen
+är ett begränsat temalager för knapp, textfält, meny och titelrad, i
+båda temana vid 100, 125, 150 och 200 %, med verklig textrendering
+och tangentbordsnavigering.
