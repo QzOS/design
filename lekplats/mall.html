@@ -41,7 +41,7 @@ svg.a { flex: none; }
   text-shadow: 0 0 calc(3 * var(--u)) color-mix(in srgb, var(--bakgrund) 70%, transparent), 0 0 calc(1 * var(--u)) color-mix(in srgb, var(--bakgrund) 80%, transparent); }
 
 /* ---- fönster ---- */
-.fonster { position: absolute; display: flex; flex-direction: column; background: var(--yta); border: 1px solid var(--fonster-kant-inaktiv); border-radius: var(--radie-yta); box-shadow: var(--hojd-2); overflow: hidden; min-width: calc(320 * var(--u)); min-height: calc(200 * var(--u)); transition: box-shadow var(--rorelse-kort), opacity var(--rorelse-medel), transform var(--rorelse-medel); }
+.fonster { position: absolute; outline: none; display: flex; flex-direction: column; background: var(--yta); border: 1px solid var(--fonster-kant-inaktiv); border-radius: var(--radie-yta); box-shadow: var(--hojd-2); overflow: hidden; min-width: calc(320 * var(--u)); min-height: calc(200 * var(--u)); transition: box-shadow var(--rorelse-kort), opacity var(--rorelse-medel), transform var(--rorelse-medel); }
 .fonster.aktivt { border-color: var(--fonster-kant-aktiv); box-shadow: var(--hojd-3); }
 .fonster.minimerat { opacity: 0; transform: translateY(calc(40 * var(--u))) scale(.92); pointer-events: none; }
 .fonster.maximerat { border-radius: 0; border-width: 0 0 1px 0; }
@@ -105,7 +105,7 @@ svg.a { flex: none; }
 @keyframes puls { 50% { opacity: .35; } }
 .bricka { height: calc(44 * var(--u)); padding: 0 calc(10 * var(--u)); border-radius: var(--radie-yta); display: flex; align-items: center; gap: calc(8 * var(--u)); }
 .bricka:hover { background: var(--yta-hover); } .bricka.oppen-panel { background: var(--yta-tryck); }
-.klocka { height: calc(44 * var(--u)); padding: 0 calc(8 * var(--u)); border-radius: var(--radie-yta); display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.klocka { height: calc(44 * var(--u)); padding: 0 calc(8 * var(--u)); white-space: nowrap; border-radius: var(--radie-yta); display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1.2; font-variant-numeric: tabular-nums; }
 .klocka:hover { background: var(--yta-hover); }
 .klocka b { font-size: calc(13 * var(--u)); } .klocka small { font-size: calc(11 * var(--u)); color: var(--text-dampad); }
 .prick { position: absolute; top: calc(9 * var(--u)); right: calc(9 * var(--u)); width: calc(8 * var(--u)); height: calc(8 * var(--u)); border-radius: 50%; background: var(--varme); box-shadow: 0 0 0 calc(2 * var(--u)) var(--yta); }
@@ -117,12 +117,12 @@ svg.a { flex: none; }
 .panel.dold { opacity: 0; transform: translateY(calc(16 * var(--u))); pointer-events: none; visibility: hidden; }
 .ovanfor { bottom: calc(72 * var(--u)); }
 .dockat-lage .ovanfor { bottom: calc(64 * var(--u)); }
-.start { width: calc(640 * var(--u)); left: 50%; margin-left: calc(-320 * var(--u)); display: flex; flex-direction: column; overflow: hidden; max-height: calc(100% - 88 * var(--u)); }
-.start.oversikt { width: calc(880 * var(--u)); margin-left: calc(-440 * var(--u)); }
-.vanster-lage .start { left: calc(8 * var(--u)); margin-left: 0; }
+.start { width: calc(640 * var(--u)); max-width: calc(100% - 16 * var(--u)); left: 0; right: 0; margin-inline: auto; display: flex; flex-direction: column; overflow: hidden; max-height: calc(100% - 88 * var(--u)); }
+.start.oversikt { width: calc(880 * var(--u)); }
+.vanster-lage .start { left: calc(8 * var(--u)); right: auto; margin-inline: 0; }
 .start .kropp { display: flex; min-height: 0; flex: 1; }
-.start .huvud { width: calc(640 * var(--u)); flex: none; padding: calc(24 * var(--u)); display: flex; flex-direction: column; gap: calc(20 * var(--u)); min-height: 0; overflow: auto; }
-.start .sida { display: none; flex: 1; border-left: 1px solid var(--kant); margin: calc(24 * var(--u)) 0; padding: 0 calc(24 * var(--u)); flex-direction: column; gap: calc(12 * var(--u)); }
+.start .huvud { flex: 0 1 calc(640 * var(--u)); min-width: 0; padding: calc(24 * var(--u)); display: flex; flex-direction: column; gap: calc(20 * var(--u)); min-height: 0; overflow: auto; }
+.start .sida { display: none; flex: 1 1 0; min-width: calc(200 * var(--u)); border-left: 1px solid var(--kant); margin: calc(24 * var(--u)) 0; padding: 0 calc(24 * var(--u)); flex-direction: column; gap: calc(12 * var(--u)); }
 .start.oversikt .sida { display: flex; }
 .sok { display: flex; align-items: center; gap: calc(12 * var(--u)); height: calc(40 * var(--u)); padding: 0 calc(14 * var(--u)); border-radius: 999px; background: var(--falt); border: 1px solid var(--kant-kontroll); color: var(--text-dampad); flex: none; }
 .sok:focus-within { border-color: var(--fokus); outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(2 * var(--u)); }
@@ -132,11 +132,11 @@ svg.a { flex: none; }
 .liten-knapp { height: calc(24 * var(--u)); padding: 0 calc(10 * var(--u)); border-radius: 999px; background: var(--knapp); font-size: calc(12 * var(--u)); font-weight: 600; display: inline-flex; align-items: center; gap: calc(4 * var(--u)); }
 .liten-knapp:hover { background: var(--knapp-hover); }
 .liten-knapp svg.g { width: calc(12 * var(--u)); height: calc(12 * var(--u)); }
-.rutnat { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: calc(4 * var(--u)) 0; }
+.rutnat { display: grid; grid-template-columns: repeat(auto-fill, minmax(calc(92 * var(--u)), 1fr)); gap: calc(4 * var(--u)) 0; }
 .prog { height: calc(80 * var(--u)); border-radius: var(--radie-yta); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(6 * var(--u)); margin: 0 calc(4 * var(--u)); font-size: calc(12 * var(--u)); }
 .prog:hover { background: var(--yta-hover); }
 .prog svg.a { width: calc(40 * var(--u)); height: calc(40 * var(--u)); }
-.senaste { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(4 * var(--u)); }
+.senaste { display: grid; grid-template-columns: repeat(auto-fill, minmax(calc(240 * var(--u)), 1fr)); gap: calc(4 * var(--u)); }
 .rad { display: flex; align-items: center; gap: calc(12 * var(--u)); min-height: calc(48 * var(--u)); padding: 0 calc(8 * var(--u)); border-radius: var(--radie-kontroll); text-align: left; min-width: 0; }
 .rad:hover, .rad.forst { background: var(--yta-hover); }
 .rad svg.a { width: calc(32 * var(--u)); height: calc(32 * var(--u)); }
@@ -412,7 +412,8 @@ function tillampa() {
   const f = $("#falt");
   f.classList.toggle("dockat", S.falt === "dockat");
   f.classList.toggle("vanster", S.just === "vanster");
-  $("#start").classList.toggle("oversikt", S.start === "oversikt");
+  /* översikten visas bara när panelen ryms med den: 880 u och 8 u på var sida */
+  $("#start").classList.toggle("oversikt", S.start === "oversikt" && skarm.clientWidth >= 896 * S.skala);
   $$(".segment[data-val]").forEach((seg) => seg.querySelectorAll("button").forEach((b) =>
     b.setAttribute("aria-pressed", String(String(S[seg.dataset.val]) === b.dataset.v))));
   $$("[data-binder]").forEach((el) => {
@@ -421,11 +422,11 @@ function tillampa() {
   });
   ritaRutor();
   spara();
+  if (typeof FONSTER !== "undefined") { ritaFalt(); FONSTER.forEach(placera); }  /* fönstren följer arbetsytan */
 }
-function satt(k, v) {
-  S[k] = k === "skala" ? Number(v) : v; tillampa();
-  FONSTER.filter((f) => f.max).forEach(placera);  /* arbetsytan följer fältets form */
-}
+function satt(k, v) { S[k] = k === "skala" ? Number(v) : v; tillampa(); }
+let omTimer;
+addEventListener("resize", () => { clearTimeout(omTimer); omTimer = setTimeout(tillampa, 80); });
 document.addEventListener("click", (e) => {
   const b = e.target.closest(".segment[data-val] button");
   if (b) satt(b.closest(".segment").dataset.val, b.dataset.v);
@@ -467,9 +468,10 @@ function oppna(app, opt = {}) {
     <button class="tknapp" data-g="min" aria-label="Minimera">${svgG("minimera")}</button>
     <button class="tknapp" data-g="max" aria-label="Maximera">${svgG("maximera")}</button>
     <button class="tknapp stang" data-g="stang" aria-label="Stäng">${svgG("stang")}</button></div></div><div class="innehall"></div>`;
-  f.el = el; lager.appendChild(el);
+  f.el = el; el.tabIndex = -1; lager.appendChild(el);
   innehall(f, $(".innehall", el));
-  el.addEventListener("pointerdown", () => aktivera(f));
+  el.addEventListener("pointerdown", () => { if (AKTIV !== f) aktivera(f, false); });
+  el.addEventListener("focusin", (e) => { if (e.target !== el) f.senast = e.target; if (AKTIV !== f) aktivera(f, false); });
   $(".titelrad", el).addEventListener("pointerdown", (e) => dra(e, f));
   $(".titelrad", el).addEventListener("dblclick", (e) => { if (!e.target.closest("button")) maxa(f); });
   el.querySelectorAll(".tknapp").forEach((b) => b.addEventListener("click", (e) => {
@@ -479,30 +481,48 @@ function oppna(app, opt = {}) {
   FONSTER.push(f); placera(f); aktivera(f); ritaFalt();
   return f;
 }
+/* arbetsytan i u: skärmen utom fältet och dess avstånd */
+function arbetsyta() { return { w: skarm.clientWidth / S.skala, h: skarm.clientHeight / S.skala - (S.falt === "dockat" ? 56 : 72) }; }
 function placera(f) {
-  const s = f.el.style;
-  if (f.max) { s.left = "0"; s.top = "0"; s.width = "100%"; s.height = S.falt === "dockat" ? "calc(100% - 56 * var(--u))" : "calc(100% - 72 * var(--u))"; }
-  else { s.left = `calc(${f.x} * var(--u))`; s.top = `calc(${f.y} * var(--u))`; s.width = `calc(${f.w} * var(--u))`; s.height = `calc(${f.h} * var(--u))`; }
+  const s = f.el.style, a = arbetsyta();
+  if (f.max) { s.left = "0"; s.top = "0"; s.width = "100%"; s.height = `calc(${a.h} * var(--u))`; }
+  else {
+    /* ett fönster får aldrig vara större än arbetsytan, och titelraden går alltid att nå */
+    const w = Math.min(f.w, a.w - 16), h = Math.min(f.h, a.h - 16);
+    const x = Math.max(-(w - 120), Math.min(f.x, a.w - 120)), y = Math.max(0, Math.min(f.y, a.h - 36));
+    s.left = `calc(${x} * var(--u))`; s.top = `calc(${y} * var(--u))`; s.width = `calc(${w} * var(--u))`; s.height = `calc(${h} * var(--u))`;
+  }
   f.el.classList.toggle("maximerat", f.max);
   const mb = f.el.querySelector('[data-g="max"]');
   mb.innerHTML = svgG(f.max ? "aterstall" : "maximera"); mb.setAttribute("aria-label", f.max ? "Återställ" : "Maximera");
 }
-function aktivera(f) {
+function aktivera(f, fokus = true) {
   if (f.min) { f.min = false; f.el.classList.remove("minimerat"); }
+  if (fokus) fokusera(f);
   AKTIV = f; f.el.style.zIndex = ++Z;
   FONSTER.forEach((x) => x.el.classList.toggle("aktivt", x === f));
   if (f.app === "kalender") { const k = $('#appknappar [data-app="kalender"]'); k && k.classList.remove("uppmarksamhet"); UPPMARKSAMHET.delete("kalender"); }
   ritaFalt();
 }
+/* fokus tillbaka dit det var senast i fönstret, annars första fältet, annars fönstret självt */
+function fokusera(f) {
+  FORE = null;
+  const t = f.senast && f.el.contains(f.senast) ? f.senast : (f.el.querySelector(".innehall input, .innehall textarea") || f.el);
+  t.focus({ preventScroll: true });
+}
+function nastaFonster() {
+  const n = FONSTER.filter((x) => !x.min).sort((a, b) => b.el.style.zIndex - a.el.style.zIndex)[0];
+  if (n) aktivera(n); else { const i = $(".ikon"); i && i.focus({ preventScroll: true }); }
+}
 function minimera(f) {
   f.min = true; f.el.classList.add("minimerat"); f.el.classList.remove("aktivt");
-  if (AKTIV === f) { AKTIV = null; const n = FONSTER.filter((x) => !x.min).sort((a, b) => b.el.style.zIndex - a.el.style.zIndex)[0]; if (n) aktivera(n); }
+  if (AKTIV === f) { AKTIV = null; nastaFonster(); }
   ritaFalt();
 }
 function maxa(f) { f.max = !f.max; placera(f); }
 function stang(f) {
   f.el.remove(); FONSTER = FONSTER.filter((x) => x !== f);
-  if (AKTIV === f) { AKTIV = null; const n = FONSTER.filter((x) => !x.min).sort((a, b) => b.el.style.zIndex - a.el.style.zIndex)[0]; if (n) aktivera(n); }
+  if (AKTIV === f) { AKTIV = null; nastaFonster(); }
   ritaFalt(); dolj("#forhand");
 }
 function dra(e, f) {
@@ -623,30 +643,60 @@ function oppnaDok(n) {
 
 /* ---------- aktivitetsfältet ---------- */
 const UPPMARKSAMHET = new Set();
+let DOLDA = [];
+function lage(a) {
+  const fl = FONSTER.filter((f) => f.app === a), aktiv = AKTIV && AKTIV.app === a;
+  return { fl, aktiv, text: fl.length ? (aktiv ? "aktivt" : fl.every((f) => f.min) ? "minimerat" : "öppet") : "" };
+}
+function appknapp(a) {
+  const l = lage(a);
+  const k = ["cell", l.fl.length ? "kor" : "", l.aktiv ? "aktiv" : "", UPPMARKSAMHET.has(a) ? "uppmarksamhet" : ""].join(" ");
+  return `<button class="${k}" data-app="${a}" aria-label="${esc(APPAR[a].namn + (l.text ? ", " + l.text : ""))}">${svgA(a)}<span class="mark"></span></button>`;
+}
+/* Knappar som inte ryms samlas bakom en Mer-knapp sist. Det aktiva programmets knapp syns alltid. */
 function ritaFalt() {
   const lista = [...FAST_I_FALTET, ...FONSTER.map((f) => f.app).filter((a, i, l) => !FAST_I_FALTET.includes(a) && l.indexOf(a) === i)];
   const box = $("#appknappar");
-  box.innerHTML = lista.map((a) => {
-    const fl = FONSTER.filter((f) => f.app === a), aktiv = AKTIV && AKTIV.app === a;
-    const k = ["cell", fl.length ? "kor" : "", aktiv ? "aktiv" : "", UPPMARKSAMHET.has(a) ? "uppmarksamhet" : ""].join(" ");
-    const lbl = APPAR[a].namn + (fl.length ? (aktiv ? ", aktivt" : fl.every((f) => f.min) ? ", minimerat" : ", öppet") : "");
-    return `<button class="${k}" data-app="${a}" aria-label="${esc(lbl)}">${svgA(a)}<span class="mark"></span></button>`;
-  }).join("");
+  box.innerHTML = lista.map(appknapp).join("");
+  const u = S.skala, W = skarm.clientWidth, bw = $(".bricka-grupp").offsetWidth;
+  const fast = $("#faltgrupp").offsetWidth - box.offsetWidth + 8 * u;
+  const plats = S.falt === "dockat" ? W - 24 * u - fast - (S.just === "vanster" ? bw : 2 * bw) : W - 30 * u - fast - bw;
+  const ryms = Math.max(1, Math.floor(plats / (48 * u)));
+  DOLDA = [];
+  if (lista.length <= ryms) return;
+  let synliga = lista.slice(0, ryms - 1); DOLDA = lista.slice(ryms - 1);
+  const akt = AKTIV && AKTIV.app;
+  if (akt && DOLDA.includes(akt) && synliga.length) { DOLDA = DOLDA.filter((a) => a !== akt); DOLDA.unshift(synliga.pop()); synliga.push(akt); }
+  const k = ["cell", "mer", DOLDA.some((a) => FONSTER.some((f) => f.app === a)) ? "kor" : "", DOLDA.some((a) => UPPMARKSAMHET.has(a)) ? "uppmarksamhet" : ""].join(" ");
+  box.innerHTML = synliga.map(appknapp).join("") +
+    `<button class="${k}" id="merknapp" aria-label="Fler program, ${DOLDA.length}" aria-haspopup="menu">${svgG("mer")}<span class="mark"></span></button>`;
 }
-$("#appknappar").addEventListener("click", (e) => {
-  const b = e.target.closest(".cell"); if (!b) return;
-  const a = b.dataset.app, fl = FONSTER.filter((f) => f.app === a);
+function klickaApp(a) {
+  const { fl } = lage(a);
   dolj("#forhand"); stangPaneler();
   if (!fl.length) { oppna(a); return; }
   const f = fl.sort((x, y) => y.el.style.zIndex - x.el.style.zIndex)[0];
   if (AKTIV === f) minimera(f); else aktivera(f);
+}
+$("#appknappar").addEventListener("click", (e) => {
+  const b = e.target.closest(".cell"); if (!b) return;
+  if (b.id === "merknapp") {
+    const m = $("#faltmeny"), oppen = !m.hidden && MENY_ANKARE === b;
+    stangMenyer(); if (oppen) return;
+    m.innerHTML = DOLDA.map((a) => { const l = lage(a);
+      return `<button role="menuitem" data-app="${a}">${svgA(a, "g")}<span style="flex:1">${esc(APPAR[a].namn)}</span><small style="color:inherit;opacity:.7">${l.text}</small></button>`; }).join("");
+    oppnaMeny(m, b);
+    m.onclick = (ev) => { const x = ev.target.closest("[data-app]"); if (x) { stangMenyer(); klickaApp(x.dataset.app); } };
+    return;
+  }
+  klickaApp(b.dataset.app);
 });
 $("#appknappar").addEventListener("contextmenu", (e) => {
-  const b = e.target.closest(".cell"); if (!b) return; e.preventDefault();
+  const b = e.target.closest(".cell[data-app]"); if (!b) return; e.preventDefault();
   const a = b.dataset.app, fl = FONSTER.filter((f) => f.app === a), m = $("#faltmeny");
   m.innerHTML = `<button role="menuitem" data-m="ny">${svgA(a, "g")}${esc(APPAR[a].namn)}</button>` + (fl.length ? `<hr><button role="menuitem" data-m="stang">${svgG("stang")}Stäng ${fl.length > 1 ? "alla fönster" : "fönstret"}</button>` : "");
-  m.hidden = false; placeraOver(m, b);
-  m.onclick = (ev) => { const x = ev.target.closest("button"); if (!x) return; m.hidden = true;
+  oppnaMeny(m, b);
+  m.onclick = (ev) => { const x = ev.target.closest("button"); if (!x) return; stangMenyer();
     if (x.dataset.m === "ny") oppna(a, { nytt: true }); else fl.forEach(stang); };
 });
 let forhandTimer;
@@ -675,17 +725,49 @@ function dolj(sel) { $(sel).classList.add("dold"); }
 /* ---------- paneler ---------- */
 const PANELER = { start: ["#start", "#startknapp"], snabb: ["#snabb", "#bricka"], avis: ["#avis", "#klockknapp"] };
 let OPPEN = null;
-function vaxla(namn, fokus) {
-  const var_oppen = OPPEN === namn; stangPaneler();
-  if (var_oppen) return;
+/*
+ * Fokusets livscykel. När en panel, en meny eller låsskärmen öppnas sparas
+ * var fokus var. Escape, eller samma knapp igen, stänger och lämnar
+ * tillbaka fokus dit. Väljs något i panelen får det som öppnas fokus i
+ * stället. Ett fönster som aktiveras får fokus där det var senast.
+ */
+let FORE = null;
+function minns() {
+  const a = document.activeElement;
+  if (a && a !== document.body && !a.closest(".panel, .meny, .overlagg")) FORE = a;
+}
+function aterstall() {
+  const f = FORE; FORE = null;
+  if (f && document.contains(f) && !f.closest(".minimerat") && f.getClientRects().length) f.focus({ preventScroll: true });
+  else if (AKTIV) fokusera(AKTIV);
+  else { const i = $(".ikon"); i && i.focus({ preventScroll: true }); }
+}
+function vaxla(namn) {
+  const varOppen = OPPEN === namn;
+  if (OPPEN === null && !FORE) minns();
+  stangPaneler();
+  if (varOppen) { aterstall(); return; }
   OPPEN = namn; const [p, k] = PANELER[namn]; $("#toast").classList.add("dold");
   $(p).classList.remove("dold"); $(k).classList.add("oppen-panel"); $(k).setAttribute("aria-expanded", "true");
-  if (namn === "start") { ritaStart(); setTimeout(() => (fokus || $("#sokfalt")).focus({ preventScroll: true }), 30); }
+  if (namn === "start") ritaStart();
   if (namn === "avis") { ritaAvis(); $("#prick").hidden = true; }
+  const forst = namn === "start" ? $("#sokfalt") : $(p).querySelector("button");
+  if (forst) forst.focus({ preventScroll: true });  /* direkt, så att inga tecken går förlorade */
 }
 function stangPaneler() {
   Object.entries(PANELER).forEach(([, [p, k]]) => { $(p).classList.add("dold"); $(k).classList.remove("oppen-panel"); $(k).setAttribute("aria-expanded", "false"); });
-  OPPEN = null; $("#strommeny").hidden = true; $("#faltmeny").hidden = true; $("#sokfalt").value = ""; ALLA = false;
+  OPPEN = null; stangMenyer(); $("#sokfalt").value = ""; ALLA = false;
+}
+let MENY_ANKARE = null;
+function oppnaMeny(m, ankare) {
+  MENY_ANKARE = ankare; m.hidden = false; placeraOver(m, ankare);
+  const b = m.querySelector("button"); b && b.focus({ preventScroll: true });
+}
+function stangMenyer(tillbaka) {
+  const oppen = !$("#strommeny").hidden || !$("#faltmeny").hidden;
+  $("#strommeny").hidden = true; $("#faltmeny").hidden = true;
+  if (oppen && tillbaka && MENY_ANKARE && document.contains(MENY_ANKARE)) MENY_ANKARE.focus({ preventScroll: true });
+  MENY_ANKARE = null;
 }
 $("#startknapp").onclick = () => vaxla("start");
 $("#sokknapp").onclick = () => vaxla("start");
@@ -693,12 +775,32 @@ $("#bricka").onclick = () => vaxla("snabb");
 $("#klockknapp").onclick = () => vaxla("avis");
 $("#klocka").onclick = () => { stangPaneler(); oppna("kalender"); };
 document.addEventListener("pointerdown", (e) => {
-  if (!e.target.closest(".panel, .falt, .meny, .forhand, .lek")) stangPaneler();
-  if (!e.target.closest(".meny") && !e.target.closest("#stromknapp, #snabb-strom")) { $("#strommeny").hidden = true; $("#faltmeny").hidden = true; }
+  if (!e.target.closest(".panel, .falt, .meny, .forhand, .lek")) { stangPaneler(); FORE = null; }
+  if (!e.target.closest(".meny, #stromknapp, #snabb-strom, #merknapp")) stangMenyer();
 });
+/* med musen: spara fokus innan knappen i fältet tar det */
+document.addEventListener("pointerdown", (e) => {
+  if (OPPEN === null && e.target.closest("#startknapp, #sokknapp, #bricka, #klockknapp")) { FORE = null; minns(); }
+}, true);
+let superEnsam = false;
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") { if (!$("#strommeny").hidden || !$("#faltmeny").hidden) { $("#strommeny").hidden = $("#faltmeny").hidden = true; } else stangPaneler(); }
+  superEnsam = e.key === "Meta" || e.key === "OS";
+  /* Ctrl+Esc öppnar Start, som i NT; Super ensam gör samma sak där webbläsaren släpper igenom den */
+  if (e.key === "Escape" && e.ctrlKey) { e.preventDefault(); vaxla("start"); return; }
+  if (e.key === "Escape") {
+    if (!$("#strommeny").hidden || !$("#faltmeny").hidden) stangMenyer(true);
+    else if (OPPEN) { stangPaneler(); aterstall(); }
+    return;
+  }
+  const m = e.target.closest && e.target.closest(".meny");
+  if (m && ["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
+    e.preventDefault();
+    const b = [...m.querySelectorAll("button")], i = b.indexOf(e.target);
+    const n = e.key === "Home" ? 0 : e.key === "End" ? b.length - 1 : (i + (e.key === "ArrowDown" ? 1 : -1) + b.length) % b.length;
+    b[n].focus();
+  }
 });
+document.addEventListener("keyup", (e) => { if ((e.key === "Meta" || e.key === "OS") && superEnsam) vaxla("start"); superEnsam = false; });
 
 /* Start */
 let ALLA = false;
@@ -742,20 +844,20 @@ $$("[data-oppna]").forEach((b) => b.addEventListener("click", () => { stangPanel
 
 /* ström */
 function stromMeny(ankare) {
-  const m = $("#strommeny"); m.hidden = !m.hidden;
-  if (!m.hidden) { placeraOver(m, ankare); m.querySelector("button").focus(); }
+  const m = $("#strommeny"), oppen = !m.hidden;
+  stangMenyer(); if (!oppen) oppnaMeny(m, ankare);
 }
 $("#stromknapp").onclick = (e) => stromMeny(e.currentTarget);
 $("#snabb-strom").onclick = (e) => stromMeny(e.currentTarget);
 $("#strommeny").addEventListener("click", (e) => {
-  const b = e.target.closest("[data-strom]"); if (!b) return; const v = b.dataset.strom; stangPaneler();
+  const b = e.target.closest("[data-strom]"); if (!b) return; const v = b.dataset.strom; const f = FORE; stangPaneler(); FORE = f;
   if (v === "las") las();
   else if (v === "ut") { [...FONSTER].forEach(stang); las(); }
   else if (v === "om") { svart("Startar om …"); [...FONSTER].forEach(stang); setTimeout(() => $("#svart").classList.add("dold"), 1400); }
   else if (v === "av") { [...FONSTER].forEach(stang); svart("Avstängd. Klicka för att starta."); $("#svart").onclick = () => { $("#svart-text").textContent = "Startar …"; setTimeout(() => $("#svart").classList.add("dold"), 900); $("#svart").onclick = null; }; }
 });
-function las() { const l = $("#las"); l.classList.remove("dold"); l.focus(); }
-function las_upp() { $("#las").classList.add("dold"); }
+function las() { if (!FORE) minns(); const l = $("#las"); l.classList.remove("dold"); l.focus(); }
+function las_upp() { $("#las").classList.add("dold"); aterstall(); }
 $("#las").addEventListener("click", las_upp);
 $("#las").addEventListener("keydown", las_upp);
 function svart(t) { $("#svart-text").textContent = t; $("#svart").classList.remove("dold"); }

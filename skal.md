@@ -37,6 +37,7 @@ Filerna ligger under `svg/<tema>/skal/`.
 |---|---|---|---|
 | Aktivitetsfältet | `falt/` | flytande, dockat | `taskbar.c`, dockat längs en kant |
 | Programknapp | `programknapp/` | vila, hover, tryck, öppen, aktiv, uppmärksamhet, fokus | en knapp per fönster, med text i stället för ikon |
+| Fler program | `overflode/` | vila, öppen, uppmärksamhet | två pilknappar som rullar raderna |
 | Start-knapp | `startknapp/` | vila, hover, öppen | Start-knappen, nedtryckt när menyn är uppe |
 | Bricka och klocka | `bricka/` | vila, hover, öppen | bara klockan |
 | Start-panelen | `startpanel/` | kompakt, med översikt, sök | Start-menyn som ägarritad popup |
@@ -53,7 +54,7 @@ Dessutom, gemensamt för båda temana:
   stora mapp- och filikoner för skrivbordet.
 - `svg/logo.svg`: QzOS-märket, en sol vid horisonten.
 - `svg/bakgrund/`: bakgrundsbilden Dyner i båda temana.
-- 30 nya glyfer i `svg/glyfer/` för skalet: ström, wifi, volym, batteri,
+- 31 nya glyfer i `svg/glyfer/` för skalet: ström, wifi, volym, batteri,
   lås, avisering och andra.
 
 ## Mått
@@ -71,6 +72,71 @@ Dessutom, gemensamt för båda temana:
 
 Arbetsytan (`ui_setworkarea`) är skärmen utom fältet och dess avstånd:
 72 u nedtill för det flytande fältet, 56 u för det dockade.
+
+## Beteende i gränsfallen
+
+Det här är beteendekontrakt för skalet och libui, inte bara för
+lekplatsen. Lekplatsen gör så här, och det går att pröva där.
+
+### Smal skärm och hög skala
+
+Allt räknas i u, så en hög skala gör skärmen smalare i u. Vid 200 % är
+en skärm om 1920 bildpunkter 960 u bred.
+
+- **Start-panelen** är 640 u bred, men aldrig bredare än skärmen minus
+  8 u på var sida. Rutnätet med fästa program tar så många kolumner om
+  minst 92 u som ryms, och listan Senaste så många om minst 240 u.
+- **Översikten** i Start visas bara när panelen ryms med den, alltså när
+  skärmen är minst 896 u bred. Annars visas den kompakta panelen, även
+  om översikten är vald.
+- **Fönster** öppnas och hålls inom arbetsytan: ett fönster blir aldrig
+  större än arbetsytan minus 16 u, och minst 120 u av titelraden går
+  alltid att nå. Fönstret minns sin egen storlek och får tillbaka den
+  när det finns plats.
+- **Ett maximerat fönster** följer arbetsytan när fältet byter form
+  eller skalan ändras.
+
+### Överflöd i fältet
+
+- Programknappar som inte ryms samlas bakom en **Mer-knapp** sist i
+  gruppen, med glyfen `mer`. Den öppnar en meny med programmen och om
+  de är öppna eller minimerade.
+- **Det aktiva programmets knapp syns alltid.** Ligger den bland de
+  dolda byter den plats med den sista synliga.
+- Mer-knappen har markören för öppen om något dolt program har fönster,
+  och uppmärksamhetens markör om något av dem ber om uppmärksamhet.
+- Hur många knappar som ryms räknas om när fönster öppnas och stängs,
+  när skärmen ändrar storlek och när skalan eller fältets form byts.
+
+### Fokusets livscykel
+
+1. **Panel eller meny öppnas** (Start, snabbinställningarna,
+   aviseringarna, strömmenyn, Mer): skalet minns var fokus var, och
+   fokus flyttas in i panelen. Start får fokus i sökfältet, så att det
+   går att skriva direkt. De andra får fokus på sin första knapp.
+2. **Escape, eller samma knapp igen,** stänger och lämnar tillbaka fokus
+   dit det var. En meny lämnar tillbaka fokus till knappen som öppnade
+   den.
+3. **Något väljs i panelen:** det som öppnas får fokus, inte det som
+   hade fokus före.
+4. **Ett klick utanför** stänger panelen, och fokus stannar där klicket
+   hamnade.
+5. **Ett fönster som aktiveras** får fokus där det var senast i
+   fönstret, annars i första fältet, annars i fönstret självt.
+6. **Ett aktivt fönster som minimeras eller stängs** lämnar fokus till
+   nästa fönster i z-ordningen. Finns inget får skrivbordet fokus.
+7. **Låsskärmen** minns fokus på samma sätt och lämnar tillbaka det när
+   den låses upp.
+
+Tangenter:
+
+- **Ctrl+Esc** öppnar och stänger Start, som i NT. **Super** ensam gör
+  samma sak.
+- **Pil upp och ned, Home och End** flyttar mellan objekten i en meny.
+
+I generic_gdi behöver punkt 1 och 2 regeln för att skalet får ta fokus
+(F3 i `docs/shell.md`), och punkt 5 att libui minns fokus per fönster
+när det inaktiveras.
 
 ## Vad mekaniken behöver
 
