@@ -8,6 +8,45 @@ i en webbläsare.
 
 ![Glöd](oversikt/glod.png)
 
+## Syfte
+
+Det här repot definierar hur QzOS skrivbord ska se ut och bete sig. Det
+är målet för område 1 i generic_gdi #393. NT 3.1 är grunden för
+mekaniken: fönster, meddelanden, fokus och kontrollernas funktion
+behålls. Det som byts är presentationen.
+
+Repot är ett presentationskontrakt, inte en implementation. Inget här
+körs i QzOS. Implementationen hör till libui, libgdi, libsvg och
+kompositören.
+
+Delarna används på olika sätt:
+
+| Del | Används som |
+|---|---|
+| `tokens/tokens.json` | Den auktoritativa källan. libui och skalet ska läsa samma färgroller, mått, typ, skuggor och rörelse, och samma koppling till `COL_*`. |
+| `svg/glyfer/`, `svg/appikoner/`, `svg/logo.svg` | Ikoner som kan användas direkt genom libsvg. |
+| `svg/glod/`, `svg/gryning/` | Visuella referenser för ritlagret, inte kontroller att ladda. De innehåller exempeltext och skuggfilter, som ligger utanför QzOS SVG-ikonprofil. En riktig kontroll ritar sin geometri, tar texten ur sina egna data genom libtt och får sitt läge från libui. |
+| `lekplats/` | En miljö för att snabbt pröva designbeslut, särskilt skalets layout och arbetsflöden. Dess JavaScript är inte början på det riktiga skalet och ska inte flyttas över. |
+
+Ansvaret delas så här:
+
+| Lager | Ansvar |
+|---|---|
+| QzOS/design | tokens, komponentmått, lägen och visuella referenser |
+| libui, ett gemensamt ritlager | kontrollgeometri, text genom libtt, lägen och träffytor |
+| libgdi, libsvg och kompositören | banor, täckning, lutningar, alfa, ikoner och fönsterskuggor |
+
+Hover, fokus och andra lägen hör till libui och dess meddelandemodell.
+Skuggor och oskärpa hör till fönsterkompositionen. Träffytan för att
+ändra ett fönsters storlek är ett kontrakt mellan fönstret och
+inmatningen, inte en fråga om grafik.
+
+Nästa steg är ett litet temalager i libui med några få komponenter,
+till exempel knapp, textfält, meny och titelrad. Det prövar kedjan
+tokens → logiska mått → libui → libgdi och libtt → bildpunkter i båda
+temana vid 100, 125, 150 och 200 %. Först när den fungerar flyttas mer
+över till den nya presentationen.
+
 ## Innehåll
 
 | | |
