@@ -90,7 +90,7 @@ den vanliga mallens 14 enheter hög:
 
 Plex är en ställföreträdare, eftersom Manrope inte finns här. Manropes värden är
 inte mätta. `sysprop` ser riktig ut vid Plex 14. `schemes`, placerad i
-bildpunkter, behåller sina mått och blir trång men går sönder inte.
+bildpunkter, behåller sina mått och blir trängre, men går inte sönder.
 
 Det gör att 32 u i praktiken blir en fråga om typsnitt för dialoger, medan det
 som är placerat i bildpunkter måste ses över. I exemplen finns 71 `ui_create`,
