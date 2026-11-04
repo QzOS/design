@@ -1,8 +1,8 @@
 # Gaplistan: målbilden mot det som finns
 
 Vad som saknas mellan [`mal.md`](../mal.md) och [`skal.md`](../skal.md) och
-det som finns i generic_gdi och gfx_v3d i dag. Underlag för att anpassa
-designen till mekanismerna, inte ett beslut. Läget gäller november 2026.
+det som finns i generic_gdi och gfx_v3d. Underlag för att anpassa designen till
+mekanismerna, med de beslut som tagits. Läget gäller 4 november 2026.
 
 Märkning av vad en uppgift bygger på:
 
@@ -12,18 +12,40 @@ Märkning av vad en uppgift bygger på:
 
 ## Sammanfattning
 
-1. **Rundade fönsterhörn går att göra i kompositören,** utan ny shader och utan
-   att röra kontrollkoden. Kostnaden är rimlig (mätt).
-2. **Skuggorna i `mal.md` håller 60 Hz** med fem stora överlappande fönster, men
-   inte med tolv (mätt). Det går att förbättra, se nedan.
-3. **Kontrollhöjd 32 u är nära för dialoger.** De räknas i dialogenheter, och
-   knapparna är redan 29 bildpunkter (mätt). Det som är svårt är allt som är
-   placerat i bildpunkter.
-4. **Två krav i `mal.md` är inaktuella** och en punkt krockar med ett beslut,
-   se [Skillnader mot `mal.md`](#skillnader-mot-malmd).
+1. **Mekaniken för mått och typsnitt finns nu.** En profil är en textfil med egna
+   mått, typsnitt och färger, med arv. Den går att byta med fönster öppna och
+   sprids av skalet till alla program. Se
+   [Profiler i generic_gdi](#profiler-i-generic_gdi).
+2. **Rundade fönsterhörn går att göra i kompositören,** utan ny shader och utan
+   att röra kontrollkoden. Kostnaden är rimlig (mätt). Beslutat, inte byggt.
+3. **Skuggorna i `mal.md` håller 60 Hz** med fem stora överlappande fönster, men
+   inte med tolv, om alla har högsta nivån (mätt). `mal.md` ger inte alla fönster
+   högsta nivån, och det är inte mätt med rätt blandning än.
+4. **Kontrollhöjd 32 u är nära för dialoger.** De räknas i dialogenheter, och
+   knapparna är redan 29 bildpunkter (mätt). Det som är placerat i bildpunkter
+   ändras inte av sig självt.
+5. **Fyra krav i `mal.md` stämmer inte längre,** se
+   [Skillnader mot `mal.md`](#skillnader-mot-malmd).
 
-Största öppna frågan för designen är inte tekniken utan vilken väg man väljer
-för fönsterramen, se [Frågor](#frågor-att-besluta).
+## Profiler i generic_gdi
+
+Det som byggts sedan listan skrevs (generic_gdi#460):
+
+- **Uppdelning:** DPI är samma design i annan storlek. En profil är en annan
+  design. En profil ger nominella värden, och fönstrets DPI realiserar dem.
+- **Filer:** `NAME.profile` med `[profile]`, `[metrics]`, `[fonts]` och `[colors]`,
+  i katalogen `UI_PROFILEDIR`. En saknad nyckel ärvs, ett värde gäller även om det
+  är 0, och `auto` går efter typsnittet. Classic och Flat är inbyggda.
+- **Källan:** `tokens.json` i det här repot. `tools/gen-profiles.py` i generic_gdi
+  skriver `profiles/glod.profile` och `gryning.profile`. Vid försök går det lika bra
+  att lägga en egen fil med `parent=gryning` och några nycklar.
+- **Byte:** en transaktion. Ett toppfönster behåller klientytans storlek, en dialog
+  följer basenheterna, och skalet väljer för alla.
+- **Mått som läses:** titelrad, knappcell och synlig knapp, ram, resize-zon utanför
+  fönstret, menyrad, rader i lista och träd, menyobjekt, header, flik, statusrad,
+  kombinationsruta, kryssruta och textfältets marginal.
+- **Inte i filen än:** hörnradier och skuggor, som kommer härnäst, samt
+  ritfunktioner. `draw=` väljer bara mellan Classic och den tillfälliga platta.
 
 ## Proven
 
@@ -90,7 +112,7 @@ den vanliga mallens 14 enheter hög:
 
 Plex är en ställföreträdare, eftersom Manrope inte finns här. Manropes värden är
 inte mätta. `sysprop` ser riktig ut vid Plex 14. `schemes`, placerad i
-bildpunkter, behåller sina mått och blir trängre, men går inte sönder.
+bildpunkter, behåller sina mått och blir trängre, men går inte sönder. Med mått från profilen får listan färre rader i sin fasta höjd.
 
 Det gör att 32 u i praktiken blir en fråga om typsnitt för dialoger, medan det
 som är placerat i bildpunkter måste ses över. I exemplen finns 71 `ui_create`,
@@ -102,13 +124,14 @@ med `grep`, inte alla är kontroller).
 | Krav i `mal.md` | Läge | Vad som saknas | Storlek |
 |---|---|---|---|
 | Skala per fönster | Klart i #439, fysiska bildpunkter (kod) | Byte av skala medan programmet kör | Medel |
-| Ett gemensamt ritlager | Sömmen finns, `src/ui/theme.[ch]` (kod). 49 anrop går genom den, cirka 75 direkta anrop gör det inte (`grep`) | Funktion per komponent och läge, med roller | Stor |
+| Mått per profil | Klart i #463–#469 (kod, mätt) | Fler mått när komponenterna ritas | Liten var |
+| Ett gemensamt ritlager | Sömmen finns, `src/ui/theme.[ch]` (kod). Cirka 75 direkta anrop går inte genom den (`grep`) | Funktion per komponent och läge, med roller | Stor |
 | Hover | `ui_trackleave` och `MSG_MOUSELEAVE` finns, men ingen kontroll använder dem (kod) | Kontrollerna måste spåra läget | Medel, per kontroll |
 | Fokus från tangentbordet | Hittar inget (kod) | Ett läge per fönster, motsvarande `WM_UPDATEUISTATE` | Liten |
-| TrueType i gränssnittet | `gdi_addfont` och libtt finns. Bytet provat som bilder ovan (mätt) | Manrope och JetBrains Mono, och beslut om hur de levereras | Liten |
-| Alfa hela vägen | Skuggor, konstant alfa och `WNDX_LAYERED` klart i #450 (kod). Inte i `MSG_PAINT` | Beror på vägen för hörnen | Se frågorna |
+| TrueType i gränssnittet | Klart: Manrope och JetBrains Mono från `UI_FONTDIR` (mätt) | Hur de levereras i ett riktigt system | Liten |
+| Alfa hela vägen | Skuggor, konstant alfa och `WNDX_LAYERED` klart i #450 (kod). Inte i `MSG_PAINT`, och beslutet gör det onödigt för hörnen | Inget för hörnen | Se beslut 1 |
 | Animering i takt med skärmen | `ui_requestframe` och `MSG_FRAME` klart i #435 (kod) | Övergångar i kontrollerna | Medel |
-| Ikoner och glyfer | libsvg med cache finns (kod) | Glyferna byggda till typsnitt eller ritade med libsvg | Liten |
+| Ikoner och glyfer | libsvg med cache finns (kod) | Glyferna byggda till typsnitt eller ritade med libsvg. Titelradens symboler är för stora i dag | Liten |
 
 ## Komponenterna
 
@@ -116,9 +139,9 @@ Storleken är en bedömning, utan de gemensamma kraven ovan.
 
 | Komponent | Det nya mot i dag | Storlek |
 |---|---|---|
-| Fönster | Titelrad 36 u mot 19, rundade hörn, skugga per höjd. Mått i `MET_*`, som program läser | Medel |
-| Storleksgrepp | 6 u **utanför** kanten. I dag ligger träffytan i fönstrets egen bild, så det kräver en ändring i servern (kod) | Medel |
-| Titelradsknappar | 28 u, hover, nya glyfer | Liten |
+| Fönster | Titelrad och ram klara. Kvar: rundade hörn och skugga per höjd | Medel |
+| Storleksgrepp | Klart: 6 u utanför kanten, 12 u i hörnen, genom servern (generic_gdi#466) | Klart |
+| Titelradsknappar | Mått klara. Kvar: hover och nya glyfer | Liten |
 | Knapp | Primär, sekundär, kontur, fara. I dag finns en sort | Medel, kräver stil i API:t |
 | Kryssruta, radio | 18 u, fyllda | Liten |
 | Växel | Ny kontroll | Liten |
@@ -146,30 +169,37 @@ Storleken är en bedömning, utan de gemensamma kraven ovan.
 Jag har inte ändrat `mal.md`. Det här är förslag.
 
 1. **Krav 1, logiska koordinater.** `mal.md` säger att libui räknar i u. Beslutet i
-   generic_gdi#439 blev tvärtom: libui och GDI behåller **fysiska bildpunkter**,
-   och temalagret får räkna i u internt men publicerar bildpunkter. Regeln om
-   avrundning i `mal.md` gäller fortfarande för temat.
+   generic_gdi#439 blev tvärtom: libui och GDI behåller **fysiska bildpunkter**, och
+   en profil anger u som realiseras. Regeln `max(1, floor(u × s))` för kanter gäller
+   och är byggd för en profils linjer.
 2. **Krav 3, hover,** beskrivs som saknat. Mekanismen finns (`ui_trackleave`). Det
    som saknas är att kontrollerna använder den.
 3. **Krav 6 säger** att skuggor och rundade hörn kräver alfa från libgdi till
-   kompositören. Skuggor finns utan det, och proven visar att hörnen också kan
-   göras utan.
+   kompositören. Skuggor finns utan det. Enligt beslut 1 görs hörnen också utan.
 4. **Skalorna.** `mal.md` har fasta steg per skärm. #439 tar godtyckligt DPI från
    48 till 960 per fönster. Fasta steg går att välja i skalet.
 5. **Rullningslisten och princip 6.** Att ta bort pilknapparna ändrar träffytorna,
-   som princip 6 säger ska vara desamma.
+   som princip 6 säger ska vara desamma. Öppen.
 
-## Frågor att besluta
+## Beslut
 
-1. **Vem ritar fönsterhörnen?** Kompositören (mitt förslag): allt blir runt
-   direkt, gamla program också, kostnaden är mätt. Radien blir densamma för alla
-   fönster och innehåll i hörnet klipps. Eller klienten: friare, men kräver alfa i
-   `MSG_PAINT`, hela ritvägen.
-2. **Vilken del av kontrollerna ska bytas först?** Om dialoger ska ändras är det
-   typsnitt och höjder som bör bestämmas först, eftersom de styr layouten.
-3. **Ska `schemes`-liknande kod i bildpunkter följa med,** eller räcker det att
+1. **Kompositören äger de yttre fönsterhörnen.** Äldre program får rundade hörn utan
+   PARGB-ytor och utan att ändra sin ritning. Radie eller fönsterroll är metadata per
+   fönster, inte en enda radie. Musen går på hela rektangeln tills vidare. Hörnen
+   ska också fungera utan GPU, eftersom generic_gdi inte är knutet till gfx_v3d.
+2. **Ordning:** typsnitt och kontrollmått, ram och titelrad, hörn och skuggor,
+   visuell integration. De två första är klara.
+3. **Skuggnivå per roll** enligt `mal.md`: 1 för tips och små popuper, 2 för inaktiva
+   fönster och menyer, 3 för aktivt fönster och dialoger. Skuggor är av som
+   systemstandard. Cachad geometri, damage-begränsning och att hoppa över skymda
+   delar mäts före eventuell dynamisk kvalitet.
+4. **Profiler är data,** enkla textfiler. Ett byte är en transaktion. Klientytan
+   behålls, och dialogens barn skalas med basenheterna.
+
+## Öppna frågor
+
+1. **Ska kod placerad i bildpunkter, som `schemes`, följa med,** eller räcker det att
    nya och mallbaserade dialoger gör det?
-4. **Hur stor skugga är rimlig?** Se tabellen. En skugga på 56 u fungerar, men
-   mindre på inaktiva fönster sparar tid.
-5. **Skalets snabbpanel** behöver systemtjänster som inte finns. Är den med i
-   första versionen?
+2. **Skalets snabbpanel** behöver systemtjänster som inte finns. Är den med i första
+   versionen?
+3. **Rullningslisten** utan pilknappar, se ovan.
