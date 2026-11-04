@@ -40,8 +40,8 @@ och följer den tekniska riktningen i
 
 Det är viktigt att skilja mellan två typer av SVG:
 
-- **Ikoner** i `svg/glyfer/`, `svg/appikoner/` och `svg/logo.svg`
-  kan ritas genom [QzOS SVG Icon Profile](https://github.com/QzOS/generic_gdi/blob/main/docs/svg.md).
+- **Ikoner** i `svg/glyfer/`, `svg/appikoner/`, `svg/logo.svg` och
+  `svg/webblasare/` kan ritas genom [QzOS SVG Icon Profile](https://github.com/QzOS/generic_gdi/blob/main/docs/svg.md).
 - **Komponenter** i `svg/glod/` och `svg/gryning/` är
   designreferenser, inte kompletta kontroller att ladda. De kan innehålla
   exempeltext och SVG-filter utanför ikonprofilen. I QzOS får en kontroll
@@ -92,12 +92,13 @@ värden**; det innebär inte att libui måste läsa JSON vid körning.
 | `tokens/glod.css`, `tokens/gryning.css` | Genererade CSS-variabler |
 | `svg/glyfer/` | 59 symboler i 16 u, med `currentColor` |
 | `svg/appikoner/`, `svg/logo.svg`, `svg/bakgrund/` | Programikoner, QzOS-märket och bakgrunden Dyner |
+| `svg/webblasare/` | Ikonerna till [QzOS/browser](https://github.com/QzOS/browser) i 90-talsstil, se nedan |
 | `svg/glod/`, `svg/gryning/` | Komponentreferenser i båda teman och deras olika lägen |
 | `oversikt/` | Genererade bilder över komponenter, skal och DPI-exempel |
 | [`docs/dpi.md`](docs/dpi.md) | Genererade bildpunktsmått vid 100–300 % |
 | `lekplats/mall.html` | Handredigerad källa för webblekplatsen |
 | `lekplats/index.html` | Genererad webblekplats |
-| `verktyg/` | Generatorerna `bygg.py` och `oversikt.py` |
+| `verktyg/` | Generatorerna `bygg.py`, `webblasare.py` och `oversikt.py` |
 | `tema/` | Tidiga `.dc.html`-skisser, inte auktoritativa |
 
 En logisk enhet, **1 u**, motsvarar en bildpunkt vid 96 DPI.
@@ -111,6 +112,30 @@ Korall markerar aktivt eller valt, medan fokus och varning har egna
 färgroller som anpassas efter tema och kontrast. Tillstånd visas inte
 enbart med färg. Gränssnittet använder Manrope och terminal/kod
 JetBrains Mono.
+
+## Webbläsarens ikoner
+
+`svg/webblasare/` har ikonerna till QzOS/browser, som har Netscape
+Navigator 3:s uppställning. De har en egen stil, i mitten av 90-talets
+anda och inte i Glöd och Gryning: svart kontur, platta färger, en ljus
+fasett uppe till vänster och en mörk nere till höger. Inget är ritat
+efter Netscape.
+
+![Webbläsarens ikoner vid 100 och 200 %](oversikt/webblasare.png)
+
+| Filer | Storlek | Motsvarar i `src/icons.h` |
+|---|---|---|
+| `bakat`, `framat`, `hem`, `ladda-om`, `bilder`, `oppna`, `skriv-ut`, `sok`, `stopp` | 24 u | `QBI_BACK` … `QBI_STOP` |
+| samma med `-inaktiv` | 24 u | `grey`: avstängd knapp |
+| `nyckel-hel`, `nyckel-bruten` | 16 u | `qb_icon_key`, säker och osäker |
+| `throbber`, `throbber-laddar` | 64 u | `qb_icon_throbber`, i vila och en bild ur rörelsen |
+
+Konturerna ligger på halva enheter och fasetterna på hela, så att varje
+rak kant är en hel bildpunkt vid 100 och 200 %. En avstängd knapp har
+konturen och de mörkaste ytorna i grått med samma sak i vitt en enhet
+ned och åt höger, som verktygsfälten förr. Alla 22 filer tolkas av
+libsvg i strikt läge. Throbbern rör sig fortfarande i programmet;
+stillbilderna visar hur den ser ut.
 
 ## Bygg om referenserna
 
