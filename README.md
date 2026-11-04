@@ -127,15 +127,15 @@ efter Netscape.
 |---|---|---|
 | `bakat`, `framat`, `hem`, `ladda-om`, `bilder`, `oppna`, `skriv-ut`, `sok`, `stopp` | 24 u | `QBI_BACK` … `QBI_STOP` |
 | samma med `-inaktiv` | 24 u | `grey`: avstängd knapp |
-| `nyckel-hel`, `nyckel-bruten` | 16 u | `qb_icon_key`, säker och osäker |
-| `throbber`, `throbber-laddar` | 64 u | `qb_icon_throbber`, i vila och en bild ur rörelsen |
+| `nyckel-hel`, `nyckel-bruten` | 16 u | `qb_icon_key`: guld och hel när anslutningen är säker, grå och avbruten när den inte är det |
 
 Konturerna ligger på halva enheter och fasetterna på hela, så att varje
 rak kant är en hel bildpunkt vid 100 och 200 %. En avstängd knapp har
 konturen och de mörkaste ytorna i grått med samma sak i vitt en enhet
-ned och åt höger, som verktygsfälten förr. Alla 22 filer tolkas av
-libsvg i strikt läge. Throbbern rör sig fortfarande i programmet;
-stillbilderna visar hur den ser ut.
+ned och åt höger, som verktygsfälten förr. Avstängd Ladda om är en grå
+siluett, eftersom dess smala bågar blir grötiga med två konturer vid 100 %.
+Alla 20 filer tolkas av libsvg i strikt läge. Throbbern rör sig och ritas
+i kod (`qb_icon_throbber`), så den finns inte här.
 
 ## Bygg om referenserna
 
@@ -157,3 +157,9 @@ bland annat i npm-paketet `@fontsource/manrope`.
 är ett begränsat temalager för knapp, textfält, meny och titelrad, i
 båda temana vid 100, 125, 150 och 200 %, med verklig textrendering
 och tangentbordsnavigering.
+
+## Licens
+
+Apache License 2.0, som QzOS/generic_gdi och QzOS/browser. Se
+[`LICENSE`](LICENSE). Det gäller allt i repot: källor, generatorer,
+genererade SVG-filer, bilder och dokument.

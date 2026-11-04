@@ -11,8 +11,7 @@ Skriver svg/webblasare/:
       samma knapp avstängd: konturen i grått med en vit skugga, som förr
   nyckel-hel, nyckel-bruten
       statusradens nyckel, 16 x 16 u
-  throbber, throbber-laddar
-      bilden uppe till höger, 64 x 64 u, i vila och i en bild ur rörelsen
+Throbbern uppe till höger rör sig och ritas i kod (qb_icon_throbber), inte här.
 
 Stilen: svart kontur, platta färger, en ljus fasett uppe till vänster och en
 mörk nere till höger, som ikonerna i verktygsfälten i mitten av 90-talet.
@@ -93,16 +92,19 @@ def ljushet(hexf):
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
-def inaktiv(former):
+def inaktiv(former, siluett=False):
     """
     Avstängd som i verktygsfälten förr: konturen och de mörka ytorna i
     grått, och samma sak i vitt en enhet ned och åt höger, bakom.
-    De ljusa ytorna försvinner.
+    De ljusa ytorna försvinner. Med siluett fylls varje form med kontur,
+    för en knapp vars former är för smala för två konturer i 24 bildpunkter.
     """
     def lager(farg, dx):
         ut = []
         for typ, g, fy, ko in former:
-            fyll = farg if ljushet(fy) < 0.2 else "none"
+            if siluett and not ko:
+                continue
+            fyll = farg if siluett or ljushet(fy) < 0.2 else "none"
             if fyll == "none" and not ko:
                 continue
             g2 = flytta((typ, g), dx)
@@ -306,7 +308,7 @@ KNAPPAR = {
     "bakat": ("Bakåt", "QBI_BACK", bakat),
     "framat": ("Framåt", "QBI_FORWARD", framat),
     "hem": ("Hem", "QBI_HOME", hem),
-    "ladda-om": ("Ladda om", "QBI_RELOAD", ladda_om),
+    "ladda-om": ("Ladda om", "QBI_RELOAD", ladda_om, True),
     "bilder": ("Bilder", "QBI_IMAGES", bilder),
     "oppna": ("Öppna", "QBI_OPEN", oppna),
     "skriv-ut": ("Skriv ut", "QBI_PRINT", skriv_ut),
@@ -315,14 +317,19 @@ KNAPPAR = {
 }
 
 
-# ---------------------------------------------------------------- nyckeln och throbbern
+# ---------------------------------------------------------------- nyckeln
 
 def nyckel(hel):
-    l, b, m = P["gul"]
+    """
+    Hel: guld, en säker anslutning. Bruten: grå, i två delar med ett tydligt
+    avbrott och den yttre delen nedfallen, så att skillnaden syns i 16 bildpunkter.
+    """
+    l, b, m = P["gul"] if hel else ("#E4E4E4", "#9C9C9C", "#5E5E5E")
+    hal = "#7A5A00" if hel else "#3C3C3C"
     ut = [
         cirkel(4.5, 8, 3.5, b),                    # handtaget
         bana("M2.6 6.6 A2.4 2.4 0 0 1 5.9 5.6 L5.4 6.5 A1.4 1.4 0 0 0 3.5 7.2 Z", l, False),
-        cirkel(4.5, 8, 1.25, "#808080"),           # hålet
+        cirkel(4.5, 8, 1.25, hal),                 # hålet
     ]
     if hel:
         ut += [
@@ -332,36 +339,15 @@ def nyckel(hel):
         ]
     else:
         ut += [
-            poly([(7.5, 6.5), (10.5, 6.5), (9.8, 8), (10.5, 9.5), (7.5, 9.5)], b),
+            # stumpen vid handtaget, med en sågtandad brottyta
+            poly([(7.5, 6.5), (10.5, 6.5), (9.7, 7.5), (10.5, 8.5), (9.7, 9.5), (7.5, 9.5)], b),
             rekt(8, 7, 2, 1, l),
-            poly([(11.5, 7.5), (15.5, 7.5), (15.5, 10.5), (14.5, 10.5), (14.5, 12.5), (12.5, 12.5),
-                  (12.5, 10.5), (11.5, 10.5), (10.8, 9)], b),
-            rekt(12, 8, 3, 1, l),
+            # den yttre delen, en och en halv enhet bort och fallen ett steg
+            poly([(12, 7.5), (15.5, 7.5), (15.5, 10.5), (14.5, 10.5), (14.5, 12.5), (12.5, 12.5),
+                  (12.5, 10.5), (12, 10.5), (12.8, 9.5), (12, 8.5)], b),
+            rekt(13, 8, 2, 1, l),
         ]
     return ut
-
-
-def throbber(laddar):
-    """QzOS-Q:et med sina kometer, som qb_icon_throbber ritar det"""
-    s = '<rect x="0" y="0" width="64" height="64" fill="#000060"/>'
-    s += '<rect x="0" y="0" width="64" height="1" fill="#2A2A8C"/><rect x="0" y="0" width="1" height="64" fill="#2A2A8C"/>'
-    cx, cy, r = 32, 32, 19
-    s += f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#FFFFFF" stroke-width="6"/>'
-    s += (f'<path d="M{f(cx + r / 3)} {f(cy + r / 3)} L{f(cx + r * 1.25)} {f(cy + r * 1.25)}" '
-          f'fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="square"/>')
-    if laddar:
-        bild = 16  # en bild där kometerna är uppe till höger
-        for i in range(4):
-            a = bild * 0.35 - i * 0.28
-            px, py = cx + math.cos(a) * r * 1.45, cy + math.sin(a) * r * 1.45
-            d = (4 - i) * r / 12 + 1
-            c = "#FFF078" if i == 0 else ["#787CD2", "#5A5AD2", "#3C3CD2"][i - 1]
-            s += f'<rect x="{f(px - d)}" y="{f(py - d)}" width="{f(2 * d)}" height="{f(2 * d)}" fill="{c}"/>'
-    else:
-        d = 4 * r / 12 + 1
-        px, py = cx, cy - r * 1.45
-        s += f'<rect x="{f(px - d)}" y="{f(py - d)}" width="{f(2 * d)}" height="{f(2 * d)}" fill="#FFF078"/>'
-    return s
 
 
 # ---------------------------------------------------------------- filerna
@@ -376,16 +362,14 @@ def bygg():
     for gammal in UT.glob("*.svg"):
         gammal.unlink()
     n = 0
-    for namn, (titel, _, fn) in KNAPPAR.items():
+    for namn, (titel, _, fn, *flagga) in KNAPPAR.items():
+        siluett = bool(flagga and flagga[0])
         former = fn()
         (UT / f"{namn}.svg").write_text(dokument(24, titel, "".join(svg_form(s) for s in former)), encoding="utf-8")
-        (UT / f"{namn}-inaktiv.svg").write_text(dokument(24, f"{titel}, inaktiv", inaktiv(former)), encoding="utf-8")
+        (UT / f"{namn}-inaktiv.svg").write_text(dokument(24, f"{titel}, inaktiv", inaktiv(former, siluett)), encoding="utf-8")
         n += 2
     for hel, namn, titel in ((True, "nyckel-hel", "Säker anslutning"), (False, "nyckel-bruten", "Osäker anslutning")):
         (UT / f"{namn}.svg").write_text(dokument(16, titel, "".join(svg_form(s) for s in nyckel(hel))), encoding="utf-8")
-        n += 1
-    for laddar, namn, titel in ((False, "throbber", "QzOS, i vila"), (True, "throbber-laddar", "QzOS, laddar")):
-        (UT / f"{namn}.svg").write_text(dokument(64, titel, throbber(laddar)), encoding="utf-8")
         n += 1
     return n
 

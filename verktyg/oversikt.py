@@ -139,7 +139,7 @@ def webblasare():
 
     ovrigt = (f'<div class=f style="gap:16px;align-items:center;padding:8px 12px">'
               f'{fil("nyckel-hel", 1)}{fil("nyckel-bruten", 1)}{fil("nyckel-hel", 2)}{fil("nyckel-bruten", 2)}'
-              f'{fil("throbber", 1)}{fil("throbber-laddar", 1)}</div>')
+              f'{fil("nyckel-hel", 4)}{fil("nyckel-bruten", 4)}</div>')
     return f"""<!doctype html><meta charset=utf-8><style>
 body{{margin:0;padding:12px;background:#C0C0C0;font-family:"DejaVu Sans",sans-serif;width:max-content}}
 .f{{display:flex;gap:2px;margin-bottom:12px}}
