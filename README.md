@@ -6,7 +6,8 @@ ett nytt skal. NT 3.1-mekaniken för fönster, meddelanden, fokus och
 kontroller behålls; presentationen byts.
 
 Läs [målet](mal.md) för designprinciper och regler, [skalets färdriktning](skal.md)
-för idéerna om aktivitetsfält och Start-panel, eller prova
+för idéerna om aktivitetsfält och Start-panel, [gaplistan](docs/gaplista.md) för
+vad som saknas mot koden i dag, eller prova
 [lekplatsen](lekplats/index.html) i en webbläsare.
 
 ![Glöd – komponenterna](oversikt/glod.png)
