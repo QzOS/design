@@ -129,13 +129,23 @@ efter Netscape.
 | samma med `-inaktiv` | 24 u | `grey`: avstängd knapp |
 | `nyckel-hel`, `nyckel-bruten` | 16 u | `qb_icon_key`: guld och hel när anslutningen är säker, grå och avbruten när den inte är det |
 
-Konturerna ligger på halva enheter och fasetterna på hela, så att varje
-rak kant är en hel bildpunkt vid 100 och 200 %. En avstängd knapp har
-konturen och de mörkaste ytorna i grått med samma sak i vitt en enhet
-ned och åt höger, som verktygsfälten förr. Avstängd Ladda om är en grå
-siluett, eftersom dess smala bågar blir grötiga med två konturer vid 100 %.
-Alla 20 filer tolkas av libsvg i strikt läge. Throbbern rör sig och ritas
-i kod (`qb_icon_throbber`), så den finns inte här.
+Konturerna ligger på halva enheter och ytorna utan kontur på hela, så att
+varje vågrät och lodrät kant är en hel bildpunkt vid 100 och 200 %. Sneda
+kanter, bågar och cirklar kantutjämnas.
+
+En avstängd knapp har konturen och de mörkaste ytorna i grått, med samma
+sak i vitt en enhet ned och åt höger, som verktygsfälten förr. Formerna
+med kontur fylls med `currentColor`, så att de täcker det som ligger bakom
+dem precis som i den färgade knappen. Programmet ska därför rita en
+avstängd knapp med knappens färg (`COL_BTNFACE`) som
+`svg_renderopts.current`; annars blir formerna svarta.
+
+Alla 20 filer tolkas av libsvg i strikt läge. Jämfört med Chromium är
+resultatet nästan detsamma vid 200 %. Vid 100 % skiljer sig de sneda
+kanterna och bågarna, som mest 96 nivåer av 255 i Ladda om, eftersom de
+två kantutjämnar på var sitt sätt.
+
+Throbbern rör sig och ritas i kod (`qb_icon_throbber`), så den finns inte här.
 
 ## Bygg om referenserna
 

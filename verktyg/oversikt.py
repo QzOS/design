@@ -145,7 +145,7 @@ body{{margin:0;padding:12px;background:#C0C0C0;font-family:"DejaVu Sans",sans-se
 .f{{display:flex;gap:2px;margin-bottom:12px}}
 .k{{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
   background:#C0C0C0;border:1px solid;border-color:#FFFFFF #000000 #000000 #FFFFFF;box-shadow:inset -1px -1px #808080}}
-.k svg{{display:block}}
+.k svg{{display:block;color:#C0C0C0}}
 .av{{color:#808080;text-shadow:1px 1px #FFFFFF}}
 </style>{falt(1, ("bilder", "skriv-ut", "sok", "stopp"))}{falt(2, ())}{falt(2, tuple(n for n, _ in VERKTYG))}{ovrigt}"""
 

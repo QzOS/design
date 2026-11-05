@@ -8,7 +8,8 @@ Skriver svg/webblasare/:
   bakat, framat, hem, ladda-om, bilder, oppna, skriv-ut, sok, stopp
       verktygsknapparna, 24 x 24 u, en per QBI_* i src/icons.h
   <namn>-inaktiv
-      samma knapp avstängd: konturen i grått med en vit skugga, som förr
+      samma knapp avstängd: konturen i grått med en vit skugga, som förr;
+      formerna fylls med currentColor, knappens färg (svg_renderopts.current)
   nyckel-hel, nyckel-bruten
       statusradens nyckel, 16 x 16 u
 Throbbern uppe till höger rör sig och ritas i kod (qb_icon_throbber), inte här.
@@ -16,8 +17,8 @@ Throbbern uppe till höger rör sig och ritas i kod (qb_icon_throbber), inte hä
 Stilen: svart kontur, platta färger, en ljus fasett uppe till vänster och en
 mörk nere till höger, som ikonerna i verktygsfälten i mitten av 90-talet.
 Inget är ritat efter Netscape. Konturerna ligger på halva enheter och
-fasetterna på hela, så att varje rak kant är en hel bildpunkt i 100 och
-200 %. Allt är inom QzOS SVG Icon Profile (generic_gdi docs/svg.md):
+ytorna utan kontur på hela, så att varje vågrät och lodrät kant är en hel
+bildpunkt i 100 och 200 %; sneda kanter och bågar kantutjämnas. Allt är inom QzOS SVG Icon Profile (generic_gdi docs/svg.md):
 svg, g, rect, circle, polygon och path, inga transformer, ingen text.
 """
 import math
@@ -92,31 +93,31 @@ def ljushet(hexf):
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
-def inaktiv(former, siluett=False):
+def inaktiv(former):
     """
     Avstängd som i verktygsfälten förr: konturen och de mörka ytorna i
-    grått, och samma sak i vitt en enhet ned och åt höger, bakom.
-    De ljusa ytorna försvinner. Med siluett fylls varje form med kontur,
-    för en knapp vars former är för smala för två konturer i 24 bildpunkter.
+    grått, och samma sak i vitt en enhet ned och åt höger, bakom. Varje
+    form med kontur fylls med currentColor, så att den täcker det som
+    ligger bakom den, som den färgade knappen gör. Programmet ger knappens
+    färg (COL_BTNFACE) som svg_renderopts.current. De ljusa fasetterna
+    utan kontur försvinner.
     """
-    def lager(farg, dx):
+    def lager(farg, d):
         ut = []
         for typ, g, fy, ko in former:
-            if siluett and not ko:
+            if ljushet(fy) < 0.2:
+                fyll = farg            # springor och mörka ytor
+            elif ko:
+                fyll = "currentColor"  # knappens färg, täcker det bakom
+            else:
                 continue
-            fyll = farg if siluett or ljushet(fy) < 0.2 else "none"
-            if fyll == "none" and not ko:
-                continue
-            g2 = flytta((typ, g), dx)
-            ut.append(svg_form((typ, g2, fyll, ko), kontur=farg))
+            ut.append(svg_form((typ, flytta(typ, g, d), fyll, ko), kontur=farg))
         return "".join(ut)
     return lager("#FFFFFF", 1) + lager("#808080", 0)
 
 
-def flytta(s, d):
-    typ, g = s
-    if not d:
-        return g
+def flytta(typ, g, d):
+    """formen d enheter ned och åt höger"""
     if typ == "poly":
         return [(x + d, y + d) for x, y in g]
     if typ == "rect":
@@ -125,22 +126,7 @@ def flytta(s, d):
     if typ == "circle":
         cx, cy, r = g
         return (cx + d, cy + d, r)
-    # en bana: flytta alla absoluta koordinatpar (banorna här är bara M, L, A och Z, absoluta)
-    ut, tal, i = [], [], 0
-    for tok in g.replace(",", " ").split():
-        if tok[0].isalpha():
-            ut.append(tok)
-            if tok in ("A", "a"):
-                i = -5
-            continue
-        v = float(tok)
-        if i < 0:  # A: rx ry rotation stor svep, oförändrade
-            ut.append(tok)
-            i += 1
-            continue
-        ut.append(f(v + d))
-        i += 1
-    return " ".join(ut)
+    raise ValueError("en avstängd knapp har bara polygoner, rektanglar och cirklar")
 
 
 def spegla(former, w=24):
@@ -191,7 +177,7 @@ def hem():
         rekt(17, 12, 1, 9, gm),
         rekt(6, 20, 12, 1, gm),
         poly([(1.5, 12.5), (12, 2.5), (22.5, 12.5)], rb),  # taket
-        poly([(3.9, 11.5), (12, 3.9), (12, 5.3), (5.4, 11.5)], rl, False),
+        poly([(4.4, 11), (12, 3.9), (12, 5.3), (5.9, 11)], rl, False),
         rekt(4, 11, 16, 1, rm),
         rekt(7.5, 14.5, 4, 4, hb, True),           # fönstret
         rekt(8, 15, 1, 3, hl),
@@ -239,7 +225,7 @@ def bilder():
         rekt(6, 8, 12, 2, hl),
         cirkel(15.5, 10.5, 1.75, yb),              # solen
         poly([(5.5, 16.5), (9.5, 11.5), (12, 14.2), (14, 12.5), (18.5, 16.5)], gb),  # bergen
-        poly([(9.5, 11.5), (10.9, 13.2), (8.1, 13.2)], "#FFFFFF", False),
+        poly([(9.5, 11.5), (10.7, 13), (8.3, 13)], "#FFFFFF", False),
         poly([(6.4, 16), (9.5, 12.2), (10, 12.8), (7.6, 16)], gl, False),
     ]
 
@@ -294,12 +280,12 @@ def sok():
 def stopp():
     rl, rb, rm = P["rod"]
     ytter = [(7.5, 1.5), (16.5, 1.5), (22.5, 7.5), (22.5, 16.5), (16.5, 22.5), (7.5, 22.5), (1.5, 16.5), (1.5, 7.5)]
-    inre = [(8.3, 3.5), (15.7, 3.5), (20.5, 8.3), (20.5, 15.7), (15.7, 20.5), (8.3, 20.5), (3.5, 15.7), (3.5, 8.3)]
+    inre = [(8.5, 4), (15.5, 4), (20, 8.5), (20, 15.5), (15.5, 20), (8.5, 20), (4, 15.5), (4, 8.5)]
     return [
         poly(ytter, "#FFFFFF"),
         poly(inre, rb, False),
-        poly([(8.3, 3.5), (15.7, 3.5), (16.5, 4.5), (8, 4.5), (4.5, 8), (4.5, 15.5), (3.5, 15.7), (3.5, 8.3)], rl, False),
-        poly([(20.5, 8.3), (20.5, 15.7), (15.7, 20.5), (8.3, 20.5), (8.5, 19.5), (15.5, 19.5), (19.5, 15.5), (19.5, 8.5)], rm, False),
+        poly([(8.5, 4), (15.5, 4), (16.5, 5), (8.9, 5), (5, 8.9), (5, 15.1), (4, 15.5), (4, 8.5)], rl, False),
+        poly([(20, 9), (20, 15.5), (15.5, 20), (8.5, 20), (8.9, 19), (15.1, 19), (19, 15.1), (19, 9)], rm, False),
         rekt(6.5, 10.5, 11, 3, "#FFFFFF", True),   # balken
     ]
 
@@ -308,7 +294,7 @@ KNAPPAR = {
     "bakat": ("Bakåt", "QBI_BACK", bakat),
     "framat": ("Framåt", "QBI_FORWARD", framat),
     "hem": ("Hem", "QBI_HOME", hem),
-    "ladda-om": ("Ladda om", "QBI_RELOAD", ladda_om, True),
+    "ladda-om": ("Ladda om", "QBI_RELOAD", ladda_om),
     "bilder": ("Bilder", "QBI_IMAGES", bilder),
     "oppna": ("Öppna", "QBI_OPEN", oppna),
     "skriv-ut": ("Skriv ut", "QBI_PRINT", skriv_ut),
@@ -343,8 +329,8 @@ def nyckel(hel):
             poly([(7.5, 6.5), (10.5, 6.5), (9.7, 7.5), (10.5, 8.5), (9.7, 9.5), (7.5, 9.5)], b),
             rekt(8, 7, 2, 1, l),
             # den yttre delen, en och en halv enhet bort och fallen ett steg
-            poly([(12, 7.5), (15.5, 7.5), (15.5, 10.5), (14.5, 10.5), (14.5, 12.5), (12.5, 12.5),
-                  (12.5, 10.5), (12, 10.5), (12.8, 9.5), (12, 8.5)], b),
+            poly([(11.5, 7.5), (15.5, 7.5), (15.5, 10.5), (14.5, 10.5), (14.5, 12.5), (12.5, 12.5),
+                  (12.5, 10.5), (11.5, 10.5), (12.3, 9.5), (11.5, 8.5)], b),
             rekt(13, 8, 2, 1, l),
         ]
     return ut
@@ -362,11 +348,10 @@ def bygg():
     for gammal in UT.glob("*.svg"):
         gammal.unlink()
     n = 0
-    for namn, (titel, _, fn, *flagga) in KNAPPAR.items():
-        siluett = bool(flagga and flagga[0])
+    for namn, (titel, _, fn) in KNAPPAR.items():
         former = fn()
         (UT / f"{namn}.svg").write_text(dokument(24, titel, "".join(svg_form(s) for s in former)), encoding="utf-8")
-        (UT / f"{namn}-inaktiv.svg").write_text(dokument(24, f"{titel}, inaktiv", inaktiv(former, siluett)), encoding="utf-8")
+        (UT / f"{namn}-inaktiv.svg").write_text(dokument(24, f"{titel}, inaktiv", inaktiv(former)), encoding="utf-8")
         n += 2
     for hel, namn, titel in ((True, "nyckel-hel", "Säker anslutning"), (False, "nyckel-bruten", "Osäker anslutning")):
         (UT / f"{namn}.svg").write_text(dokument(16, titel, "".join(svg_form(s) for s in nyckel(hel))), encoding="utf-8")
