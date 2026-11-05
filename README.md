@@ -40,8 +40,8 @@ och följer den tekniska riktningen i
 
 Det är viktigt att skilja mellan två typer av SVG:
 
-- **Ikoner** i `svg/glyfer/`, `svg/appikoner/` och `svg/logo.svg`
-  kan ritas genom [QzOS SVG Icon Profile](https://github.com/QzOS/generic_gdi/blob/main/docs/svg.md).
+- **Ikoner** i `svg/glyfer/`, `svg/appikoner/`, `svg/logo.svg` och
+  `svg/webblasare/` kan ritas genom [QzOS SVG Icon Profile](https://github.com/QzOS/generic_gdi/blob/main/docs/svg.md).
 - **Komponenter** i `svg/glod/` och `svg/gryning/` är
   designreferenser, inte kompletta kontroller att ladda. De kan innehålla
   exempeltext och SVG-filter utanför ikonprofilen. I QzOS får en kontroll
@@ -92,12 +92,13 @@ värden**; det innebär inte att libui måste läsa JSON vid körning.
 | `tokens/glod.css`, `tokens/gryning.css` | Genererade CSS-variabler |
 | `svg/glyfer/` | 59 symboler i 16 u, med `currentColor` |
 | `svg/appikoner/`, `svg/logo.svg`, `svg/bakgrund/` | Programikoner, QzOS-märket och bakgrunden Dyner |
+| `svg/webblasare/` | Ikonerna till [QzOS/browser](https://github.com/QzOS/browser) i 90-talsstil, se nedan |
 | `svg/glod/`, `svg/gryning/` | Komponentreferenser i båda teman och deras olika lägen |
 | `oversikt/` | Genererade bilder över komponenter, skal och DPI-exempel |
 | [`docs/dpi.md`](docs/dpi.md) | Genererade bildpunktsmått vid 100–300 % |
 | `lekplats/mall.html` | Handredigerad källa för webblekplatsen |
 | `lekplats/index.html` | Genererad webblekplats |
-| `verktyg/` | Generatorerna `bygg.py` och `oversikt.py` |
+| `verktyg/` | Generatorerna `bygg.py`, `webblasare.py` och `oversikt.py` |
 | `tema/` | Tidiga `.dc.html`-skisser, inte auktoritativa |
 
 En logisk enhet, **1 u**, motsvarar en bildpunkt vid 96 DPI.
@@ -111,6 +112,40 @@ Korall markerar aktivt eller valt, medan fokus och varning har egna
 färgroller som anpassas efter tema och kontrast. Tillstånd visas inte
 enbart med färg. Gränssnittet använder Manrope och terminal/kod
 JetBrains Mono.
+
+## Webbläsarens ikoner
+
+`svg/webblasare/` har ikonerna till QzOS/browser, som har Netscape
+Navigator 3:s uppställning. De har en egen stil, i mitten av 90-talets
+anda och inte i Glöd och Gryning: svart kontur, platta färger, en ljus
+fasett uppe till vänster och en mörk nere till höger. Inget är ritat
+efter Netscape.
+
+![Webbläsarens ikoner vid 100 och 200 %](oversikt/webblasare.png)
+
+| Filer | Storlek | Motsvarar i `src/icons.h` |
+|---|---|---|
+| `bakat`, `framat`, `hem`, `ladda-om`, `bilder`, `oppna`, `skriv-ut`, `sok`, `stopp` | 24 u | `QBI_BACK` … `QBI_STOP` |
+| samma med `-inaktiv` | 24 u | `grey`: avstängd knapp |
+| `nyckel-hel`, `nyckel-bruten` | 16 u | `qb_icon_key`: guld och hel när anslutningen är säker, grå och avbruten när den inte är det |
+
+Konturerna ligger på halva enheter och ytorna utan kontur på hela, så att
+varje vågrät och lodrät kant är en hel bildpunkt vid 100 och 200 %. Sneda
+kanter, bågar och cirklar kantutjämnas.
+
+En avstängd knapp har konturen och de mörkaste ytorna i grått, med samma
+sak i vitt en enhet ned och åt höger, som verktygsfälten förr. Formerna
+med kontur fylls med `currentColor`, så att de täcker det som ligger bakom
+dem precis som i den färgade knappen. Programmet ska därför rita en
+avstängd knapp med knappens färg (`COL_BTNFACE`) som
+`svg_renderopts.current`; annars blir formerna svarta.
+
+Alla 20 filer tolkas av libsvg i strikt läge. Jämfört med Chromium är
+resultatet nästan detsamma vid 200 %. Vid 100 % skiljer sig de sneda
+kanterna och bågarna, som mest 96 nivåer av 255 i Ladda om, eftersom de
+två kantutjämnar på var sitt sätt.
+
+Throbbern rör sig och ritas i kod (`qb_icon_throbber`), så den finns inte här.
 
 ## Bygg om referenserna
 
@@ -132,3 +167,9 @@ bland annat i npm-paketet `@fontsource/manrope`.
 är ett begränsat temalager för knapp, textfält, meny och titelrad, i
 båda temana vid 100, 125, 150 och 200 %, med verklig textrendering
 och tangentbordsnavigering.
+
+## Licens
+
+Apache License 2.0, som QzOS/generic_gdi och QzOS/browser. Se
+[`LICENSE`](LICENSE). Det gäller allt i repot: källor, generatorer,
+genererade SVG-filer, bilder och dokument.

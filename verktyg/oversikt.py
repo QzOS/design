@@ -117,6 +117,39 @@ svg{{display:block}}
 </style>{''.join(rader)}"""
 
 
+VERKTYG = [("bakat", "Back"), ("framat", "Forward"), ("hem", "Home"), ("ladda-om", "Reload"),
+           ("bilder", "Images"), ("oppna", "Open"), ("skriv-ut", "Print"), ("sok", "Find"), ("stopp", "Stop")]
+
+
+def webblasare():
+    """webbläsarens verktygsfält som i QzOS/browser, med knapparna i 100 och 200 %"""
+    d = SVG / "webblasare"
+
+    def fil(namn, s):
+        el = (d / f"{namn}.svg").read_text(encoding="utf-8")
+        w = float(re.search(r'width="([\d.]+)"', el).group(1))
+        return re.sub(r'width="[\d.]+" height="[\d.]+"', f'width="{w * s:g}" height="{w * s:g}"', el, count=1)
+
+    def falt(s, avstangda):
+        knappar = "".join(
+            f'<div class=k style="width:{54 * s}px;height:{46 * s}px;font-size:{11 * s}px">'
+            f'{fil(n + ("-inaktiv" if n in avstangda else ""), s)}'
+            f'<span class="{"av" if n in avstangda else ""}">{e}</span></div>' for n, e in VERKTYG)
+        return f'<div class=f>{knappar}</div>'
+
+    ovrigt = (f'<div class=f style="gap:16px;align-items:center;padding:8px 12px">'
+              f'{fil("nyckel-hel", 1)}{fil("nyckel-bruten", 1)}{fil("nyckel-hel", 2)}{fil("nyckel-bruten", 2)}'
+              f'{fil("nyckel-hel", 4)}{fil("nyckel-bruten", 4)}</div>')
+    return f"""<!doctype html><meta charset=utf-8><style>
+body{{margin:0;padding:12px;background:#C0C0C0;font-family:"DejaVu Sans",sans-serif;width:max-content}}
+.f{{display:flex;gap:2px;margin-bottom:12px}}
+.k{{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  background:#C0C0C0;border:1px solid;border-color:#FFFFFF #000000 #000000 #FFFFFF;box-shadow:inset -1px -1px #808080}}
+.k svg{{display:block;color:#C0C0C0}}
+.av{{color:#808080;text-shadow:1px 1px #FFFFFF}}
+</style>{falt(1, ("bilder", "skriv-ut", "sok", "stopp"))}{falt(2, ())}{falt(2, tuple(n for n, _ in VERKTYG))}{ovrigt}"""
+
+
 def main():
     fonter = typsnitt(sys.argv[1] if len(sys.argv) > 1 else None)
     UT.mkdir(exist_ok=True)
@@ -130,8 +163,10 @@ def main():
             sida.screenshot(path=str(UT / f"skal-{tema}.png"), full_page=True)
         sida.set_content(dpi(fonter), wait_until="networkidle")
         sida.screenshot(path=str(UT / "dpi.png"), full_page=True)
+        sida.set_content(webblasare(), wait_until="networkidle")
+        sida.locator("body").screenshot(path=str(UT / "webblasare.png"))
         b.close()
-    print("oversikt/: glod, gryning, skal-glod, skal-gryning och dpi")
+    print("oversikt/: glod, gryning, skal-glod, skal-gryning, dpi och webblasare")
 
 
 if __name__ == "__main__":

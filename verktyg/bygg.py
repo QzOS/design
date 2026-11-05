@@ -1409,6 +1409,8 @@ def main():
     (ROT / "docs").mkdir(exist_ok=True)
     (ROT / "docs" / "dpi.md").write_text(dpi_md(), encoding="utf-8")
     lekplats()
+    import webblasare  # webbläsarens ikoner har sin egen stil och sin egen fil
+    antal += webblasare.bygg()
     print(f"{antal} SVG-filer, {len(TEMAN)} CSS-filer, docs/dpi.md och lekplats/index.html")
 
 
