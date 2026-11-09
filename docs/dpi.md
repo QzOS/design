@@ -44,6 +44,8 @@ Genererad av `verktyg/bygg.py` ur `tokens/tokens.json`. Regeln står i
 | forlopp-h | 6 | 6 | 8 | 9 | 11 | 12 | 15 | 18 |
 | verktygsknapp | 32 | 32 | 40 | 48 | 56 | 64 | 80 | 96 |
 | splitter-greppyta | 8 | 8 | 10 | 12 | 14 | 16 | 20 | 24 |
+| ikoncell-b | 88 | 88 | 110 | 132 | 154 | 176 | 220 | 264 |
+| ikoncell-h | 100 | 100 | 125 | 150 | 175 | 200 | 250 | 300 |
 | radie-liten | 5 | 5 | 6 | 8 | 9 | 10 | 13 | 15 |
 | radie-kontroll | 8 | 8 | 10 | 12 | 14 | 16 | 20 | 24 |
 | radie-yta | 12 | 12 | 15 | 18 | 21 | 24 | 30 | 36 |
