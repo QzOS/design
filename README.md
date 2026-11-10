@@ -66,9 +66,13 @@ python3 -m http.server 8000
 
 Här kan du öppna och dra fönster, minimera och maximera dem, prova Start
 med sökning, programknappar, förhandsvisningar, snabbinställningar och
-aviseringar. Reglagen ändrar tema, skala (75–200 %), flytande eller
-dockat fält, placering, Start-variant och bakgrund. Terminalens kommandon
-är exempelkommandon; fönster, filer, systemstatus och tjänster är
+aviseringar. Reglaget **Skalet** växlar mellan **Mål**, målbilden, och
+**I dag**, skalet i generic_gdi main: en textknapp per fönster, Start som
+meny och bara klockan i brickan. Övriga reglage ändrar tema, skala
+(75–200 %), flytande eller dockat fält, placering, Start-variant,
+brickans symboler, oskärpa och bakgrund. Oskärpan är av från början;
+den är ett val och inte en del av målet. Terminalens kommandon är
+exempelkommandon; fönster, filer, systemstatus och tjänster är
 simulerade.
 
 **Lekplatsen använder webbläsarens layout och rendering.** Den visar
@@ -87,7 +91,7 @@ värden**; det innebär inte att libui måste läsa JSON vid körning.
 | Sökväg | Innehåll |
 |---|---|
 | [`mal.md`](mal.md) | Designprinciper, tillstånd, DPI-regler, komponenter och krav på mekaniken |
-| [`skal.md`](skal.md) | Skalets idéer, komponenter, mått och öppna frågor |
+| [`skal.md`](skal.md) | Skalets idéer, komponenter, mått, läget mot generic_gdi main och öppna frågor |
 | [`tokens/tokens.json`](tokens/tokens.json) | Källvärden för Glöd och Gryning |
 | `tokens/glod.css`, `tokens/gryning.css` | Genererade CSS-variabler |
 | `svg/glyfer/` | 71 symboler i 16 u, med `currentColor` |
