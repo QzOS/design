@@ -27,7 +27,9 @@ fönstret `yta` #242A31, panelen `yta-upphojd` och `knapp` #323A43,
 `accent` #EE7665 och `text` #EDF1F4. De andra rollerna är blandningar av
 dem: hover och tryck mot texten, kontrollgränsen och den dämpade texten
 så nära fönstret de kan komma och ändå klara 3:1 och 6:1. Fokus,
-signalfärgerna och skuggorna är desamma som i Glöd. Ytorna är platta med rundade hörn. Djup
+signalfärgerna och skuggorna är desamma som i Glöd. Samma regler finns i
+lekplatsens program Färger, där ett eget tema kan provas och kopieras
+till `tokens.json`. Ytorna är platta med rundade hörn. Djup
 visas med skuggor i stället för 3D-kanter. Korall (`accent`) betyder
 *aktivt eller valt*. Bärnsten (`fokus`, `varning`) betyder *titta här*.
 Allt mäts i logiska enheter och ritas skarpt i alla skalor från 100 till

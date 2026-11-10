@@ -13,6 +13,7 @@ html, body { height: 100%; }
 body { margin: 0; background: #1B1426; overflow: hidden; font-family: Manrope, Inter, "DejaVu Sans", system-ui, sans-serif; }
 body.tema-gryning { background: #EFE7EE; color-scheme: light; }
 body.tema-grafit { background: #101316; }
+body.tema-egen { background: var(--yta-sankt); }
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
@@ -30,6 +31,7 @@ svg.a { flex: none; }
 .tema-glod .skarm { --tapet: var(--tapet-glod); }
 .tema-gryning .skarm { --tapet: var(--tapet-gryning); }
 .tema-grafit .skarm { --tapet: var(--tapet-grafit); }
+.tema-egen .skarm { --tapet: var(--tapet-egen); }
 :focus-visible { outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(2 * var(--u)); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
@@ -250,6 +252,34 @@ input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(1
 .saknas b { color: var(--text); font-size: calc(18 * var(--u)); }
 .saknas p { margin: 0; max-width: calc(360 * var(--u)); font-size: calc(13 * var(--u)); line-height: 1.5; }
 
+/* ---- eget tema: Färger ---- */
+.egen { padding: calc(20 * var(--u)) calc(24 * var(--u)); display: flex; flex-direction: column; gap: calc(16 * var(--u)); user-select: text; }
+.egen p { margin: 0; color: var(--text-dampad); font-size: calc(13 * var(--u)); line-height: 1.5; }
+.egen h3 { margin: 0; font-size: calc(12 * var(--u)); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-dampad); }
+.egen section { display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
+.egen .forval { display: flex; flex-wrap: wrap; gap: calc(6 * var(--u)); }
+.egen .forval button { height: calc(28 * var(--u)); padding: 0 calc(10 * var(--u)) 0 calc(6 * var(--u)); border-radius: 999px; background: var(--knapp); font-size: calc(12 * var(--u)); font-weight: 600; display: inline-flex; align-items: center; gap: calc(6 * var(--u)); }
+.egen .forval button:hover { background: var(--knapp-hover); }
+.egen .forval i { display: flex; width: calc(28 * var(--u)); height: calc(16 * var(--u)); border-radius: 999px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--kant); }
+.egen .forval i b { flex: 1; }
+.egen .grund { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(8 * var(--u)) calc(16 * var(--u)); }
+.egen label { display: grid; grid-template-columns: calc(32 * var(--u)) 1fr calc(92 * var(--u)); align-items: center; gap: calc(10 * var(--u)); font-size: calc(13 * var(--u)); }
+.egen input[type=color] { width: calc(32 * var(--u)); height: calc(32 * var(--u)); padding: 0; border: 1px solid var(--kant-kontroll); border-radius: var(--radie-kontroll); background: none; cursor: pointer; }
+.egen input[type=color]::-webkit-color-swatch-wrapper { padding: calc(3 * var(--u)); }
+.egen input[type=color]::-webkit-color-swatch { border: 0; border-radius: calc(5 * var(--u)); }
+.egen input[type=color]::-moz-color-swatch { border: 0; border-radius: calc(5 * var(--u)); }
+.egen .hex { width: 100%; font-family: "JetBrains Mono", monospace; font-size: calc(13 * var(--u)); text-transform: uppercase; }
+.egen .hex[aria-invalid="true"] { border-color: var(--fel); }
+.egen table { border-collapse: collapse; font-size: calc(13 * var(--u)); width: 100%; color: var(--text); }
+.egen td { padding: calc(5 * var(--u)) 0; border-top: 1px solid var(--kant); }
+.egen td:nth-child(2) { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--text-dampad); }
+.egen td:nth-child(3) { width: calc(84 * var(--u)); text-align: right; }
+.egen .betyg { display: inline-flex; align-items: center; gap: calc(4 * var(--u)); font-weight: 700; font-size: calc(12 * var(--u)); }
+.egen .betyg.ok { color: var(--lyckat); } .egen .betyg.lagt { color: var(--fel); }
+.egen .knappar { display: flex; flex-wrap: wrap; gap: calc(8 * var(--u)); align-items: center; }
+.egen textarea { width: 100%; height: calc(120 * var(--u)); resize: vertical; border-radius: var(--radie-kontroll); background: var(--falt); border: 1px solid var(--kant-kontroll); color: var(--text); font-family: "JetBrains Mono", monospace; font-size: calc(12 * var(--u)); padding: calc(8 * var(--u)); }
+.egen .kvitto { font-size: calc(13 * var(--u)); color: var(--text-dampad); }
+
 /* ---- lås och start ---- */
 .overlagg { position: absolute; inset: 0; z-index: 9000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(8 * var(--u)); transition: opacity var(--rorelse-lang); }
 .overlagg.dold { opacity: 0; pointer-events: none; }
@@ -418,7 +448,7 @@ input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(1
 <aside class="lek" id="lek" data-oppen="true" aria-label="Lekplatsens reglage">
   <button id="lek-knapp" aria-expanded="true"><svg class="logo"><use href="#logo"/></svg><span>Lekplatsen</span><svg class="g"><use href="#g-chevron-upp"/></svg></button>
   <div class="reg">
-    <div><span class="etik">Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button><button data-v="grafit">Grafit</button></div></div>
+    <div><span class="etik">Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button><button data-v="grafit">Grafit</button><button data-v="egen">Eget</button></div></div>
     <div><span class="etik">Skala</span><div class="segment" data-val="skala"><button data-v="0.75">75</button><button data-v="1">100</button><button data-v="1.25">125</button><button data-v="1.5">150</button><button data-v="2">200</button></div></div>
     <div><span class="etik">Skalet</span><div class="segment" data-val="lage"><button data-v="idag">I dag</button><button data-v="mal">Mål</button></div></div>
     <div class="bara-mal"><span class="etik">Aktivitetsfältet</span><div class="segment" data-val="falt"><button data-v="flytande">Flytande</button><button data-v="dockat">Dockat</button></div></div>
@@ -450,7 +480,7 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 
 /* ---------- tillstånd ---------- */
 /* lage: mal är målbilden, idag skalet i generic_gdi main; oskärpa och alla brickans symboler är val, inte målet */
-const S = { tema: null, skala: 1, lage: "mal", falt: "flytande", just: "mitten", start: "kompakt", tapet: "dyner", oskarpa: "av", symboler: "kalla" };
+const S = { tema: null, skala: 1, lage: "mal", falt: "flytande", just: "mitten", start: "kompakt", tapet: "dyner", oskarpa: "av", symboler: "kalla", egen: null };
 let harSparat = false;
 try { const s = localStorage.getItem("qzos-lek"); if (s) { Object.assign(S, JSON.parse(s)); harSparat = true; } } catch (e) {}
 if (!S.tema) {
@@ -461,7 +491,17 @@ if (innerWidth < 700 && !harSparat) S.skala = 0.75;
 function spara() { try { localStorage.setItem("qzos-lek", JSON.stringify(S)); } catch (e) {} }
 
 function tillampa() {
-  document.body.className = "tema-" + S.tema;
+  /* ett eget tema: grundtemat ger måtten och de ljusa eller mörka reglerna,
+     de härledda färgerna läggs ovanpå som variabler på body */
+  const eg = S.tema === "egen" ? harled(S.egen || FORVAL.grafit.farger) : null;
+  document.body.className = eg ? `tema-${eg.ljust ? "gryning" : "glod"} tema-egen` : "tema-" + S.tema;
+  ROLLER.forEach((k) => document.body.style.removeProperty("--" + k));
+  ["1", "2", "3"].forEach((n) => document.body.style.removeProperty("--hojd-" + n));
+  if (eg) {
+    Object.entries(eg.f).forEach(([k, v]) => document.body.style.setProperty("--" + k, v));
+    Object.entries(eg.h).forEach(([n, v]) => document.body.style.setProperty("--hojd-" + n, v));
+    document.documentElement.style.setProperty("--tapet-egen", `url("data:image/svg+xml,${encodeURIComponent(dyner(eg))}")`);
+  }
   skarm.style.setProperty("--u", S.skala + "px");
   skarm.classList.toggle("enfargad", S.tapet === "enfargad");
   skarm.classList.toggle("dockat-lage", S.falt === "dockat");
@@ -494,12 +534,145 @@ let omTimer;
 addEventListener("resize", () => { clearTimeout(omTimer); omTimer = setTimeout(tillampa, 80); });
 document.addEventListener("click", (e) => {
   const b = e.target.closest(".segment[data-val] button");
-  if (b) satt(b.closest(".segment").dataset.val, b.dataset.v);
+  if (!b) return;
+  satt(b.closest(".segment").dataset.val, b.dataset.v);
+  if (b.dataset.v === "egen" && b.closest('[data-val="tema"]') && b.closest(".lek")) oppna("farger");
 });
 $("#lek-knapp").addEventListener("click", () => {
   const l = $("#lek"), o = l.dataset.oppen !== "true";
   l.dataset.oppen = String(o); $("#lek-knapp").setAttribute("aria-expanded", String(o));
 });
+
+/* ---------- eget tema ----------
+   Sex grundfärger blir alla roller i tokens.json, med samma regler som
+   Grafit härleddes med: hover och tryck mot texten, kontrollgränsen och
+   den dämpade texten så nära ytan de kan komma och ändå klara kraven.
+   Signalfärgerna och skuggorna kommer ur Glöd eller Gryning, efter om
+   temat är mörkt eller ljust. */
+const TOK = /*TOKENS_JSON*/;
+const ROLLER = Object.keys(TOK.farg.glod);
+const GRUND = [["bakgrund", "Skrivbord"], ["yta", "Fönster"], ["panel", "Panel och knappar"], ["accent", "Accent"], ["text", "Text"], ["fokus", "Fokus och länkar"]];
+const ur = (t) => { const f = TOK.farg[t], lj = lum(f.yta) > lum(f.text);
+  return { bakgrund: f.bakgrund, yta: f.yta, panel: lj ? f.knapp : f["yta-upphojd"], accent: f.accent, text: f.text, fokus: f.fokus }; };
+const FORVAL = {
+  glod: { namn: "Glöd", farger: ur("glod") }, gryning: { namn: "Gryning", farger: ur("gryning") }, grafit: { namn: "Grafit", farger: ur("grafit") },
+  nordstal: { namn: "Nordstål", farger: { bakgrund: "#111C29", yta: "#1D2D40", panel: "#2B3E52", accent: "#EBA95D", text: "#EBF2F8", fokus: "#8CC4F0" } },
+  petroleum: { namn: "Petroleum", farger: { bakgrund: "#102427", yta: "#1A3438", panel: "#29484C", accent: "#67C7D1", text: "#E8F2F1", fokus: "#F2B35E" } },
+  skogsgron: { namn: "Skogsgrön", farger: { bakgrund: "#14201D", yta: "#22332C", panel: "#30483B", accent: "#E1B96D", text: "#ECF1E9", fokus: "#EE7665" } },
+  kalksten: { namn: "Kalksten", farger: { bakgrund: "#E7EAE8", yta: "#F8F9F7", panel: "#DCE3E0", accent: "#247B93", text: "#1D2B31", fokus: "#A8520F" } },
+};
+function rgbAv(h) { return [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255); }
+function hexAv(c) { return "#" + c.map((x) => Math.round(Math.max(0, Math.min(1, x)) * 255).toString(16).padStart(2, "0")).join("").toUpperCase(); }
+function lum(h) { const [r, g, b] = rgbAv(h).map((c) => c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
+function kontrast(a, b) { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+function blanda(a, b, t) { const x = rgbAv(a), y = rgbAv(b); return hexAv(x.map((v, i) => v + (y[i] - v) * t)); }
+/* den minsta blandningen fran -> mot som har krav:1 mot alla ytor */
+function minst(fran, mot, krav, ytor) {
+  for (let i = 0; i <= 1000; i++) { const c = blanda(fran, mot, i / 1000); if (ytor.every((y) => kontrast(c, y) >= krav)) return c; }
+  return mot;
+}
+function harled(g) {
+  const { bakgrund: B, yta: Y, panel: P, accent: A, text: T, fokus: F } = g;
+  const ljust = lum(Y) > lum(T), bas = TOK.farg[ljust ? "gryning" : "glod"], f = { ...bas };
+  Object.assign(f, {
+    bakgrund: B, yta: Y, "yta-upphojd": ljust ? Y : P,
+    "yta-sankt": ljust ? blanda(B, T, 0.05) : blanda(B, "#000000", 0.25),
+    "yta-hover": blanda(Y, T, 0.07), "yta-tryck": blanda(Y, T, 0.13), "yta-inaktiv": blanda(Y, B, ljust ? 0.5 : 0.35),
+    falt: ljust ? Y : B, spar: ljust ? blanda(B, T, 0.08) : B,
+    knapp: P, "knapp-hover": blanda(P, T, 0.08), "knapp-tryck": ljust ? blanda(P, T, 0.14) : blanda(P, B, 0.3),
+    kant: blanda(Y, T, 0.13), text: T,
+    accent: A, "accent-hover": ljust ? blanda(A, "#000000", 0.08) : blanda(A, "#FFFFFF", 0.14), "accent-tryck": blanda(A, "#000000", 0.1),
+    markering: blanda(Y, A, ljust ? 0.14 : 0.28), "markering-text": T,
+    fokus: F, lank: F, ikon: F, varme: F,
+    "titel-inaktiv": ljust ? B : blanda(Y, B, 0.35),
+    "fonster-kant-aktiv": blanda(Y, T, 0.22), "fonster-kant-inaktiv": blanda(Y, T, 0.1),
+    "tips-bakgrund": T, "tips-text": ljust ? Y : B, "reglage-tumme": ljust ? "#FFFFFF" : T,
+    skugga: ljust ? T : blanda(B, "#000000", 0.6),
+  });
+  f["kant-kontroll"] = minst(Y, T, 3, [Y, B, P, f.falt]);
+  f["text-dampad"] = minst(P, T, 6, [Y, P]);
+  f["text-inaktiv"] = minst(Y, T, 2.6, [Y]);
+  f["accent-text"] = minst(A, ljust ? T : "#FFFFFF", 4.5, [Y, P]);
+  const pa = (ljust ? [T, "#FFFFFF"] : [B, "#FFFFFF"]).concat(["#000000"]);
+  f["pa-accent"] = pa.find((c) => kontrast(c, A) >= 4.5) || pa.sort((a, b) => kontrast(b, A) - kontrast(a, A))[0];
+  if (!ljust) ["pa-info", "pa-lyckat", "pa-varning", "pa-fel"].forEach((k) => { f[k] = B; });
+  f.tumme = f["kant-kontroll"]; f["tumme-hover"] = f["text-dampad"];
+  const hojd = TOK.hojd[ljust ? "gryning" : "glod"], sk = rgbAv(f.skugga).map((x) => Math.round(x * 255)).join(" "), h = {};
+  Object.entries(hojd).forEach(([n, v]) => { h[n] = `0 calc(${v.y} * var(--u, 1px)) calc(${v.oskarpa} * var(--u, 1px)) rgb(${sk} / ${v.alfa})`; });
+  return { ljust, f, h, hojd };
+}
+/* Dyner i temats färger: himlen ur skrivbordet, solen ur accenten, dynerna från fönstret mot accenten */
+function dyner(eg) {
+  const f = eg.f, mot = eg.ljust ? f.text : "#000000";
+  const himmel = eg.ljust ? [blanda(f.yta, "#FFFFFF", 0.5), f.bakgrund, blanda(f.bakgrund, f.accent, 0.15)]
+                          : [blanda(f.bakgrund, "#000000", 0.15), f.bakgrund, blanda(f.bakgrund, f.yta, 0.7)];
+  const sol = eg.ljust ? [blanda(f.accent, "#FFFFFF", 0.6), blanda(f.accent, "#FFFFFF", 0.35)] : [blanda(f.accent, "#FFFFFF", 0.3), f.accent];
+  const former = ["M0 560C260 520 420 470 640 500S1040 600 1260 560 1700 470 1920 500V1080H0Z",
+    "M0 700C180 640 360 520 560 500S900 610 1080 650 1420 520 1620 470 1840 520 1920 560V1080H0Z",
+    "M0 820C220 760 420 690 640 700S980 800 1240 760 1640 620 1920 640V1080H0Z",
+    "M0 900C300 860 520 780 820 800S1260 900 1520 860 1800 790 1920 800V1080H0Z",
+    "M0 1000C360 960 700 900 1040 930S1640 1010 1920 960V1080H0Z"];
+  let d = `<linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${himmel[0]}"/><stop offset=".6" stop-color="${himmel[1]}"/><stop offset="1" stop-color="${himmel[2]}"/></linearGradient>` +
+    `<linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sol[0]}"/><stop offset="1" stop-color="${sol[1]}"/></linearGradient>`;
+  let k = `<rect width="1920" height="1080" fill="url(#h)"/><circle cx="1330" cy="470" r="150" fill="url(#s)" opacity=".9"/>`;
+  [0.08, 0.2, 0.42, 0.68, 0.9].forEach((t, i) => {
+    const a = blanda(eg.ljust ? f.bakgrund : f.yta, f.accent, t), b = blanda(a, mot, eg.ljust ? 0.06 : 0.2);
+    d += `<linearGradient id="d${i}" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
+    k += `<path d="${former[i]}" fill="url(#d${i})"/>`;
+  });
+  eg.tapetfarger = [...himmel, ...sol];
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"><defs>${d}</defs>${k}</svg>`;
+}
+const KRAV = [["Text mot fönstret", "text", "yta", 4.5], ["Text på knapp", "text", "knapp", 4.5],
+  ["Dämpad text mot fönstret", "text-dampad", "yta", 4.5], ["Kontrollgräns mot fönstret", "kant-kontroll", "yta", 3],
+  ["Kontrollgräns mot fältet", "kant-kontroll", "falt", 3], ["Fokus mot fönstret", "fokus", "yta", 3],
+  ["Text på accent", "pa-accent", "accent", 4.5], ["Accenttext mot fönstret", "accent-text", "yta", 4.5],
+  ["Text på markering", "markering-text", "markering", 4.5], ["Fel mot fönstret", "fel", "yta", 3]];
+function temaRedigerare(fon, el) {
+  if (!S.egen) S.egen = { ...(FORVAL[S.tema] || FORVAL.grafit).farger };
+  el.innerHTML = `<div class="egen">
+    <p>Välj sex grundfärger. Resten av rollerna härleds med samma regler som Grafit, och hela skrivbordet byter färg medan du väljer.</p>
+    <section><h3>Utgå från</h3><div class="forval">${Object.entries(FORVAL).map(([k, v]) =>
+      `<button data-forval="${k}"><i>${["bakgrund", "yta", "accent"].map((r) => `<b style="background:${v.farger[r]}"></b>`).join("")}</i>${esc(v.namn)}</button>`).join("")}</div></section>
+    <section><h3>Grundfärger</h3><div class="grund">${GRUND.map(([k, n]) =>
+      `<label><input type="color" id="egen-${k}-farg" data-k="${k}" aria-label="${esc(n)}"><span>${esc(n)}</span><input class="falt-in hex" id="egen-${k}" data-k="${k}" maxlength="7" spellcheck="false" aria-label="${esc(n)}, hex"></label>`).join("")}</div></section>
+    <section><h3>Kontrast</h3><table id="egen-kontrast"></table></section>
+    <section><h3>Till tokens.json</h3><div class="knappar"><button class="knapp primar" id="egen-kopiera">Kopiera som JSON</button><span class="kvitto" id="egen-kvitto" role="status"></span></div>
+      <textarea id="egen-json" readonly aria-label="Temat som JSON"></textarea></section></div>`;
+  const rita = (fran) => {
+    GRUND.forEach(([k]) => {
+      const c = el.querySelector(`#egen-${k}-farg`), h = el.querySelector(`#egen-${k}`);
+      if (fran !== c) c.value = S.egen[k].toLowerCase();
+      if (fran !== h) { h.value = S.egen[k]; h.removeAttribute("aria-invalid"); }
+    });
+    const eg = harled(S.egen), f = eg.f;
+    dyner(eg);
+    const rader = KRAV.map(([n, a, b, k]) => [n, kontrast(f[a], f[b]), k]);
+    rader.push(["Dämpad text i fältet, över bakgrunden", Math.min(...eg.tapetfarger.map((w) => kontrast(f["text-dampad"], blanda(w, f.yta, 0.92)))), 4.5]);
+    el.querySelector("#egen-kontrast").innerHTML = rader.map(([n, v, k]) => `<tr><td>${esc(n)}</td><td>${v.toFixed(2).replace(".", ",")}:1</td><td>${v >= k
+      ? `<span class="betyg ok">${svgG("bock")}klarar</span>` : `<span class="betyg lagt">${svgG("varning")}under ${String(k).replace(".", ",")}</span>`}</td></tr>`).join("");
+    const grund = Object.fromEntries(GRUND.map(([k]) => [k, S.egen[k]]));
+    el.querySelector("#egen-json").value = JSON.stringify({ grund, ljust: eg.ljust, farg: f, hojd: eg.hojd }, null, 2);
+    el.querySelector("#egen-kvitto").textContent = "";
+  };
+  const andra = (k, v, fran) => { S.egen = { ...S.egen, [k]: v.toUpperCase() }; S.tema = "egen"; rita(fran); tillampa(); };
+  el.addEventListener("input", (e) => {
+    const t = e.target, k = t.dataset.k; if (!k) return;
+    if (t.type === "color") andra(k, t.value, t);
+    else { const v = t.value.trim().replace(/^#?/, "#"); if (/^#[0-9a-f]{6}$/i.test(v)) andra(k, v, t); else t.setAttribute("aria-invalid", "true"); }
+  });
+  el.addEventListener("click", (e) => {
+    const fv = e.target.closest("[data-forval]");
+    if (fv) { S.egen = { ...FORVAL[fv.dataset.forval].farger }; S.tema = "egen"; rita(); tillampa(); return; }
+    if (e.target.closest("#egen-kopiera")) {
+      const ta = el.querySelector("#egen-json"), kv = el.querySelector("#egen-kvitto");
+      const markera = () => { ta.focus(); ta.select(); kv.textContent = "Markerat. Kopiera med Ctrl+C."; };
+      try { navigator.clipboard.writeText(ta.value).then(() => { kv.textContent = "Kopierat."; }, markera); } catch (err) { markera(); }
+    }
+  });
+  rita();
+  if (S.tema !== "egen") { S.tema = "egen"; tillampa(); }
+}
 
 /* ---------- klockan ---------- */
 const DAGAR = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
@@ -526,8 +699,8 @@ function oppna(app, opt = {}) {
   if (finns && !opt.dok) { aktivera(finns); return finns; }
   const n = FONSTER.length;
   const f = { id: NASTA++, app, titel: opt.titel || APPAR[app].namn, x: 120 + (n % 6) * 36, y: 40 + (n % 6) * 30,
-    w: { terminal: 640, text: 620, kalkylator: 320, kalender: 420, installningar: 520 }[app] || 720,
-    h: { terminal: 400, kalkylator: 460, kalender: 420, installningar: 560 }[app] || 460, min: false, max: false, dok: opt.dok };
+    w: { terminal: 640, text: 620, kalkylator: 320, kalender: 420, installningar: 520, farger: 600 }[app] || 720,
+    h: { terminal: 400, kalkylator: 460, kalender: 420, installningar: 560, farger: 640 }[app] || 460, min: false, max: false, dok: opt.dok };
   const el = document.createElement("section");
   el.className = "fonster"; el.setAttribute("aria-label", f.titel);
   el.innerHTML = `<div class="titelrad">${svgA(app)}<span class="titel">${esc(f.titel)}</span><div class="tknappar">
@@ -652,11 +825,11 @@ function innehall(f, el) {
       rad(`<span class="p">användare@qzos</span> <span class="v">~</span> $ ${esc(k)}`);
       const [c, ...arg] = k.split(/\s+/);
       if (!c) {}
-      else if (c === "hjälp" || c === "help") rad(`<span class="d">ls · datum · rensa · tema glod|gryning|grafit · skala 75|100|125|150|200 · öppna &lt;program&gt;</span>`);
+      else if (c === "hjälp" || c === "help") rad(`<span class="d">ls · datum · rensa · tema glod|gryning|grafit|egen · skala 75|100|125|150|200 · öppna &lt;program&gt;</span>`);
       else if (c === "ls") rad(MAPPAR.Hem.map(([, n]) => esc(n)).join("  "));
       else if (c === "datum" || c === "date") rad(new Date().toLocaleString("sv-SE"));
       else if (c === "rensa" || c === "clear") ut.innerHTML = "";
-      else if (c === "tema" && ["glod", "gryning", "grafit"].includes(arg[0])) { satt("tema", arg[0]); rad(`tema: ${arg[0]}`); }
+      else if (c === "tema" && ["glod", "gryning", "grafit", "egen"].includes(arg[0])) { satt("tema", arg[0]); rad(`tema: ${arg[0]}`); }
       else if (c === "skala" && Number(arg[0]) >= 50 && Number(arg[0]) <= 300) { satt("skala", Number(arg[0]) / 100); rad(`skala: ${arg[0]} %`); }
       else if ((c === "öppna" || c === "open") && arg[0]) { const p = Object.keys(APPAR).find((x) => x.startsWith(arg[0].toLowerCase()) || APPAR[x].namn.toLowerCase().startsWith(arg[0].toLowerCase())); p ? (oppna(p), rad(`startar ${APPAR[p].namn}`)) : rad(`${esc(arg[0])}: hittar inget sådant program`); }
       else rad(`${esc(c)}: kommandot finns inte i lekplatsen`);
@@ -670,7 +843,7 @@ function innehall(f, el) {
     const vx = (k, v, e) => `<button class="vaxel" role="switch" data-binder="${k}=${v}" data-satt="${k}" data-pa="${v}" data-av="${{ falt: "dockat", just: "vanster", start: "kompakt", tapet: "enfargad" }[k]}"><span>${e}</span><i></i></button>`;
     el.innerHTML = `<div class="installningar">
       <section><h3>Utseende</h3>
-        <div class="val"><span>Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button><button data-v="grafit">Grafit</button></div></div>
+        <div class="val"><span>Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button><button data-v="grafit">Grafit</button><button data-v="egen">Eget</button></div></div>
         <div class="val"><span>Skala</span><div class="segment" data-val="skala"><button data-v="1">100 %</button><button data-v="1.25">125 %</button><button data-v="1.5">150 %</button><button data-v="1.75">175 %</button><button data-v="2">200 %</button></div></div>
         ${vx("tapet", "dyner", "Bakgrundsbild")}</section>
       <section><h3>Aktivitetsfältet</h3>${vx("falt", "flytande", "Flytande")}${vx("just", "mitten", "Centrerat")}</section>
@@ -688,6 +861,8 @@ function innehall(f, el) {
     }
     el.innerHTML = `<div class="kalender"><h2>${MANADER[m]} ${y}</h2><div class="manad">${["mån", "tis", "ons", "tor", "fre", "lör", "sön"].map((x) => `<span class="vd">${x}</span>`).join("")}${c}</div>
       <div class="handelse"><b>Temagenomgång</b><small>i dag 15:00–15:30</small></div></div>`;
+  } else if (a === "farger") {
+    temaRedigerare(f, el);
   } else if (a === "kalkylator") {
     let visat = "0", forra = null, op = null, ny = true;
     el.innerHTML = `<div class="kalk"><output aria-live="polite">0</output><div class="tangenter">${["C", "±", "%", "÷", "7", "8", "9", "×", "4", "5", "6", "−", "1", "2", "3", "+", "0", ",", "⌫", "="].map((k) =>
@@ -1028,17 +1203,18 @@ function ritaBricka() {
 const RUTOR = [["wifi", "Wi-Fi", "Hemma-5G", true], ["bluetooth", "Bluetooth", "2 enheter", true], ["flygplan", "Flygläge", null, false],
   ["fokus", "Fokus", null, false], ["mane", "Nattljus", "Från 21:00", false], ["tema", "Mörkt tema", null, null]];
 let MORKT = "glod";
+function morkt() { return S.tema === "egen" ? !harled(S.egen || FORVAL.grafit.farger).ljust : S.tema !== "gryning"; }
 function ritaRutor() {
   $("#rutor").innerHTML = RUTOR.map(([g, n, u, pa], i) => {
-    const p = g === "tema" ? S.tema !== "gryning" : pa;
-    const under = g === "tema" ? ({ glod: "Glöd", grafit: "Grafit" }[S.tema] || "Gryning") : (u && p !== false ? u : p ? "På" : "Av");
+    const p = g === "tema" ? morkt() : pa;
+    const under = g === "tema" ? ({ glod: "Glöd", grafit: "Grafit", gryning: "Gryning", egen: "Eget" }[S.tema]) : (u && p !== false ? u : p ? "På" : "Av");
     return `<button class="ruta" aria-pressed="${p}" data-i="${i}">${svgG(g === "tema" ? "mane" : g)}<span><b>${n}</b><small>${under}</small></span></button>`;
   }).join("");
 }
 $("#rutor").addEventListener("click", (e) => {
   const b = e.target.closest(".ruta"); if (!b) return; const r = RUTOR[b.dataset.i];
   /* mörkt tema på: tillbaka till det mörka tema man hade, annars Glöd */
-  if (r[0] === "tema") { if (S.tema !== "gryning") MORKT = S.tema; satt("tema", S.tema === "gryning" ? MORKT : "gryning"); return; }
+  if (r[0] === "tema") { if (morkt()) MORKT = S.tema; satt("tema", morkt() ? "gryning" : MORKT); return; }
   r[3] = !r[3]; if (r[0] === "mane") skarm.style.filter = r[3] ? "sepia(.35) saturate(1.2)" : ""; ritaRutor();
 });
 function reglage(inp) { inp.style.setProperty("--v", ((inp.value - inp.min) / (inp.max - inp.min) * 100) + "%"); }

@@ -73,7 +73,15 @@ aviseringar. Reglaget **Skalet** växlar mellan **Mål**, målbilden, och
 meny och bara klockan i brickan. Övriga reglage ändrar tema, skala
 (75–200 %), flytande eller dockat fält, placering, Start-variant,
 brickans symboler, oskärpa och bakgrund. Oskärpan är av från början;
-den är ett val och inte en del av målet. Terminalens kommandon är
+den är ett val och inte en del av målet.
+
+Temat **Eget** öppnar programmet Färger, där du väljer sex grundfärger:
+skrivbord, fönster, panel, accent, text och fokus. Övriga roller härleds
+med samma regler som Grafit, och skrivbordet, fönstren och Dyner byter
+färg medan du väljer. Färger visar kontrasten mot kraven i `mal.md` och
+kan kopiera hela temat som JSON till `tokens.json`. Glöd, Gryning, Grafit
+och förslagen Nordstål, Petroleum, Skogsgrön och Kalksten finns som
+startpunkter. Terminalens kommandon är
 exempelkommandon; fönster, filer, systemstatus och tjänster är
 simulerade.
 

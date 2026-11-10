@@ -1495,7 +1495,9 @@ def lekplats():
     appar = json.dumps({a: {"namn": v[0]} for a, v in APPAR.items()}, ensure_ascii=False)
     ut = (mall.replace("/*TOKENS*/", tokens)
           .replace("<!--SYMBOLER-->", f"<defs>{defs}</defs>{sym}")
-          .replace("/*APPAR*/", appar))
+          .replace("/*APPAR*/", appar)
+          .replace("/*TOKENS_JSON*/", json.dumps({"farg": T["farg"], "hojd": {k: v for k, v in T["hojd"].items() if k != "anvandning"}},
+                                                  ensure_ascii=False)))
     (ROT / "lekplats" / "index.html").write_text(ut, encoding="utf-8")
 
 

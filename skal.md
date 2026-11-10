@@ -74,7 +74,9 @@ komponenter, i Glöd, Gryning och Grafit:
   designen. Ingen sök, inga snabbinställningar, aviseringar eller
   förhandsvisning.
 
-Tema, skala (75–200 %) och bakgrund gäller båda. Terminalen förstår
+Tema, skala (75–200 %) och bakgrund gäller båda. Temat *Eget* öppnar
+programmet Färger, där sex grundfärger blir ett helt tema som går att
+prova direkt och kopiera som JSON. Terminalen förstår
 `hjälp`, `ls`, `tema`, `skala` och `öppna`.
 
 Sidan byggs av `verktyg/bygg.py` ur `lekplats/mall.html`. Färgerna och
