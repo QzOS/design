@@ -12,6 +12,7 @@
 html, body { height: 100%; }
 body { margin: 0; background: #1B1426; overflow: hidden; font-family: Manrope, Inter, "DejaVu Sans", system-ui, sans-serif; }
 body.tema-gryning { background: #EFE7EE; color-scheme: light; }
+body.tema-grafit { background: #101316; }
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
@@ -28,6 +29,7 @@ svg.a { flex: none; }
 .skarm.enfargad { background: var(--bakgrund); }
 .tema-glod .skarm { --tapet: var(--tapet-glod); }
 .tema-gryning .skarm { --tapet: var(--tapet-gryning); }
+.tema-grafit .skarm { --tapet: var(--tapet-grafit); }
 :focus-visible { outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(2 * var(--u)); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
@@ -416,7 +418,7 @@ input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(1
 <aside class="lek" id="lek" data-oppen="true" aria-label="Lekplatsens reglage">
   <button id="lek-knapp" aria-expanded="true"><svg class="logo"><use href="#logo"/></svg><span>Lekplatsen</span><svg class="g"><use href="#g-chevron-upp"/></svg></button>
   <div class="reg">
-    <div><span class="etik">Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button></div></div>
+    <div><span class="etik">Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button><button data-v="grafit">Grafit</button></div></div>
     <div><span class="etik">Skala</span><div class="segment" data-val="skala"><button data-v="0.75">75</button><button data-v="1">100</button><button data-v="1.25">125</button><button data-v="1.5">150</button><button data-v="2">200</button></div></div>
     <div><span class="etik">Skalet</span><div class="segment" data-val="lage"><button data-v="idag">I dag</button><button data-v="mal">Mål</button></div></div>
     <div class="bara-mal"><span class="etik">Aktivitetsfältet</span><div class="segment" data-val="falt"><button data-v="flytande">Flytande</button><button data-v="dockat">Dockat</button></div></div>
@@ -600,7 +602,7 @@ function dra(e, f) {
 /* ---------- programmens innehåll ---------- */
 const TEXT_LEK = `# Lekplatsen
 
-Skalet ur QzOS/design att prova på, i temana Glöd och Gryning. Växla mellan två lägen i reglagen uppe till höger:
+Skalet ur QzOS/design att prova på, i temana Glöd, Gryning och Grafit. Växla mellan två lägen i reglagen uppe till höger:
 
 - Mål: aktivitetsfältet, Start, snabbinställningarna, aviseringarna och skrivbordet som designen tänker sig dem.
 - I dag: skalet i generic_gdi (examples/shell) som det är i main, med samma färger och komponenter.
@@ -650,11 +652,11 @@ function innehall(f, el) {
       rad(`<span class="p">användare@qzos</span> <span class="v">~</span> $ ${esc(k)}`);
       const [c, ...arg] = k.split(/\s+/);
       if (!c) {}
-      else if (c === "hjälp" || c === "help") rad(`<span class="d">ls · datum · rensa · tema glod|gryning · skala 75|100|125|150|200 · öppna &lt;program&gt;</span>`);
+      else if (c === "hjälp" || c === "help") rad(`<span class="d">ls · datum · rensa · tema glod|gryning|grafit · skala 75|100|125|150|200 · öppna &lt;program&gt;</span>`);
       else if (c === "ls") rad(MAPPAR.Hem.map(([, n]) => esc(n)).join("  "));
       else if (c === "datum" || c === "date") rad(new Date().toLocaleString("sv-SE"));
       else if (c === "rensa" || c === "clear") ut.innerHTML = "";
-      else if (c === "tema" && ["glod", "gryning"].includes(arg[0])) { satt("tema", arg[0]); rad(`tema: ${arg[0]}`); }
+      else if (c === "tema" && ["glod", "gryning", "grafit"].includes(arg[0])) { satt("tema", arg[0]); rad(`tema: ${arg[0]}`); }
       else if (c === "skala" && Number(arg[0]) >= 50 && Number(arg[0]) <= 300) { satt("skala", Number(arg[0]) / 100); rad(`skala: ${arg[0]} %`); }
       else if ((c === "öppna" || c === "open") && arg[0]) { const p = Object.keys(APPAR).find((x) => x.startsWith(arg[0].toLowerCase()) || APPAR[x].namn.toLowerCase().startsWith(arg[0].toLowerCase())); p ? (oppna(p), rad(`startar ${APPAR[p].namn}`)) : rad(`${esc(arg[0])}: hittar inget sådant program`); }
       else rad(`${esc(c)}: kommandot finns inte i lekplatsen`);
@@ -668,7 +670,7 @@ function innehall(f, el) {
     const vx = (k, v, e) => `<button class="vaxel" role="switch" data-binder="${k}=${v}" data-satt="${k}" data-pa="${v}" data-av="${{ falt: "dockat", just: "vanster", start: "kompakt", tapet: "enfargad" }[k]}"><span>${e}</span><i></i></button>`;
     el.innerHTML = `<div class="installningar">
       <section><h3>Utseende</h3>
-        <div class="val"><span>Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button></div></div>
+        <div class="val"><span>Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button><button data-v="grafit">Grafit</button></div></div>
         <div class="val"><span>Skala</span><div class="segment" data-val="skala"><button data-v="1">100 %</button><button data-v="1.25">125 %</button><button data-v="1.5">150 %</button><button data-v="1.75">175 %</button><button data-v="2">200 %</button></div></div>
         ${vx("tapet", "dyner", "Bakgrundsbild")}</section>
       <section><h3>Aktivitetsfältet</h3>${vx("falt", "flytande", "Flytande")}${vx("just", "mitten", "Centrerat")}</section>
@@ -1025,16 +1027,18 @@ function ritaBricka() {
 /* snabbinställningar */
 const RUTOR = [["wifi", "Wi-Fi", "Hemma-5G", true], ["bluetooth", "Bluetooth", "2 enheter", true], ["flygplan", "Flygläge", null, false],
   ["fokus", "Fokus", null, false], ["mane", "Nattljus", "Från 21:00", false], ["tema", "Mörkt tema", null, null]];
+let MORKT = "glod";
 function ritaRutor() {
   $("#rutor").innerHTML = RUTOR.map(([g, n, u, pa], i) => {
-    const p = g === "tema" ? S.tema === "glod" : pa;
-    const under = g === "tema" ? (p ? "Glöd" : "Gryning") : (u && p !== false ? u : p ? "På" : "Av");
+    const p = g === "tema" ? S.tema !== "gryning" : pa;
+    const under = g === "tema" ? ({ glod: "Glöd", grafit: "Grafit" }[S.tema] || "Gryning") : (u && p !== false ? u : p ? "På" : "Av");
     return `<button class="ruta" aria-pressed="${p}" data-i="${i}">${svgG(g === "tema" ? "mane" : g)}<span><b>${n}</b><small>${under}</small></span></button>`;
   }).join("");
 }
 $("#rutor").addEventListener("click", (e) => {
   const b = e.target.closest(".ruta"); if (!b) return; const r = RUTOR[b.dataset.i];
-  if (r[0] === "tema") { satt("tema", S.tema === "glod" ? "gryning" : "glod"); return; }
+  /* mörkt tema på: tillbaka till det mörka tema man hade, annars Glöd */
+  if (r[0] === "tema") { if (S.tema !== "gryning") MORKT = S.tema; satt("tema", S.tema === "gryning" ? MORKT : "gryning"); return; }
   r[3] = !r[3]; if (r[0] === "mane") skarm.style.filter = r[3] ? "sepia(.35) saturate(1.2)" : ""; ritaRutor();
 });
 function reglage(inp) { inp.style.setProperty("--v", ((inp.value - inp.min) / (inp.max - inp.min) * 100) + "%"); }

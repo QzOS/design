@@ -39,13 +39,13 @@ SVG-filerna och lekplatsens standardläge:
 - **Texten går att läsa utan oskärpa**, också över Dyner. Sämsta fallet
   är den ljusaste delen av bilden bakom ytan:
 
-  | Yta utan oskärpa | Text | Glöd | Gryning |
-  |---|---|---|---|
-  | Fältet, `yta` 92 % | `text` | 8,78:1 | 15,39:1 |
-  | | `text-dampad` | 5,20:1 | 5,86:1 |
-  | Paneler, täckande `yta` | `text-dampad` | 6,21:1 | 6,25:1 |
-  | Låsskärmen, `bakgrund` 75 % | `text-dampad` | 4,70:1 | 4,65:1 |
-  | Skrivbordsikonens etikett, direkt på bilden | `text` | 4,54:1 | 7,31:1 |
+  | Yta utan oskärpa | Text | Glöd | Gryning | Grafit |
+  |---|---|---|---|---|
+  | Fältet, `yta` 92 % | `text` | 8,78:1 | 15,39:1 | 10,89:1 |
+  | | `text-dampad` | 5,20:1 | 5,86:1 | 6,45:1 |
+  | Paneler, täckande `yta` | `text-dampad` | 6,21:1 | 6,25:1 | 7,54:1 |
+  | Låsskärmen, `bakgrund` 75 % | `text-dampad` | 4,70:1 | 4,65:1 | 5,37:1 |
+  | Skrivbordsikonens etikett, direkt på bilden | `text` | 4,54:1 | 7,31:1 | 8,55:1 |
 
   Låsskärmens slöja är 75 % utan oskärpa och 35 % med. Etiketterna
   ligger över himlen och de två översta dynerna, och den sämsta av dem
@@ -57,7 +57,7 @@ SVG-filerna och lekplatsens standardläge:
 `lekplats/index.html` är skalet att använda i en webbläsare: fönster som
 öppnas, aktiveras, minimeras, maximeras och dras, och skrivbordsikoner.
 Reglaget **Skalet** växlar mellan två lägen med samma tokens och
-komponenter, i Glöd och i Gryning:
+komponenter, i Glöd, Gryning och Grafit:
 
 - **Mål** är målbilden: det flytande eller dockade fältet med
   programknappar, Start-panelen med sök och alla program,
@@ -101,13 +101,14 @@ Filerna ligger under `svg/<tema>/skal/`.
 | Skrivbordsikon | `skrivbordsikon/` | vila, hover, vald, vald med fokus, byter namn, markeringsruta | `desktop.c`, utom markeringsrutan, i ett rutnät om 75 × 70 bildpunkter |
 | Skalet i dag | `i-dag/` | fältet, Start-menyn | det generic_gdi main ritar med profilen, som referens för lekplatsens läge I dag |
 
-Dessutom, gemensamt för båda temana:
+Dessutom, gemensamt för alla teman:
 
 - `svg/appikoner/`: tolv programikoner för programmen i
   `generic_gdi/examples` och några som skalet behöver plats för, samt
   stora mapp- och filikoner för skrivbordet.
 - `svg/logo.svg`: QzOS-märket, en sol vid horisonten.
-- `svg/bakgrund/`: bakgrundsbilden Dyner i båda temana.
+- `svg/bakgrund/`: bakgrundsbilden Dyner i alla teman. I Grafit är himlen och de bortre
+  dynerna grafit, och solen och de närmaste dynerna korall.
 - `svg/glyfer/`: 71 glyfer, bland dem de skalet använder: ström, wifi,
   volym, batteri, lås, avisering, reglage och andra.
 
