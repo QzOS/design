@@ -880,8 +880,8 @@ def ikonetikett(t, cx, y, s, farg=None, bredd=80):
 
 
 def skrivbordsikon(t, x, y, lage, etikett="Projekt", ikon="mapp-stor"):
-    """en ikon på skrivbordet i en cell om 88 x 100 u"""
-    w, h = 88, 100
+    """en ikon på skrivbordet i en cell om ikoncell-b x ikoncell-h u"""
+    w, h = M["ikoncell-b"], M["ikoncell-h"]
     s, defs = "", ""
     if lage == "hover":
         s += rekt(x, y, w, h, R["yta"], t["text"], extra=' fill-opacity=".10"')
