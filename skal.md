@@ -1,28 +1,81 @@
 # Skalet: färdriktning
 
-Skalet i generic_gdi (`examples/shell/`) följer i dag Shell95-skissen:
-aktivitetsfält längs en kant, Start-meny med banderoll och skrivbord med
-ikoner ur `~/Desktop`. Mekaniken finns: en knapp per fönster genom
-skalprotokollet, programstart, senaste dokument, Kör, Avsluta, ikoner som
-markeras, öppnas, flyttas och döps om, och klockan.
+Det här dokumentet är riktningen för hur skalet ska se ut och kännas.
+Formen går mot ett modernt skrivbord med ett flytande fält och en
+Start-panel. Den ska vara QzOS egen, inte en kopia av något annat system.
+Det är brainstorming: komponenterna finns för att prova, och lekplatsen
+för att se dem tillsammans.
 
-Det här dokumentet är riktningen för hur skalet ska se ut och kännas,
-inte hur det ser ut i dag. Det är brainstorming: komponenterna finns för
-att prova, och lekplatsen för att se dem tillsammans. Formen går mot ett
-modernt skrivbord med ett flytande fält och en Start-panel. Den ska vara
-QzOS egen, inte en kopia av något annat system.
+Skalet i generic_gdi (`examples/shell/`) är i dag Shell95-skissen,
+ritad efter designprofilen (generic_gdi #481): ett dockat fält med en
+textknapp per fönster och accentmarkören under den aktiva, en Start-meny
+med accentbanderoll och solen, skrivbordsikoner ur `~/Desktop` och
+klockan. Lekplatsen visar båda: läget **I dag** är det skalet, läget
+**Mål** är målbilden. Avsnittet [Vad mekaniken behöver](#vad-mekaniken-behöver)
+säger vad som finns i generic_gdi main och vad som saknas.
 
 ![Skalet i Glöd](oversikt/skal-glod.png)
+
+## Referensen
+
+Målet ska gå att nå med mekanik som finns eller kan byggas utan att
+stilen går förlorad. Därför gäller tre saker för bilderna i `oversikt/`,
+SVG-filerna och lekplatsens standardläge:
+
+- **Oskärpa är ett val, inte målet.** Utan oskärpa är fältet
+  halvgenomskinligt (`yta` 92 % flytande, 94 % dockat) och panelerna
+  täckande, eftersom texten i fönstren bakom en panel annars skymtar
+  igenom. Oskärpa bakom dem får läggas till där kompositören klarar
+  det, och då får panelerna vara 96 %, men inget får hänga på den. I
+  lekplatsen är den ett reglage som är av från början.
+- **Brickan visar bara verklig status.** En statussymbol ritas bara när
+  en tjänst har något att visa: Wi-Fi när det finns ett trådlöst nät,
+  batteriet när det finns ett batteri. Finns ingen symbol visar knappen
+  till snabbinställningarna glyfen `reglage`. Referensbilden har
+  brickan med klockan och aviseringarna och inga symboler, eftersom
+  ingen tjänst rapporterar något än. `bricka/alla-symboler` och
+  lekplatsens reglage *Alla* visar hur det blir med wifi, volym och
+  batteri.
+- **Texten går att läsa utan oskärpa**, också över Dyner. Sämsta fallet
+  är den ljusaste delen av bilden bakom ytan:
+
+  | Yta utan oskärpa | Text | Glöd | Gryning |
+  |---|---|---|---|
+  | Fältet, `yta` 92 % | `text` | 8,78:1 | 15,39:1 |
+  | | `text-dampad` | 5,20:1 | 5,86:1 |
+  | Paneler, täckande `yta` | `text-dampad` | 6,21:1 | 6,25:1 |
+  | Låsskärmen, `bakgrund` 75 % | `text-dampad` | 4,70:1 | 4,65:1 |
+  | Skrivbordsikonens etikett, direkt på bilden | `text` | 4,54:1 | 7,31:1 |
+
+  Låsskärmens slöja är 75 % utan oskärpa och 35 % med. Etiketterna
+  ligger över himlen och de två översta dynerna, och den sämsta av dem
+  ger siffran ovan; skuggan bakom texten är en marginal, inte det som
+  bär kontrasten.
 
 ## Lekplatsen
 
 `lekplats/index.html` är skalet att använda i en webbläsare: fönster som
-öppnas, aktiveras, minimeras, maximeras och dras, Start med sök och alla
-program, snabbinställningar, aviseringar, förhandsvisning av fönster,
-strömmenyn med låsskärm, och skrivbordsikoner. Reglagen byter tema,
-skala (75–200 %), fältets form och placering, Start-panelens variant
-och bakgrund. Terminalen förstår `hjälp`, `ls`, `tema`, `skala` och
-`öppna`.
+öppnas, aktiveras, minimeras, maximeras och dras, och skrivbordsikoner.
+Reglaget **Skalet** växlar mellan två lägen med samma tokens och
+komponenter, i Glöd och i Gryning:
+
+- **Mål** är målbilden: det flytande eller dockade fältet med
+  programknappar, Start-panelen med sök och alla program,
+  snabbinställningarna, aviseringarna, förhandsvisningen av fönster
+  och strömmenyn med låsskärm. Reglagen byter fältets form och
+  placering, Start-panelens variant, brickans symboler (*Med källa*
+  eller *Alla*) och oskärpan (av eller på).
+- **I dag** är skalet i generic_gdi main: ett dockat fält 40 u högt med
+  Start, en textknapp per fönster utan programikon och bara klockan i
+  brickan. Start är en meny med accentbanderoll: Program, Dokument,
+  Inställningar, Hjälp, Kör och Avsluta. Program visar bara programmen
+  som finns i `generic_gdi/examples`; Inställningar har Aktivitetsfältet
+  och profilerna, där Classic och Flat är gråa eftersom de inte finns i
+  designen. Ingen sök, inga snabbinställningar, aviseringar eller
+  förhandsvisning.
+
+Tema, skala (75–200 %) och bakgrund gäller båda. Terminalen förstår
+`hjälp`, `ls`, `tema`, `skala` och `öppna`.
 
 Sidan byggs av `verktyg/bygg.py` ur `lekplats/mall.html`. Färgerna och
 måtten kommer ur `tokens/tokens.json`, och glyferna, programikonerna och
@@ -35,17 +88,18 @@ Filerna ligger under `svg/<tema>/skal/`.
 
 | Komponent | Filer | Lägen | Finns i skalet i dag |
 |---|---|---|---|
-| Aktivitetsfältet | `falt/` | flytande, dockat | `taskbar.c`, dockat längs en kant |
-| Programknapp | `programknapp/` | vila, hover, tryck, öppen, aktiv, uppmärksamhet, fokus | en knapp per fönster, med text i stället för ikon |
+| Aktivitetsfältet | `falt/` | flytande, dockat | dockat längs en valfri kant, platt på `COL_WINDOW` med profilen (`i-dag/falt`) |
+| Programknapp | `programknapp/` | vila, hover, tryck, öppen, aktiv, uppmärksamhet, fokus | en textknapp per fönster, accentmarkören under den aktiva; ingen ikon, ingen uppmärksamhet |
 | Fler program | `overflode/` | vila, öppen, uppmärksamhet | två pilknappar som rullar raderna |
-| Start-knapp | `startknapp/` | vila, hover, öppen | Start-knappen, nedtryckt när menyn är uppe |
-| Bricka och klocka | `bricka/` | vila, hover, öppen | bara klockan |
-| Start-panelen | `startpanel/` | kompakt, med översikt, sök | Start-menyn som ägarritad popup |
-| Strömmenyn | `strommeny/` | | Avsluta |
+| Start-knapp | `startknapp/` | vila, hover, öppen | solen och texten Start, nedtryckt när menyn är uppe |
+| Bricka och klocka | `bricka/` | vila, hover, öppen, alla symboler | bara klockan, HH:MM eller med sekunder |
+| Start-panelen | `startpanel/` | kompakt, med översikt, sök | en ägarritad meny med accentbanderoll och solen (`i-dag/startmeny`) |
+| Strömmenyn | `strommeny/` | | Avsluta, som dialog |
 | Snabbpanelen | `snabbpanel/` | | nej |
 | Avisering | `avisering/` | | nej |
 | Förhandsvisning | `forhandsvisning/` | | nej |
-| Skrivbordsikon | `skrivbordsikon/` | vila, hover, vald, vald med fokus, byter namn, markeringsruta | `desktop.c`, utom markeringsrutan |
+| Skrivbordsikon | `skrivbordsikon/` | vila, hover, vald, vald med fokus, byter namn, markeringsruta | `desktop.c`, utom markeringsrutan, i ett rutnät om 75 × 70 bildpunkter |
+| Skalet i dag | `i-dag/` | fältet, Start-menyn | det generic_gdi main ritar med profilen, som referens för lekplatsens läge I dag |
 
 Dessutom, gemensamt för båda temana:
 
@@ -54,8 +108,8 @@ Dessutom, gemensamt för båda temana:
   stora mapp- och filikoner för skrivbordet.
 - `svg/logo.svg`: QzOS-märket, en sol vid horisonten.
 - `svg/bakgrund/`: bakgrundsbilden Dyner i båda temana.
-- 31 nya glyfer i `svg/glyfer/` för skalet: ström, wifi, volym, batteri,
-  lås, avisering och andra.
+- `svg/glyfer/`: 71 glyfer, bland dem de skalet använder: ström, wifi,
+  volym, batteri, lås, avisering, reglage och andra.
 
 ## Mått
 
@@ -65,13 +119,17 @@ Dessutom, gemensamt för båda temana:
 | Fältets avstånd från kanten, flytande | 8 |
 | Knappcell i fältet | 44, ikonen 32 |
 | Markören under en knapp | 6 × 3 öppen, 16 × 3 aktiv |
+| Brickans knapp | 20 + 24 per symbol; utan symboler en knappcell, 44 |
 | Start-panelen | 640 bred, 880 med översikt |
 | Snabbpanelen och aviseringarna | 360 breda |
 | Skrivbordsikon | cell 88 × 100, ikon 48, etikett högst två rader |
 | Programikon | 48, hörnradie 27 % |
+| Fältet i dag | 40 hög: knapphöjden `kontroll-h` 32 och 4 på var sida; uppgiftsknappar högst 160 breda |
+| Start-menyn i dag | banderollen 28, objekten `menyobjekt-h` 30 |
 
 Arbetsytan (`ui_setworkarea`) är skärmen utom fältet och dess avstånd:
-72 u nedtill för det flytande fältet, 56 u för det dockade.
+72 u nedtill för det flytande fältet, 56 u för det dockade och 40 u för
+fältet i dag.
 
 ## Beteende i gränsfallen
 
@@ -131,8 +189,9 @@ en skärm om 1920 bildpunkter 960 u bred.
 Tangenter:
 
 - **Ctrl+Esc** öppnar och stänger Start, som i NT. **Super** ensam gör
-  samma sak.
+  samma sak. I läget I dag öppnar de Start-menyn.
 - **Pil upp och ned, Home och End** flyttar mellan objekten i en meny.
+  **Pil höger** öppnar en undermeny och **pil vänster** stänger den.
 
 I generic_gdi behöver punkt 1 och 2 regeln för att skalet får ta fokus
 (F3 i `docs/shell.md`), och punkt 5 att libui minns fokus per fönster
@@ -140,13 +199,40 @@ när det inaktiveras.
 
 ## Vad mekaniken behöver
 
-Det mesta av beteendet finns. Det här saknas för att skalet ska se ut så
-här. Inget av det byggs nu.
+Läget mot generic_gdi main (d2938db). Det som är klart behöver inget
+mer för målbilden; det som saknas byggs inte nu.
+
+**Klart i main:**
+
+| Mekanik | Var |
+|---|---|
+| Alfa och skuggor: konstant alfa per fönster, `WNDX_LAYERED`, skuggor som servern ritar (`WS_SYS_SHADOW`) | generic_gdi #450, stängd |
+| Rundade hörn: servern skär toppfönstrens hörn till en radie och ritar kantlinjen längs dem | `include/ws/proto.h`, temalagret #460 |
+| Profilerna Glöd och Gryning, genererade ur `tokens/tokens.json` (`systemfarger` och `profilfarger`) | `tools/gen-profiles.py`, `profiles/` |
+| Kontrollerna ritade efter profilen | `src/ui/theme.c`, #460 |
+| Skalet efter profilen: platt fält på `COL_WINDOW`, accentmarkör under den aktiva uppgiften, accentbanderoll och solen i Start, menyrader minst `MET_MENUITEM_H` | #481 |
+| Knapphöjden ur profilen (`MET_CTL_H`), så att fältet blir 40 u | `examples/shell/draw.c` |
+| Ikonrutnätets cell som profilnycklar, `icon.spacing.width` och `.height` | #479 |
+| Hover: `MSG_MOUSELEAVE` | `include/gdi/ui.h` |
+| Bildrutor med verklig presentationstid, `WS_FRAME` | #435, stängd |
+
+**Delvis:**
+
+- **Skalning.** Profilernas mått är nominella vid 96 dpi och skalas
+  med skärmen, men pixelkontraktet och DPI per fönster är kvar (#439,
+  öppen).
+- **Skrivbordets rutnät.** Nycklarna finns (#479), men `desktop.c` har
+  kvar `CELL_W` 75 och `CELL_H` 70 bildpunkter i stället för cellen
+  88 × 100 u.
+- **Animering.** `WS_FRAME` finns, men panelerna glider inte in på
+  `rorelse.medel` (200 ms); skalet har inga övergångar än.
+
+**Saknas:**
 
 1. **Fönsterikoner i skalprotokollet.** Programknapparna visar ikoner,
-   och protokollet bär inga i dag. Knappar för fästa program behöver
-   också en lista i skalets inställningar, bredvid genvägarna under
-   `shell/programs`.
+   och protokollet bär inga i dag (`docs/shell.md`). Knappar för fästa
+   program behöver också en lista i skalets inställningar, bredvid
+   genvägarna under `shell/programs`.
 2. **Uppmärksamhet.** Ett program ska kunna be om uppmärksamhet,
    motsvarande `FlashWindow`. Knappen får då en bärnstensfärgad markör.
 3. **Miniatyrer.** Förhandsvisningen behöver fönstrets bild från
@@ -158,13 +244,11 @@ här. Inget av det byggs nu.
    inställningar, gärna genom libshells namnrymd.
 6. **Meddelandefältet.** Snabbpanelen och aviseringarna kräver det lilla
    protokoll som är uppskjutet tills en klient behöver det, och tjänster
-   för nätverk, ljud och ström som rutorna kan styra.
-7. **Alfa och oskärpa.** Fältet och panelerna är halvgenomskinliga med
-   oskärpa bakom. Det kräver alfa i kompositören, område 3 i #393.
-   Utan det ritas de täckande, vilket också ser rätt ut.
-8. **Skalning och animering.** Allt är i u och följer `mal.md`.
-   Panelerna glider in på `rorelse.medel` (200 ms), vilket kräver
-   animering i takt med `WS_FRAME`.
+   för nätverk, ljud och ström som rutorna kan styra och som ger brickan
+   dess symboler.
+7. **Oskärpa** bakom fältet och panelerna. Ingår inte i målet:
+   referensen är genomskinlig utan oskärpa eller täckande. Kompositören
+   har bara skuggornas oskärpa, och det räcker.
 
 ## Öppna frågor
 

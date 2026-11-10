@@ -196,15 +196,21 @@ och en avstängd kontrolls fyllning (`yta-inaktiv`). I Classic har de
 samma värden som `COL_BTNFACE`.
 
 Verktygsknappen har ingen fyllning i vila. Vid hover och tryck får den
-`yta-hover` och `yta-tryck`, och när den är vald `markering` med glyfen i
-`accent-text`. Ingen av dem är en systemfärg, så de står också i
-`profilfarger`. I Classic ritas verktygsknappen med NT:s kanter och har
-inga egna färger.
+`yta-hover` och `yta-tryck`. Vald får den `markering`, en ram på 1 u i
+`kant-kontroll` och glyf och text i `markering-text`. Fyllningen har för
+lite kontrast mot ytan (1,38:1 i Glöd, 1,17:1 i Gryning) för att bära
+läget ensam, så ramen visar det (princip 4); den har 3,14:1 och 3,7:1.
+Glyf och text delar färg, och `markering-text` klarar 4,5:1 mot
+`markering` i båda temana. Ingen av färgerna är en systemfärg, så de
+står i `profilfarger` (`toolbar.fill.*`, `toolbar.text.checked`,
+`toolbar.frame.checked`). I Classic ritas verktygsknappen med NT:s
+kanter och har inga egna färger.
 
 ## Krav på mekaniken
 
-Det här behöver finnas i generic_gdi innan målet kan nås. Inget av det
-görs nu. Ordningen följer beroendena i #393.
+Det här behöver finnas i generic_gdi innan målet kan nås. Ordningen
+följer beroendena i #393. Där en punkt redan finns i main står det vid
+punkten; skalets punkter står i `skal.md`.
 
 1. **Logiska koordinater och skala per skärm.** libui räknar i u, och
    ett meddelande motsvarande `WM_DPICHANGED` ritar om när skalan byts.
@@ -214,7 +220,8 @@ görs nu. Ordningen följer beroendena i #393.
    som tar roller och skala. Ersätter ritningen i `framectl.c`,
    `defproc.c`, `menu.c` och `ctl/`.
 3. **Hover.** Kontrollerna behöver få veta när muspekaren lämnar dem,
-   motsvarande `WM_MOUSELEAVE`. NT 3.1 har inget hoverläge.
+   motsvarande `WM_MOUSELEAVE`. NT 3.1 har inget hoverläge. Finns i
+   main: `MSG_MOUSELEAVE`, som NT 4.0:s `TrackMouseEvent`.
 4. **Fokus från tangentbordet.** Ett sätt att veta om fokus kom från
    tangentbordet, motsvarande `WM_UPDATEUISTATE`.
 5. **TrueType i gränssnittet.** Manrope och JetBrains Mono via libtt,
@@ -222,11 +229,14 @@ görs nu. Ordningen följer beroendena i #393.
    bitmappsfonterna.
 6. **Alfa hela vägen** (område 3). Skuggor, rundade fönsterhörn och
    genomskinliga popuper kräver förmultiplicerad alfa från libgdi till
-   kompositören. Tills dess ritas skuggorna inte och fönsterhörnen är
-   raka.
+   kompositören. Finns i main (#450): konstant alfa per fönster,
+   `WNDX_LAYERED`, skuggor som servern ritar och hörn som servern skär
+   till en radie. Oskärpa bakom ytor ingår inte i målet.
 7. **Animering i takt med skärmen** (område 4). Övergångar mellan lägen
    tar `rorelse.kort` (120 ms), popuper `rorelse.medel` (200 ms), och
-   följer `WS_FRAME` i stället för timers.
+   följer `WS_FRAME` i stället för timers. `WS_FRAME` med verklig
+   presentationstid finns i main (#435); övergångarna använder den inte
+   än.
 
 ## Utanför det här
 

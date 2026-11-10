@@ -79,11 +79,11 @@ svg.a { flex: none; }
 
 /* ---- aktivitetsfältet ---- */
 .falt { position: absolute; z-index: 5000; height: calc(56 * var(--u)); display: flex; align-items: center; gap: calc(4 * var(--u)); padding: 0 calc(6 * var(--u));
-  background: color-mix(in srgb, var(--yta) 90%, transparent); backdrop-filter: blur(calc(24 * var(--u))); -webkit-backdrop-filter: blur(calc(24 * var(--u)));
+  background: color-mix(in srgb, var(--yta) 92%, transparent);
   border: 1px solid var(--kant); border-radius: var(--radie-panel); box-shadow: var(--hojd-2);
   bottom: calc(8 * var(--u)); left: 50%; transform: translateX(-50%); transition: left var(--rorelse-medel), transform var(--rorelse-medel); }
 .falt.vanster { left: calc(8 * var(--u)); transform: none; }
-.falt.dockat { left: 0; right: 0; bottom: 0; transform: none; border-radius: 0; border-width: 1px 0 0 0; display: grid; grid-template-columns: 1fr auto 1fr; padding: 0 calc(12 * var(--u)); }
+.falt.dockat { background: color-mix(in srgb, var(--yta) 94%, transparent); left: 0; right: 0; bottom: 0; transform: none; border-radius: 0; border-width: 1px 0 0 0; display: grid; grid-template-columns: 1fr auto 1fr; padding: 0 calc(12 * var(--u)); }
 .falt.dockat.vanster { grid-template-columns: 0 auto 1fr; }
 .falt .tom { display: none; }
 .falt.dockat .tom { display: block; }
@@ -103,7 +103,8 @@ svg.a { flex: none; }
 .cell.uppmarksamhet { background: color-mix(in srgb, var(--varme) 28%, transparent); }
 .cell.uppmarksamhet .mark { width: calc(16 * var(--u)); margin-left: calc(-8 * var(--u)); background: var(--varme); opacity: 1; animation: puls 1.2s ease-in-out infinite; }
 @keyframes puls { 50% { opacity: .35; } }
-.bricka { height: calc(44 * var(--u)); padding: 0 calc(10 * var(--u)); border-radius: var(--radie-yta); display: flex; align-items: center; gap: calc(8 * var(--u)); }
+.bricka { height: calc(44 * var(--u)); min-width: calc(44 * var(--u)); justify-content: center; padding: 0 calc(10 * var(--u)); border-radius: var(--radie-yta); display: flex; align-items: center; gap: calc(8 * var(--u)); }
+.bricka > svg.g:only-child { width: calc(20 * var(--u)); height: calc(20 * var(--u)); }
 .bricka:hover { background: var(--yta-hover); } .bricka.oppen-panel { background: var(--yta-tryck); }
 .klocka { height: calc(44 * var(--u)); padding: 0 calc(8 * var(--u)); white-space: nowrap; border-radius: var(--radie-yta); display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1.2; font-variant-numeric: tabular-nums; }
 .klocka:hover { background: var(--yta-hover); }
@@ -111,7 +112,7 @@ svg.a { flex: none; }
 .prick { position: absolute; top: calc(9 * var(--u)); right: calc(9 * var(--u)); width: calc(8 * var(--u)); height: calc(8 * var(--u)); border-radius: 50%; background: var(--varme); box-shadow: 0 0 0 calc(2 * var(--u)) var(--yta); }
 
 /* ---- paneler ---- */
-.panel { position: absolute; z-index: 6000; background: color-mix(in srgb, var(--yta) 96%, transparent); backdrop-filter: blur(calc(24 * var(--u))); -webkit-backdrop-filter: blur(calc(24 * var(--u)));
+.panel { position: absolute; z-index: 6000; background: var(--yta);
   border: 1px solid var(--kant); border-radius: var(--radie-panel); box-shadow: var(--hojd-3); max-width: calc(100% - 16px);
   transition: opacity var(--rorelse-medel), transform var(--rorelse-medel) cubic-bezier(.2, 0, 0, 1); }
 .panel.dold { opacity: 0; transform: translateY(calc(16 * var(--u))); pointer-events: none; visibility: hidden; }
@@ -251,7 +252,8 @@ input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(1
 .overlagg { position: absolute; inset: 0; z-index: 9000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(8 * var(--u)); transition: opacity var(--rorelse-lang); }
 .overlagg.dold { opacity: 0; pointer-events: none; }
 .las { background: var(--tapet) center / cover no-repeat, var(--bakgrund); }
-.las::before { content: ""; position: absolute; inset: 0; backdrop-filter: blur(calc(18 * var(--u))); -webkit-backdrop-filter: blur(calc(18 * var(--u))); background: color-mix(in srgb, var(--bakgrund) 35%, transparent); }
+.las::before { content: ""; position: absolute; inset: 0; background: color-mix(in srgb, var(--bakgrund) 75%, transparent); }
+.oskarpa .las::before { backdrop-filter: blur(calc(18 * var(--u))); -webkit-backdrop-filter: blur(calc(18 * var(--u))); background: color-mix(in srgb, var(--bakgrund) 35%, transparent); }
 .las > * { position: relative; }
 .las .tid { font-size: calc(96 * var(--u)); font-weight: 800; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
 .las .dat { font-size: calc(20 * var(--u)); font-weight: 600; text-transform: capitalize; }
@@ -260,8 +262,40 @@ input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(1
 .svart .logo { width: calc(72 * var(--u)); height: calc(72 * var(--u)); }
 .dimma { position: absolute; inset: 0; z-index: 8500; background: #000; pointer-events: none; opacity: 0; }
 
+/* ---- oskärpa: ett val, inte en del av målet ----
+   Referensen är genomskinlig utan oskärpa. Texten ska gå att läsa ändå, också över Dyner. */
+.oskarpa .falt, .oskarpa .panel { backdrop-filter: blur(calc(24 * var(--u))); -webkit-backdrop-filter: blur(calc(24 * var(--u))); }
+/* utan oskärpa skymtar texten i fönstren bakom igenom, så panelerna är täckande; med den 96 % */
+.oskarpa .panel { background: color-mix(in srgb, var(--yta) 96%, transparent); }
+
+/* ---- skalet i dag: generic_gdi examples/shell, med samma tokens ---- */
+.idag { position: absolute; z-index: 5000; left: 0; right: 0; bottom: 0; height: calc(40 * var(--u)); display: none; align-items: center; gap: calc(4 * var(--u)); padding: 0 calc(4 * var(--u));
+  background: var(--yta); border-top: 1px solid var(--kant); }
+.idag-lage .idag { display: flex; }
+.idag-lage .falt, .idag-lage .panel, .idag-lage .toast, .idag-lage .forhand { display: none; }
+.idag .tk { position: relative; height: var(--matt-kontroll-h); border-radius: var(--radie-kontroll); padding: 0 calc(10 * var(--u)); display: flex; align-items: center; gap: calc(6 * var(--u)); font-size: calc(13 * var(--u)); white-space: nowrap; flex: none; }
+.idag .tk:hover { background: var(--yta-hover); }
+.idag .tk:active, .idag .tk.oppen-panel { background: var(--yta-tryck); }
+.idag #idagstart { font-size: calc(14 * var(--u)); font-weight: 700; }
+.idag #idagstart .logo { width: calc(16 * var(--u)); height: calc(16 * var(--u)); }
+.idag .uppgifter { flex: 1; min-width: 0; display: flex; gap: calc(4 * var(--u)); overflow: hidden; }
+.idag .uppg { width: calc(160 * var(--u)); flex: 0 1 auto; min-width: calc(48 * var(--u)); }
+.idag .uppg span { overflow: hidden; text-overflow: ellipsis; }
+.idag .uppg.aktiv { background: var(--knapp); font-weight: 700; }
+.idag .uppg.aktiv::after { content: ""; position: absolute; left: 50%; bottom: 0; width: calc(16 * var(--u)); height: calc(3 * var(--u)); margin-left: calc(-8 * var(--u)); border-radius: calc(1.5 * var(--u)); background: var(--accent); }
+.idag .tid { padding: 0 calc(8 * var(--u)); font-size: calc(13 * var(--u)); font-weight: 600; font-variant-numeric: tabular-nums; }
+.startmeny { flex-direction: row; padding: 0; overflow: hidden; }
+.startmeny .banderoll { width: calc(28 * var(--u)); flex: none; background: var(--accent); display: flex; align-items: flex-end; justify-content: center; padding-bottom: calc(10 * var(--u)); }
+.startmeny .banderoll .logo { width: calc(16 * var(--u)); height: calc(16 * var(--u)); }
+.startmeny .objekt { flex: 1; display: flex; flex-direction: column; padding: var(--matt-meny-utfyllnad); }
+.meny button .pil { margin-left: auto; }
+.meny button[aria-disabled="true"] { color: var(--text-inaktiv); pointer-events: none; }
+.meny button[aria-expanded="true"] { background: var(--accent); color: var(--pa-accent); }
+.meny button[aria-expanded="true"] svg.g { color: var(--pa-accent); }
+.meny button .bock { width: calc(16 * var(--u)); flex: none; }
+
 /* ---- lekplatsens reglage ---- */
-.lek { position: fixed; z-index: 9500; top: 12px; right: 12px; width: 268px; --u: 1px; background: color-mix(in srgb, var(--yta) 94%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+.lek { position: fixed; z-index: 9500; top: 12px; right: 12px; width: 268px; --u: 1px; background: var(--yta);
   border: 1px solid var(--kant); border-radius: 16px; box-shadow: var(--hojd-2); color: var(--text); font-size: 13px; overflow: hidden; }
 .lek > button { width: 100%; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 14px; font-weight: 800; }
 .lek > button .logo { width: 20px; height: 20px; }
@@ -317,7 +351,7 @@ input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(1
     <div class="rutor" id="rutor"></div>
     <div class="reglage"><svg class="g" aria-hidden="true"><use href="#g-sol"/></svg><input type="range" id="ljus" min="30" max="100" value="100" aria-label="Ljusstyrka"></div>
     <div class="reglage"><svg class="g" aria-hidden="true"><use href="#g-volym"/></svg><input type="range" id="volym" min="0" max="100" value="45" aria-label="Volym"></div>
-    <div class="fot2"><svg class="g" aria-hidden="true"><use href="#g-batteri"/></svg><span>82 % · 5 h 10 min</span>
+    <div class="fot2"><span><span id="batterirad" hidden><svg class="g" aria-hidden="true" style="vertical-align:middle"><use href="#g-batteri"/></svg> 82 % · 5 h 10 min</span></span>
       <button class="ikonknapp" id="snabb-strom" aria-label="Ström"><svg class="g"><use href="#g-strom"/></svg></button>
       <button class="ikonknapp" data-oppna="installningar" aria-label="Inställningar"><svg class="g"><use href="#g-reglage"/></svg></button></div>
   </section>
@@ -349,12 +383,30 @@ input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(1
     </div>
     <div class="grupp bricka-grupp">
       <span class="sep"></span>
-      <button class="bricka" id="bricka" aria-label="Snabbinställningar: Wi-Fi, volym, batteri">
-        <svg class="g"><use href="#g-wifi"/></svg><svg class="g"><use href="#g-volym"/></svg><svg class="g"><use href="#g-batteri"/></svg></button>
+      <button class="bricka" id="bricka" aria-label="Snabbinställningar"><svg class="g"><use href="#g-reglage"/></svg></button>
       <button class="klocka" id="klocka" aria-label="Kalender"><b id="tid">--:--</b><small id="datum"></small></button>
       <button class="cell" id="klockknapp" aria-label="Aviseringar"><svg class="g"><use href="#g-avisering"/></svg><span class="prick" id="prick" hidden></span></button>
     </div>
   </nav>
+
+  <nav class="idag" id="idag" aria-label="Aktivitetsfältet, i dag">
+    <button class="tk" id="idagstart" aria-haspopup="menu" aria-expanded="false"><svg class="logo"><use href="#logo"/></svg>Start</button>
+    <div class="uppgifter" id="uppgifter"></div>
+    <span class="tid" id="idag-tid">--:--</span>
+  </nav>
+  <div class="meny startmeny" id="idagmeny" role="menu" aria-label="Start" hidden>
+    <span class="banderoll" aria-hidden="true"><svg class="logo"><use href="#logo-vit"/></svg></span>
+    <div class="objekt">
+      <button role="menuitem" data-under="program" aria-haspopup="menu" aria-expanded="false"><svg class="g"><use href="#g-rutnat"/></svg>Program<svg class="g pil"><use href="#g-chevron-hoger"/></svg></button>
+      <button role="menuitem" data-under="dokument" aria-haspopup="menu" aria-expanded="false"><svg class="g"><use href="#g-fil"/></svg>Dokument<svg class="g pil"><use href="#g-chevron-hoger"/></svg></button>
+      <button role="menuitem" data-under="installningar" aria-haspopup="menu" aria-expanded="false"><svg class="g"><use href="#g-reglage"/></svg>Inställningar<svg class="g pil"><use href="#g-chevron-hoger"/></svg></button>
+      <button role="menuitem" data-k="hjalp"><svg class="g"><use href="#g-hjalp"/></svg>Hjälp</button>
+      <button role="menuitem" data-k="kor"><svg class="g"><use href="#g-kor"/></svg>Kör …</button>
+      <hr>
+      <button role="menuitem" data-k="avsluta"><svg class="g"><use href="#g-strom"/></svg>Avsluta …</button>
+    </div>
+  </div>
+  <div class="meny" id="idagunder" role="menu" hidden></div>
 
   <div class="overlagg las dold" id="las" tabindex="-1"><div class="tid" id="las-tid"></div><div class="dat" id="las-dat"></div><div class="tips">Klicka eller tryck på en tangent för att låsa upp</div></div>
   <div class="overlagg svart dold" id="svart"><svg class="logo"><use href="#logo"/></svg><div id="svart-text"></div></div>
@@ -366,11 +418,14 @@ input[type=range]::-moz-range-thumb { width: calc(18 * var(--u)); height: calc(1
   <div class="reg">
     <div><span class="etik">Tema</span><div class="segment" data-val="tema"><button data-v="glod">Glöd</button><button data-v="gryning">Gryning</button></div></div>
     <div><span class="etik">Skala</span><div class="segment" data-val="skala"><button data-v="0.75">75</button><button data-v="1">100</button><button data-v="1.25">125</button><button data-v="1.5">150</button><button data-v="2">200</button></div></div>
-    <div><span class="etik">Aktivitetsfältet</span><div class="segment" data-val="falt"><button data-v="flytande">Flytande</button><button data-v="dockat">Dockat</button></div></div>
-    <div><span class="etik">Placering</span><div class="segment" data-val="just"><button data-v="mitten">Mitten</button><button data-v="vanster">Vänster</button></div></div>
-    <div><span class="etik">Start</span><div class="segment" data-val="start"><button data-v="kompakt">Kompakt</button><button data-v="oversikt">Med översikt</button></div></div>
+    <div><span class="etik">Skalet</span><div class="segment" data-val="lage"><button data-v="idag">I dag</button><button data-v="mal">Mål</button></div></div>
+    <div class="bara-mal"><span class="etik">Aktivitetsfältet</span><div class="segment" data-val="falt"><button data-v="flytande">Flytande</button><button data-v="dockat">Dockat</button></div></div>
+    <div class="bara-mal"><span class="etik">Placering</span><div class="segment" data-val="just"><button data-v="mitten">Mitten</button><button data-v="vanster">Vänster</button></div></div>
+    <div class="bara-mal"><span class="etik">Start</span><div class="segment" data-val="start"><button data-v="kompakt">Kompakt</button><button data-v="oversikt">Med översikt</button></div></div>
+    <div class="bara-mal"><span class="etik">Brickans symboler</span><div class="segment" data-val="symboler"><button data-v="kalla">Med källa</button><button data-v="alla">Alla</button></div></div>
+    <div class="bara-mal"><span class="etik">Oskärpa</span><div class="segment" data-val="oskarpa"><button data-v="av">Av</button><button data-v="pa">På</button></div></div>
     <div><span class="etik">Bakgrund</span><div class="segment" data-val="tapet"><button data-v="dyner">Dyner</button><button data-v="enfargad">Enfärgad</button></div></div>
-    <p>Klicka på ikonerna, öppna Start, dra fönster i titelraden. Komponenterna och färgerna är de i QzOS/design.</p>
+    <p id="lek-text"></p>
   </div>
 </aside>
 
@@ -392,7 +447,8 @@ const svgG = (g) => `<svg class="g" aria-hidden="true"><use href="#g-${g}"/></sv
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 /* ---------- tillstånd ---------- */
-const S = { tema: null, skala: 1, falt: "flytande", just: "mitten", start: "kompakt", tapet: "dyner" };
+/* lage: mal är målbilden, idag skalet i generic_gdi main; oskärpa och alla brickans symboler är val, inte målet */
+const S = { tema: null, skala: 1, lage: "mal", falt: "flytande", just: "mitten", start: "kompakt", tapet: "dyner", oskarpa: "av", symboler: "kalla" };
 let harSparat = false;
 try { const s = localStorage.getItem("qzos-lek"); if (s) { Object.assign(S, JSON.parse(s)); harSparat = true; } } catch (e) {}
 if (!S.tema) {
@@ -409,6 +465,12 @@ function tillampa() {
   skarm.classList.toggle("dockat-lage", S.falt === "dockat");
   skarm.classList.toggle("flytande-lage", S.falt !== "dockat");
   skarm.classList.toggle("vanster-lage", S.just === "vanster");
+  skarm.classList.toggle("idag-lage", S.lage === "idag");
+  skarm.classList.toggle("oskarpa", S.oskarpa === "pa");
+  $$(".lek .bara-mal").forEach((r) => { r.hidden = S.lage === "idag"; });
+  $("#lek-text").textContent = S.lage === "idag"
+    ? "Skalet i generic_gdi main (examples/shell): en textknapp per fönster, Start som meny och bara klockan i brickan. Samma tokens och komponenter som målet."
+    : "Målbilden. Klicka på ikonerna, öppna Start, dra fönster i titelraden. Komponenterna och färgerna är de i QzOS/design.";
   const f = $("#falt");
   f.classList.toggle("dockat", S.falt === "dockat");
   f.classList.toggle("vanster", S.just === "vanster");
@@ -421,10 +483,11 @@ function tillampa() {
     el.setAttribute("aria-checked", String(String(S[k]) === v));
   });
   ritaRutor();
+  ritaBricka();
   spara();
   if (typeof FONSTER !== "undefined") { ritaFalt(); FONSTER.forEach(placera); }  /* fönstren följer arbetsytan */
 }
-function satt(k, v) { S[k] = k === "skala" ? Number(v) : v; tillampa(); }
+function satt(k, v) { if (k === "lage" && S.lage !== v) stangPaneler(); S[k] = k === "skala" ? Number(v) : v; tillampa(); }
 let omTimer;
 addEventListener("resize", () => { clearTimeout(omTimer); omTimer = setTimeout(tillampa, 80); });
 document.addEventListener("click", (e) => {
@@ -442,6 +505,7 @@ const MANADER = ["januari", "februari", "mars", "april", "maj", "juni", "juli", 
 function tick() {
   const d = new Date(), hh = String(d.getHours()).padStart(2, "0"), mm = String(d.getMinutes()).padStart(2, "0");
   $("#tid").textContent = `${hh}:${mm}`;
+  $("#idag-tid").textContent = `${hh}:${mm}`;
   $("#datum").textContent = `${DAGAR[d.getDay()].slice(0, 3)} ${d.getDate()} ${MANADER[d.getMonth()].slice(0, 3)}`;
   $("#las-tid").textContent = `${hh}:${mm}`;
   $("#las-dat").textContent = `${DAGAR[d.getDay()]} ${d.getDate()} ${MANADER[d.getMonth()]}`;
@@ -482,7 +546,7 @@ function oppna(app, opt = {}) {
   return f;
 }
 /* arbetsytan i u: skärmen utom fältet och dess avstånd */
-function arbetsyta() { return { w: skarm.clientWidth / S.skala, h: skarm.clientHeight / S.skala - (S.falt === "dockat" ? 56 : 72) }; }
+function arbetsyta() { return { w: skarm.clientWidth / S.skala, h: skarm.clientHeight / S.skala - (S.lage === "idag" ? 40 : S.falt === "dockat" ? 56 : 72) }; }
 function placera(f) {
   const s = f.el.style, a = arbetsyta();
   if (f.max) { s.left = "0"; s.top = "0"; s.width = "100%"; s.height = `calc(${a.h} * var(--u))`; }
@@ -536,18 +600,25 @@ function dra(e, f) {
 /* ---------- programmens innehåll ---------- */
 const TEXT_LEK = `# Lekplatsen
 
-Det här är skalet ur QzOS/design att prova på: aktivitetsfältet, Start, snabbinställningarna, aviseringarna och skrivbordet, i temana Glöd och Gryning.
+Skalet ur QzOS/design att prova på, i temana Glöd och Gryning. Växla mellan två lägen i reglagen uppe till höger:
 
-Det som redan finns i generic_gdi (examples/shell):
-- en knapp per fönster i fältet, klick växlar, minimerar och återställer
-- Start med program, dokument, inställningar, Kör och Avsluta
+- Mål: aktivitetsfältet, Start, snabbinställningarna, aviseringarna och skrivbordet som designen tänker sig dem.
+- I dag: skalet i generic_gdi (examples/shell) som det är i main, med samma färger och komponenter.
+
+Det som finns i generic_gdi i dag:
+- en textknapp per fönster i fältet, klick växlar, minimerar och återställer
+- Start som meny: Program, Dokument, Inställningar, Hjälp, Kör och Avsluta
 - skrivbordets ikoner ur ~/Desktop, markera, öppna, döp om
 - klockan
+- genomskinlighet, skuggor och rundade hörn i kompositören
+- profilerna Glöd och Gryning, genererade ur tokens
 
-Det som är nytt här och saknar mekanik:
+Det som saknar mekanik:
 - sök i Start, snabbinställningar, aviseringar, förhandsvisning av fönster
 - programikoner i fältet (protokollet bär inga ikoner än)
-- skuggor, oskärpa och genomskinlighet (kräver alfa i kompositören)
+- statussymboler i brickan: ingen tjänst rapporterar nät, ljud eller batteri än
+
+Oskärpa bakom fältet och panelerna är ett val, inte en del av målet. Den är av som standard.
 `;
 const MAPPAR = { Hem: [["mapp", "Dokument"], ["mapp", "Bilder"], ["mapp", "Musik"], ["mapp", "Projekt"], ["mapp", "Hämtade filer"], ["fil", "anteckningar.md"], ["fil", "budget.ods"], ["fil", "dyner.png"]],
   Dokument: [["fil", "mal.md"], ["fil", "skal.md"], ["fil", "budget.ods"]], Bilder: [["fil", "dyner.png"], ["fil", "logga.svg"]], Musik: [], Projekt: [["mapp", "design"], ["mapp", "generic_gdi"], ["mapp", "libshell"]], "Hämtade filer": [["fil", "manrope.zip"]] };
@@ -561,7 +632,7 @@ function innehall(f, el) {
         <div class="lista" role="listbox" aria-label="${esc(plats)}">${MAPPAR[plats].length ? MAPPAR[plats].map(([t, n]) =>
         `<button class="post" data-t="${t}" data-n="${esc(n)}"><svg aria-hidden="true"><use href="#${t === "mapp" ? "mapp-stor" : "fil-stor"}"/></svg><span>${esc(n)}</span></button>`).join("")
         : `<p class="tomt">Mappen är tom.</p>`}</div></div>`;
-      f.el.querySelector(".titel").textContent = `Filer — ${plats}`;
+      f.el.querySelector(".titel").textContent = `Filer — ${plats}`; ritaUppgifter();
       el.querySelectorAll("nav button").forEach((b) => b.onclick = () => { plats = b.dataset.m; rita(); });
       el.querySelectorAll(".post").forEach((b) => {
         b.onclick = () => { el.querySelectorAll(".post").forEach((x) => x.classList.toggle("vald", x === b)); };
@@ -655,6 +726,7 @@ function appknapp(a) {
 }
 /* Knappar som inte ryms samlas bakom en Mer-knapp sist. Det aktiva programmets knapp syns alltid. */
 function ritaFalt() {
+  ritaUppgifter();
   const lista = [...FAST_I_FALTET, ...FONSTER.map((f) => f.app).filter((a, i, l) => !FAST_I_FALTET.includes(a) && l.indexOf(a) === i)];
   const box = $("#appknappar");
   box.innerHTML = lista.map(appknapp).join("");
@@ -671,6 +743,19 @@ function ritaFalt() {
   box.innerHTML = synliga.map(appknapp).join("") +
     `<button class="${k}" id="merknapp" aria-label="Fler program, ${DOLDA.length}" aria-haspopup="menu">${svgG("mer")}<span class="mark"></span></button>`;
 }
+/* skalet i dag: en textknapp per fönster, utan programikoner */
+function ritaUppgifter() {
+  $("#uppgifter").innerHTML = FONSTER.map((f) => {
+    const t = f.el.querySelector(".titel").textContent, a = AKTIV === f;
+    return `<button class="tk uppg${a ? " aktiv" : ""}" data-id="${f.id}" aria-label="${esc(t + (a ? ", aktivt" : f.min ? ", minimerat" : ""))}"><span>${esc(t)}</span></button>`;
+  }).join("");
+}
+$("#uppgifter").addEventListener("click", (e) => {
+  const b = e.target.closest(".uppg"); if (!b) return;
+  const f = FONSTER.find((x) => String(x.id) === b.dataset.id); if (!f) return;
+  stangMenyer();
+  if (AKTIV === f) minimera(f); else aktivera(f);
+});
 function klickaApp(a) {
   const { fl } = lage(a);
   dolj("#forhand"); stangPaneler();
@@ -764,8 +849,10 @@ function oppnaMeny(m, ankare) {
   const b = m.querySelector("button"); b && b.focus({ preventScroll: true });
 }
 function stangMenyer(tillbaka) {
-  const oppen = !$("#strommeny").hidden || !$("#faltmeny").hidden;
-  $("#strommeny").hidden = true; $("#faltmeny").hidden = true;
+  const oppen = $$(".meny").some((m) => !m.hidden);
+  $$(".meny").forEach((m) => { m.hidden = true; });
+  $$('.meny [aria-expanded="true"]').forEach((b) => b.setAttribute("aria-expanded", "false"));
+  $("#idagstart").classList.remove("oppen-panel"); $("#idagstart").setAttribute("aria-expanded", "false");
   if (oppen && tillbaka && MENY_ANKARE && document.contains(MENY_ANKARE)) MENY_ANKARE.focus({ preventScroll: true });
   MENY_ANKARE = null;
 }
@@ -775,8 +862,8 @@ $("#bricka").onclick = () => vaxla("snabb");
 $("#klockknapp").onclick = () => vaxla("avis");
 $("#klocka").onclick = () => { stangPaneler(); oppna("kalender"); };
 document.addEventListener("pointerdown", (e) => {
-  if (!e.target.closest(".panel, .falt, .meny, .forhand, .lek")) { stangPaneler(); FORE = null; }
-  if (!e.target.closest(".meny, #stromknapp, #snabb-strom, #merknapp")) stangMenyer();
+  if (!e.target.closest(".panel, .falt, .idag, .meny, .forhand, .lek")) { stangPaneler(); FORE = null; }
+  if (!e.target.closest(".meny, #stromknapp, #snabb-strom, #merknapp, #idagstart")) stangMenyer();
 });
 /* med musen: spara fokus innan knappen i fältet tar det */
 document.addEventListener("pointerdown", (e) => {
@@ -786,21 +873,83 @@ let superEnsam = false;
 document.addEventListener("keydown", (e) => {
   superEnsam = e.key === "Meta" || e.key === "OS";
   /* Ctrl+Esc öppnar Start, som i NT; Super ensam gör samma sak där webbläsaren släpper igenom den */
-  if (e.key === "Escape" && e.ctrlKey) { e.preventDefault(); vaxla("start"); return; }
+  if (e.key === "Escape" && e.ctrlKey) { e.preventDefault(); oppnaStart(); return; }
   if (e.key === "Escape") {
-    if (!$("#strommeny").hidden || !$("#faltmeny").hidden) stangMenyer(true);
+    if (!$("#idagunder").hidden) { const p = $('#idagmeny [aria-expanded="true"]'); stangUnder(); p && p.focus(); }
+    else if ($$(".meny").some((x) => !x.hidden)) stangMenyer(true);
     else if (OPPEN) { stangPaneler(); aterstall(); }
     return;
   }
   const m = e.target.closest && e.target.closest(".meny");
+  if (m && e.key === "ArrowRight" && e.target.dataset.under) { e.preventDefault(); underMeny(e.target); const x = $("#idagunder button:not([aria-disabled])"); x && x.focus(); return; }
+  if (m && m.id === "idagunder" && e.key === "ArrowLeft") { e.preventDefault(); const p = $('#idagmeny [aria-expanded="true"]'); stangUnder(); p && p.focus(); return; }
   if (m && ["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
     e.preventDefault();
-    const b = [...m.querySelectorAll("button")], i = b.indexOf(e.target);
+    const b = [...m.querySelectorAll("button:not([aria-disabled])")], i = b.indexOf(e.target);
     const n = e.key === "Home" ? 0 : e.key === "End" ? b.length - 1 : (i + (e.key === "ArrowDown" ? 1 : -1) + b.length) % b.length;
     b[n].focus();
   }
 });
-document.addEventListener("keyup", (e) => { if ((e.key === "Meta" || e.key === "OS") && superEnsam) vaxla("start"); superEnsam = false; });
+document.addEventListener("keyup", (e) => { if ((e.key === "Meta" || e.key === "OS") && superEnsam) oppnaStart(); superEnsam = false; });
+function oppnaStart() { if (S.lage === "idag") idagMeny(); else vaxla("start"); }
+
+/* Start i dag: en meny med accentbanderoll, som examples/shell/startmenu.c */
+const IDAG_PROGRAM = ["filer", "terminal", "text", "kalkylator", "bilder", "rita", "farger", "loggar", "installningar"];
+const PROFILER = [["classic", "Classic"], ["flat", "Flat"], ["gryning", "Gryning"], ["glod", "Glöd"]];
+function idagMeny() {
+  const m = $("#idagmeny"), k = $("#idagstart"), oppen = !m.hidden;
+  if (!oppen && !FORE) minns();
+  stangMenyer(oppen); if (oppen) return;
+  MENY_ANKARE = k; m.hidden = false; k.classList.add("oppen-panel"); k.setAttribute("aria-expanded", "true");
+  const r = k.getBoundingClientRect(), sr = skarm.getBoundingClientRect();
+  m.style.left = (r.left - sr.left) + "px"; m.style.top = "auto"; m.style.bottom = (sr.bottom - r.top + 2) + "px";
+  m.querySelector("button").focus({ preventScroll: true });
+}
+function stangUnder() {
+  $("#idagunder").hidden = true;
+  $$("#idagmeny [data-under]").forEach((x) => x.setAttribute("aria-expanded", "false"));
+}
+function underMeny(b) {
+  const u = $("#idagunder"), typ = b.dataset.under;
+  $$("#idagmeny [data-under]").forEach((x) => x.setAttribute("aria-expanded", String(x === b)));
+  if (typ === "program") u.innerHTML = IDAG_PROGRAM.map((a) => `<button role="menuitem" data-app="${a}">${svgA(a, "g")}${esc(APPAR[a].namn)}</button>`).join("");
+  else if (typ === "dokument") u.innerHTML = SENASTE.map(([, n]) => `<button role="menuitem" data-dok="${esc(n)}">${svgG("fil")}${esc(n)}</button>`).join("");
+  else u.innerHTML = `<button role="menuitem" data-k="installningar">${svgG("reglage")}Aktivitetsfältet …</button><hr>` +
+    PROFILER.map(([v, n]) => {
+      const finns = v === "glod" || v === "gryning", pa = S.tema === v;
+      /* Classic och Flat finns i generic_gdi men inte i designen */
+      return `<button role="menuitemradio" aria-checked="${pa}" ${finns ? `data-tema="${v}"` : 'aria-disabled="true"'}>${pa ? svgG("bock") : '<span class="bock"></span>'}${n}</button>`;
+    }).join("");
+  u.hidden = false;
+  const r = b.getBoundingClientRect(), sr = skarm.getBoundingClientRect(), mr = $("#idagmeny").getBoundingClientRect();
+  const pad = parseFloat(getComputedStyle(u).paddingTop) || 0;
+  const top = Math.max(8, Math.min(r.top - sr.top - pad - 1, sr.height - u.offsetHeight - 8));
+  let left = mr.right - sr.left - 2;
+  if (left + u.offsetWidth > sr.width - 8) left = mr.left - sr.left - u.offsetWidth + 2;
+  u.style.left = left + "px"; u.style.top = top + "px"; u.style.bottom = "auto";
+}
+$("#idagstart").onclick = () => idagMeny();
+$("#idagmeny").addEventListener("pointerover", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (!b.dataset.under) stangUnder();
+  else if (b.getAttribute("aria-expanded") !== "true") underMeny(b);
+});
+$("#idagmeny").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.under) { underMeny(b); const x = $("#idagunder button:not([aria-disabled])"); x && x.focus(); return; }
+  const k = b.dataset.k; stangMenyer();
+  if (k === "hjalp") oppna("text", { dok: "anteckningar.md", titel: "Hjälp — Anteckningar" });
+  else if (k === "kor") oppna("terminal");
+  else if (k === "avsluta") oppnaMeny($("#strommeny"), $("#idagstart"));
+});
+$("#idagunder").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  stangMenyer();
+  if (b.dataset.app) oppna(b.dataset.app);
+  else if (b.dataset.dok) oppnaDok(b.dataset.dok);
+  else if (b.dataset.tema) { satt("tema", b.dataset.tema); aterstall(); }
+  else if (b.dataset.k) oppna("installningar");
+});
 
 /* Start */
 let ALLA = false;
@@ -861,6 +1010,17 @@ function las_upp() { $("#las").classList.add("dold"); aterstall(); }
 $("#las").addEventListener("click", las_upp);
 $("#las").addEventListener("keydown", las_upp);
 function svart(t) { $("#svart-text").textContent = t; $("#svart").classList.remove("dold"); }
+
+/* brickan: en statussymbol bara när en tjänst har något att visa. Ingen
+   rapporterar nät, ljud eller batteri än, så knappen visar reglage-glyfen.
+   Alla visar wifi, volym och batteri för att se hur det blir. */
+const SYMBOLER = [["wifi", "Wi-Fi"], ["volym", "volym"], ["batteri", "batteri"]];
+function ritaBricka() {
+  const alla = S.symboler === "alla", b = $("#bricka");
+  b.innerHTML = alla ? SYMBOLER.map(([g]) => `<svg class="g"><use href="#g-${g}"/></svg>`).join("") : `<svg class="g"><use href="#g-reglage"/></svg>`;
+  b.setAttribute("aria-label", "Snabbinställningar" + (alla ? ": " + SYMBOLER.map(([, n]) => n).join(", ") : ""));
+  $("#batterirad").hidden = !alla;
+}
 
 /* snabbinställningar */
 const RUTOR = [["wifi", "Wi-Fi", "Hemma-5G", true], ["bluetooth", "Bluetooth", "2 enheter", true], ["flygplan", "Flygläge", null, false],

@@ -658,8 +658,9 @@ def komponenter(t):
         elif lage == "tryck":
             s += rekt(4, 4, vk, vk, R["kontroll"], t["yta-tryck"])
         elif lage == "vald":
-            s += rekt(4, 4, vk, vk, R["kontroll"], t["markering"])
-            g = t["accent-text"]
+            # fyllningen ensam har för lite kontrast mot ytan; ramen visar läget utan färg (princip 4)
+            s += rekt(4, 4, vk, vk, R["kontroll"], t["markering"], t["kant-kontroll"])
+            g = t["markering-text"]
         elif lage == "inaktiv":
             g = t["text-inaktiv"]
         s += glyf("sok", 4 + (vk - 16) / 2, 4 + (vk - 16) / 2, 16, g)
@@ -1008,24 +1009,44 @@ def ikonknapp(t, x, y, glyfnamn, lage="vila", b=CELL, h=CELL):
     return s
 
 
-def bricka(t, x, y, lage="vila", tid="14:32", datum="mån 2 nov"):
-    """statusikonerna och klockan; returnerar (kropp, bredd)"""
+ALLA_SYMBOLER = ("wifi", "volym", "batteri")
+
+
+def bricka_knapp(symboler):
+    """bredden på knappen till snabbpanelen: en cell utan symboler, annars 24 u per symbol"""
+    return CELL if not symboler else 20 + 24 * len(symboler)
+
+
+def bricka_bredd(symboler):
+    return bricka_knapp(symboler) + 4 + 64
+
+
+def bricka(t, x, y, lage="vila", symboler=(), tid="14:32", datum="mån 2 nov"):
+    """
+    Knappen till snabbpanelen och klockan; returnerar (kropp, bredd).
+    En statussymbol ritas bara när en tjänst rapporterar den. Utan någon
+    visar knappen glyfen reglage, så att snabbpanelen går att nå ändå.
+    """
     s = ""
-    bw = 92
+    bw = bricka_knapp(symboler)
     if lage in ("hover", "oppen"):
         s += rekt(x, y, bw, CELL, R["yta"], t["yta-hover"] if lage == "hover" else t["yta-tryck"])
-    for i, g in enumerate(("wifi", "volym", "batteri")):
-        s += glyf(g, x + 12 + i * 24, y + 14, 16, t["text"])
+    if symboler:
+        for i, g in enumerate(symboler):
+            s += glyf(g, x + 12 + i * 24, y + 14, 16, t["text"])
+    else:
+        s += glyf("reglage", x + (CELL - 20) / 2, y + (CELL - 20) / 2, 20, t["text"])
     cx = x + bw + 4
     s += text(cx + 32, y + 15, tid, "etikett", t["text"], "middle", 700, 13)
     s += text(cx + 32, y + 30, datum, "etikett", t["text-dampad"], "middle", 500, 11)
     return s, bw + 4 + 64
 
 
-def aktivitetsfalt(t, x, y, w, appar, flytande=True, fid=None):
+def aktivitetsfalt(t, x, y, w, appar, flytande=True, fid=None, symboler=()):
     """hela fältet; appar är (app, läge)"""
     s, defs = falt_yta(t, x, y, w, FALT_H, flytande, fid), ""
-    innehall = CELL + 4 + CELL + 12 + len(appar) * (CELL + 4) + 8 + 160 + 4 + CELL
+    bb = bricka_bredd(symboler)
+    innehall = CELL + 4 + CELL + 12 + len(appar) * (CELL + 4) + 8 + bb + 4 + CELL
     cx = x + (w - innehall) / 2 if flytande else x + 12
     cy = y + (FALT_H - CELL) / 2
     k, d = startknapp(t, cx, cy, "vila")
@@ -1040,11 +1061,11 @@ def aktivitetsfalt(t, x, y, w, appar, flytande=True, fid=None):
         s, defs = s + k, defs + d
         cx += CELL + 4
     if not flytande:
-        cx = x + w - 12 - 160 - 4 - CELL
+        cx = x + w - 12 - bb - 4 - CELL
     else:
         cx += 4
     s += rekt(cx - 6, cy + 10, 1, CELL - 20, 0, t["kant"])
-    k, bw = bricka(t, cx, cy)
+    k, bw = bricka(t, cx, cy, symboler=symboler)
     s += k
     cx += bw + 4
     s += ikonknapp(t, cx, cy, "avisering")
@@ -1052,8 +1073,8 @@ def aktivitetsfalt(t, x, y, w, appar, flytande=True, fid=None):
     return s, defs
 
 
-def falt_bredd(n):
-    return CELL + 4 + CELL + 12 + n * (CELL + 4) + 8 + 160 + 4 + CELL + 24
+def falt_bredd(n, symboler=()):
+    return CELL + 4 + CELL + 12 + n * (CELL + 4) + 8 + bricka_bredd(symboler) + 4 + CELL + 24
 
 
 def startpanel(t, x, y, variant="kompakt", fid=None):
@@ -1061,8 +1082,9 @@ def startpanel(t, x, y, variant="kompakt", fid=None):
     p = 24
     w = 640 if variant != "oversikt" else 880
     h = 560
+    # täckande: utan oskärpa skymtar texten i fönstren bakom igenom en genomskinlig panel
     s = rekt(x, y, w, h, R["panel"], t["yta"], t["kant"],
-             extra=' fill-opacity=".97"' + (f' filter="url(#{fid})"' if fid else ""))
+             extra=(f' filter="url(#{fid})"' if fid else ""))
     defs = ""
     cid = nytt_id("sp")
     defs += f'<clipPath id="{cid}"><rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{R["panel"]}"/></clipPath>'
@@ -1175,8 +1197,9 @@ def startpanel(t, x, y, variant="kompakt", fid=None):
 def snabbpanel(t, x, y, fid=None):
     w, p = 360, 18
     h = 324
+    # täckande: utan oskärpa skymtar texten i fönstren bakom igenom en genomskinlig panel
     s = rekt(x, y, w, h, R["panel"], t["yta"], t["kant"],
-             extra=' fill-opacity=".97"' + (f' filter="url(#{fid})"' if fid else ""))
+             extra=(f' filter="url(#{fid})"' if fid else ""))
     rutor = [("wifi", "Wi-Fi", "Hemma-5G", True), ("bluetooth", "Bluetooth", "2 enheter", True),
              ("flygplan", "Flygläge", "Av", False), ("fokus", "Fokus", "Av", False),
              ("mane", "Nattljus", "Från 21:00", False), ("starta-om", "Glöd", "Mörkt tema", True)]
@@ -1200,8 +1223,7 @@ def snabbpanel(t, x, y, fid=None):
               f'stroke="{t["kant-kontroll"]}"/>')
     fy = y + h - 52
     s += rekt(x, fy, w, 1, 0, t["kant"])
-    s += glyf("batteri", x + p, fy + 18, 16, t["text-dampad"])
-    s += text(x + p + 24, fy + 26, "82 % · 5 h 10 min", "etikett", t["text-dampad"], vikt=500)
+    # batteriets rad visas bara när en tjänst rapporterar ett batteri; bänken har inget
     s += ikonknapp(t, x + w - p - 36, fy + 8, "reglage", b=36, h=36)
     s += ikonknapp(t, x + w - p - 76, fy + 8, "strom", b=36, h=36)
     return s, w, h
@@ -1241,6 +1263,59 @@ def forhandsvisning(t, x, y, fid=None):
     return s, d, w, h
 
 
+# ---------------------------------------------------------------- skalet i dag
+# Det skal generic_gdi har under en profil (examples/shell, gg #481), med
+# samma tokens: ett dockat fält med en textknapp per fönster, en
+# accentmarkör under det aktiva, klockan och Start som en meny.
+
+IDAG_H = 40
+
+
+def idag_falt(t, x, y, w):
+    s = rekt(x, y, w, IDAG_H, 0, t["yta"]) + rekt(x, y, w, 1, 0, t["kant"])
+    kh = M["kontroll-h"]
+    ky = y + (IDAG_H - kh) / 2
+    k, d = logo(x + 10, ky + 8, 16)
+    sw = 16 + 6 + round(textbredd("Start", "knapp")) + 16
+    s += k + text(x + 32, ky + kh / 2, "Start", "knapp", t["text"])
+    cx = x + 8 + sw + 6
+    for titel, aktiv in (("Namnlös – Anteckningar", True), ("Filer – Hem", False), ("Terminal", False)):
+        bw = 160
+        if aktiv:
+            s += rekt(cx, ky, bw, kh, R["kontroll"], t["knapp"])
+            s += rekt(cx + bw / 2 - 8, ky + kh - 3, 16, 3, 1.5, t["accent"])
+        if textbredd(titel, "brod", 13) > bw - 20:  # som i fältet: titeln kortas med en ellips
+            while textbredd(titel + "…", "brod", 13) > bw - 20:
+                titel = titel[:-1]
+            titel = titel.rstrip(" –") + "…"
+        s += text(cx + 10, ky + kh / 2, titel, "brod", t["text"], vikt=700 if aktiv else 500, storlek=13)
+        cx += bw + 4
+    s += text(x + w - 12, ky + kh / 2, "14:32", "etikett", t["text"], "end", 600, 13)
+    return s, d
+
+
+def idag_startmeny(t, x, y, fid):
+    """Start-menyn med accentbanderoll och solen: Program, Dokument, Inställningar, Hjälp, Kör, Avsluta"""
+    objekt = [("hover", "Program", "", "rutnat"), ("normal", "Dokument", "", "fil"),
+              ("normal", "Inställningar", "", "reglage"), ("normal", "Hjälp", "", "hjalp"),
+              ("normal", "Kör …", "", "kor"), ("avskiljare",), ("normal", "Avsluta …", "", "strom")]
+    b, mw = 28, 220
+    pk, ph = popup(t, x + b, y, mw, objekt, fid)
+    pk = re.sub(r"^<rect [^>]*/>", "", pk, count=1)  # menyns egen yta: hela menyn ritas nedan
+    for i in range(3):  # undermenyerna har pilar
+        pk += glyf("chevron-hoger", x + b + mw - M["meny-utfyllnad"] - 22,
+                   y + M["meny-utfyllnad"] + i * M["menyobjekt-h"] + 7, 16,
+                   t["pa-accent"] if i == 0 else t["text-dampad"])
+    w = b + mw
+    cid = nytt_id("ban")
+    defs = f'<clipPath id="{cid}"><rect x="{fmt(x)}" y="{fmt(y)}" width="{fmt(w)}" height="{fmt(ph)}" rx="{R["yta"]}"/></clipPath>'
+    k, d = logo(x + 6, y + ph - 26, 16, "#FFFFFF")
+    kropp = rekt(x, y, w, ph, R["yta"], t["yta-upphojd"], extra=f' filter="url(#{fid})"')
+    kropp += f'<g clip-path="url(#{cid})">{rekt(x, y, b, ph, 0, t["accent"])}</g>' + k + pk
+    kropp += rekt(x, y, w, ph, R["yta"], "none", t["kant"])
+    return kropp, defs + d, w, ph
+
+
 def skal_komponenter(t):
     ut = []
 
@@ -1273,6 +1348,9 @@ def skal_komponenter(t):
         k, bw = bricka(t, 6, 6, lage)
         fil(f"bricka/{lage}", f"Bricka och klocka, {lage}", bw + 12, CELL + 12,
             rekt(0, 0, bw + 12, CELL + 12, 0, bg) + k)
+    k, bw = bricka(t, 6, 6, "vila", ALLA_SYMBOLER)
+    fil("bricka/alla-symboler", "Bricka med wifi, volym och batteri", bw + 12, CELL + 12,
+        rekt(0, 0, bw + 12, CELL + 12, 0, bg) + k)
     appar = [("filer", "aktiv"), ("terminal", "oppen"), ("webb", "vila"), ("text", "oppen"),
              ("kalender", "uppmarksamhet"), ("musik", "vila"), ("installningar", "vila")]
     w = falt_bredd(len(appar))
@@ -1280,6 +1358,10 @@ def skal_komponenter(t):
     fil("falt/flytande", "Aktivitetsfältet, flytande", w + 48, FALT_H + 48, k, d + skugga(t, 2, "s2"))
     k, d = aktivitetsfalt(t, 0, 0, 1280, appar, False)
     fil("falt/dockat", "Aktivitetsfältet, dockat", 1280, FALT_H, k, d)
+    k, d = idag_falt(t, 0, 0, 1280)
+    fil("i-dag/falt", "Aktivitetsfältet i dag", 1280, IDAG_H, k, d)
+    k, d, pw, ph = idag_startmeny(t, 16, 8, "s2")
+    fil("i-dag/startmeny", "Start-menyn i dag", pw + 32, ph + 40, k, d + skugga(t, 2, "s2"))
     for variant in ("kompakt", "oversikt", "sok"):
         k, d, pw, ph = startpanel(t, 40, 24, variant, "s3")
         fil(f"startpanel/{variant}", f"Start-panelen, {variant}", pw + 80, ph + 96, k, d + skugga(t, 3, "s3"))
@@ -1401,6 +1483,9 @@ def lekplats():
     k, d = logo(0, 0, 48)
     defs += d
     sym += f'<symbol id="logo" viewBox="0 0 48 48">{k}</symbol>'
+    k, d = logo(0, 0, 48, "#FFFFFF")  # på Start-menyns accentbanderoll i läget I dag
+    defs += d
+    sym += f'<symbol id="logo-vit" viewBox="0 0 48 48">{k}</symbol>'
     appar = json.dumps({a: {"namn": v[0]} for a, v in APPAR.items()}, ensure_ascii=False)
     ut = (mall.replace("/*TOKENS*/", tokens)
           .replace("<!--SYMBOLER-->", f"<defs>{defs}</defs>{sym}")
