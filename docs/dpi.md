@@ -41,6 +41,8 @@ Genererad av `verktyg/bygg.py` ur `tokens/tokens.json`. Regeln står i
 | rullningslist-tumme-min | 32 | 32 | 40 | 48 | 56 | 64 | 80 | 96 |
 | reglage-spar | 4 | 4 | 5 | 6 | 7 | 8 | 10 | 12 |
 | reglage-tumme | 18 | 18 | 23 | 27 | 32 | 36 | 45 | 54 |
+| reglage-bock | 4 | 4 | 5 | 6 | 7 | 8 | 10 | 12 |
+| reglage-bock-avstand | 4 | 4 | 5 | 6 | 7 | 8 | 10 | 12 |
 | forlopp-h | 6 | 6 | 8 | 9 | 11 | 12 | 15 | 18 |
 | verktygsknapp | 32 | 32 | 40 | 48 | 56 | 64 | 80 | 96 |
 | splitter-greppyta | 8 | 8 | 10 | 12 | 14 | 16 | 20 | 24 |
@@ -57,6 +59,14 @@ Genererad av `verktyg/bygg.py` ur `tokens/tokens.json`. Regeln står i
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | kant | 1 | 1 | 1 | 1 | 1 | 2 | 2 | 3 |
 | fokusring | 2 | 2 | 2 | 3 | 3 | 4 | 5 | 6 |
+
+## Centrerat i ett annat mått
+
+Samma paritet som det yttre måttet: skiljer den sig läggs 1 bildpunkt till.
+
+| Mått | u | 100 % | 125 % | 150 % | 175 % | 200 % | 250 % | 300 % |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| reglage-spar i reglage-tumme | 4 | 4 | 5 | 7 | 8 | 8 | 11 | 12 |
 
 ## Glyfstreck
 

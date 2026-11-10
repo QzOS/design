@@ -62,6 +62,7 @@ Komponenterna finns som SVG i `svg/`, i varje läge och i båda temana.
 | Kanter och avskiljare | `max(1, floor(u × s))` | kant 1 u → 1, fokusring 2 u → 3 |
 | Glyfernas streck | `round(1,5 × s × 2) / 2`, kantutjämnat | 1,5 u → 2,5 |
 | Text | `round(u × s)` bildpunkter, hintad av libtt | brödtext 14 u → 21 |
+| Mått centrerade i ett annat | som storlekar, och 1 bildpunkt till om pariteten skiljer sig från det yttre måttets | reglagets spår 4 u i knappen 18 u → 6 blir 7, i 27 |
 
 Kanter ligger på hela bildpunkter, så en 1 u-kant är skarp i alla
 skalor. En kant med udda bredd ritas med mitten på en halv bildpunkt.
@@ -120,7 +121,7 @@ Skuggans färg och styrka står per tema i `tokens.json`.
 | Trädrad | `tradrad/` | `CTL_TREE` | fallen, expanderad, exempel |
 | Header | `header/` | `CTL_HEADER` | vila, hover, sorterad uppåt och nedåt |
 | Flik | `flik/` | `CTL_TAB` | vald, vila, hover, fokus, inaktiv |
-| Skjutreglage | `reglage/` | `CTL_TRACKBAR` | vila, hover, fokus, inaktiv |
+| Skjutreglage | `reglage/` | `CTL_TRACKBAR` | vila, hover, fokus, inaktiv, med bockar |
 | Förlopp | `forlopp/` | `CTL_PROGRESS` | bestämd, obestämd, fel |
 | Verktygsknapp | `verktygsknapp/` | knapparna i `CTL_TOOLBAR` | vila, hover, tryck, vald, fokus, inaktiv |
 | Tips | `tips/` | `CTL_TOOLTIP` | |
@@ -158,6 +159,14 @@ Program som bara känner `COL_*` ska se rätt ut. `tokens.json` har under
 program som ritar egna kontroller med `ui_drawframectl` får det nya
 utseendet automatiskt, eftersom funktionen ritas av samma lager som
 libuis egna kontroller.
+
+`COL_BTNFACE` är dialogens och 3D-ytans färg, alltså `yta`: dialoger,
+egenskapssidor, gruppramar, verktygsfält och statusrader. I NT är den
+också tryckknappens fyllning, men designen ger knappen `knapp`. Därför
+har `tokens.json` ett avsnitt `profilfarger` med färger som profilerna
+har utöver systemfärgerna: knappens fyllning i vila, hover och tryck,
+och en avstängd kontrolls fyllning (`yta-inaktiv`). I Classic har de
+samma värden som `COL_BTNFACE`.
 
 ## Krav på mekaniken
 
