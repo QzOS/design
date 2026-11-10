@@ -8,8 +8,9 @@ Kräver Python-paketet playwright med Chromium. Typsnittskatalogen ska ha
 Manrope som manrope-latin-<vikt>-normal.woff2 (till exempel ur npm-paketet
 @fontsource/manrope); utan den ritas texten i ett reservtypsnitt.
 
-Skriver oversikt/glod.png och oversikt/gryning.png (alla komponenter vid
-100 %) och oversikt/dpi.png (ett urval vid 100, 125, 150, 175 och 200 %).
+Skriver oversikt/<tema>.png och oversikt/skal-<tema>.png för varje tema i
+tokens.json (alla komponenter vid 100 %), oversikt/dpi.png (ett urval vid
+100, 125, 150, 175 och 200 %) och oversikt/webblasare.png.
 """
 import json
 import pathlib
@@ -92,7 +93,7 @@ def dpi(fonter):
     skalor = (1, 1.25, 1.5, 1.75, 2)
     rader = []
     n = 0
-    for tema in ("glod", "gryning"):
+    for tema in FARG:
         bg, fg, dim, yta = FARG[tema]
         celler = []
         for s in skalor:
@@ -156,7 +157,7 @@ def main():
     with sync_playwright() as pw:
         b = pw.chromium.launch()
         sida = b.new_page(device_scale_factor=1)
-        for tema in ("glod", "gryning"):
+        for tema in FARG:
             sida.set_content(galleri(tema, fonter), wait_until="networkidle")
             sida.screenshot(path=str(UT / f"{tema}.png"), full_page=True)
             sida.set_content(galleri(tema, fonter, skal=True), wait_until="networkidle")
@@ -166,7 +167,7 @@ def main():
         sida.set_content(webblasare(), wait_until="networkidle")
         sida.locator("body").screenshot(path=str(UT / "webblasare.png"))
         b.close()
-    print("oversikt/: glod, gryning, skal-glod, skal-gryning, dpi och webblasare")
+    print("oversikt/:", ", ".join(list(FARG) + [f"skal-{t}" for t in FARG]), "samt dpi och webblasare")
 
 
 if __name__ == "__main__":

@@ -17,14 +17,23 @@ Mekaniken behålls. Presentationen byts.
 
 ## Målbilden
 
-Ett mörkt och ett ljust tema, **Glöd** och **Gryning**, med samma
-komponenter, mått och regler. Ytorna är platta med rundade hörn. Djup
+Tre teman med samma komponenter, mått och regler: **Glöd** och
+**Grafit** är mörka, **Gryning** är ljust. Grafit är ett neutralt mörkt
+alternativ till Glöd, med samma korall men utan den lila basen. Vilket
+av dem som blir QzOS mörka tema är inte bestämt.
+
+Grafit utgår från fem grundfärger: skrivbordet `bakgrund` #15191E,
+fönstret `yta` #242A31, panelen `yta-upphojd` och `knapp` #323A43,
+`accent` #EE7665 och `text` #EDF1F4. De andra rollerna är blandningar av
+dem: hover och tryck mot texten, kontrollgränsen och den dämpade texten
+så nära fönstret de kan komma och ändå klara 3:1 och 6:1. Fokus,
+signalfärgerna och skuggorna är desamma som i Glöd. Ytorna är platta med rundade hörn. Djup
 visas med skuggor i stället för 3D-kanter. Korall (`accent`) betyder
 *aktivt eller valt*. Bärnsten (`fokus`, `varning`) betyder *titta här*.
 Allt mäts i logiska enheter och ritas skarpt i alla skalor från 100 till
 300 %.
 
-Komponenterna finns som SVG i `svg/`, i varje läge och i båda temana.
+Komponenterna finns som SVG i `svg/`, i varje läge och i alla teman.
 Översikterna i `oversikt/` visar alla på en gång.
 
 ![Glöd, alla komponenter](oversikt/glod.png)
@@ -130,7 +139,7 @@ Skuggans färg och styrka står per tema i `tokens.json`.
 | Splitter | `splitter/` | `CTL_SPLITTER` | vila, hover, drag |
 | Dialog | `dialog/` | `ui_msgbox` och standardikonerna | info, varning, fel, fråga |
 
-Varje komponent finns i `svg/glod/` och `svg/gryning/`. Filen har 4 u
+Varje komponent finns i `svg/glod/`, `svg/gryning/` och `svg/grafit/`. Filen har 4 u
 marginal runt komponenten, så att fokusringen ryms. Fönster, menyer och
 dialoger har större marginal för skuggan.
 
@@ -195,13 +204,23 @@ har utöver systemfärgerna: knappens fyllning i vila, hover och tryck,
 och en avstängd kontrolls fyllning (`yta-inaktiv`). I Classic har de
 samma värden som `COL_BTNFACE`.
 
+`COL_HIGHLIGHT` är det markerade: en vald rad i en lista, ett träd eller
+en kombinationsruta, och markerad text. Den får `markering`, med texten i
+`markering-text` (`COL_HIGHLIGHTTEXT`), som läget *vald* i tabellen ovan.
+I NT är samma färg också accenten i kryssrutor, radioknappar, reglage,
+förloppslister och menyer, och där har designen `accent` med `pa-accent`
+ovanpå. De två står i `profilfarger` som `accent` och `accent.text`. Då
+används accenten sparsamt: för det som är på, aktivt eller i fokus, inte
+för varje markerad rad. I Classic har de samma värden som
+`COL_HIGHLIGHT` och `COL_HIGHLIGHTTEXT`.
+
 Verktygsknappen har ingen fyllning i vila. Vid hover och tryck får den
 `yta-hover` och `yta-tryck`. Vald får den `markering`, en ram på 1 u i
 `kant-kontroll` och glyf och text i `markering-text`. Fyllningen har för
-lite kontrast mot ytan (1,38:1 i Glöd, 1,17:1 i Gryning) för att bära
-läget ensam, så ramen visar det (princip 4); den har 3,14:1 och 3,7:1.
-Glyf och text delar färg, och `markering-text` klarar 4,5:1 mot
-`markering` i båda temana. Ingen av färgerna är en systemfärg, så de
+lite kontrast mot ytan (1,38:1 i Glöd, 1,17:1 i Gryning, 1,55:1 i
+Grafit) för att bära läget ensam, så ramen visar det (princip 4); den har
+3,14:1, 3,7:1 och 3,77:1. Glyf och text delar färg, och `markering-text`
+klarar 4,5:1 mot `markering` i alla teman. Ingen av färgerna är en systemfärg, så de
 står i `profilfarger` (`toolbar.fill.*`, `toolbar.text.checked`,
 `toolbar.frame.checked`). I Classic ritas verktygsknappen med NT:s
 kanter och har inga egna färger.
@@ -247,10 +266,11 @@ punkten; skalets punkter står i `skal.md`.
 
 ## Öppna frågor
 
-1. Behövs ett tema med hög kontrast utöver Glöd och Gryning?
-2. Behövs en tätare variant (kontrollhöjd 28 u) för listor och
+1. Behövs ett tema med hög kontrast utöver Glöd, Grafit och Gryning?
+2. Ska Grafit ersätta Glöd som QzOS mörka tema?
+3. Behövs en tätare variant (kontrollhöjd 28 u) för listor och
    verktyg, eller en glesare (40 u) för pekskärm?
-3. Ska accentfärgen kunna väljas av användaren? Rollerna tillåter det,
+4. Ska accentfärgen kunna väljas av användaren? Rollerna tillåter det,
    men kontrasten måste då kontrolleras för varje val.
 
 ## Bygga om

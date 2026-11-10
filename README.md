@@ -1,7 +1,7 @@
 # QzOS design
 
-Målbilden för QzOS skrivbord efter NT 4.0 Classic: temana **Glöd** (mörkt)
-och **Gryning** (ljust), gemensamma färgroller och komponentmått, samt
+Målbilden för QzOS skrivbord efter NT 4.0 Classic: temana **Glöd** och
+**Grafit** (mörka) och **Gryning** (ljust), gemensamma färgroller och komponentmått, samt
 ett nytt skal. NT 3.1-mekaniken för fönster, meddelanden, fokus och
 kontroller behålls; presentationen byts.
 
@@ -13,8 +13,10 @@ vad som saknas mot koden i dag, eller prova
 ![Glöd – komponenterna](oversikt/glod.png)
 
 [Komponenter i Gryning](oversikt/gryning.png) ·
+[Komponenter i Grafit](oversikt/grafit.png) ·
 [Skalet i Glöd](oversikt/skal-glod.png) ·
-[Skalet i Gryning](oversikt/skal-gryning.png)
+[Skalet i Gryning](oversikt/skal-gryning.png) ·
+[Skalet i Grafit](oversikt/skal-grafit.png)
 
 ## Status och ansvar
 
@@ -42,7 +44,7 @@ Det är viktigt att skilja mellan två typer av SVG:
 
 - **Ikoner** i `svg/glyfer/`, `svg/appikoner/`, `svg/logo.svg` och
   `svg/webblasare/` kan ritas genom [QzOS SVG Icon Profile](https://github.com/QzOS/generic_gdi/blob/main/docs/svg.md).
-- **Komponenter** i `svg/glod/` och `svg/gryning/` är
+- **Komponenter** i `svg/glod/`, `svg/gryning/` och `svg/grafit/` är
   designreferenser, inte kompletta kontroller att ladda. De kan innehålla
   exempeltext och SVG-filter utanför ikonprofilen. I QzOS får en kontroll
   sin text och sina tillstånd från libui och ritas av ett gemensamt
@@ -92,12 +94,12 @@ värden**; det innebär inte att libui måste läsa JSON vid körning.
 |---|---|
 | [`mal.md`](mal.md) | Designprinciper, tillstånd, DPI-regler, komponenter och krav på mekaniken |
 | [`skal.md`](skal.md) | Skalets idéer, komponenter, mått, läget mot generic_gdi main och öppna frågor |
-| [`tokens/tokens.json`](tokens/tokens.json) | Källvärden för Glöd och Gryning |
-| `tokens/glod.css`, `tokens/gryning.css` | Genererade CSS-variabler |
+| [`tokens/tokens.json`](tokens/tokens.json) | Källvärden för Glöd, Gryning och Grafit |
+| `tokens/glod.css`, `tokens/gryning.css`, `tokens/grafit.css` | Genererade CSS-variabler |
 | `svg/glyfer/` | 71 symboler i 16 u, med `currentColor` |
 | `svg/appikoner/`, `svg/logo.svg`, `svg/bakgrund/` | Programikoner, QzOS-märket och bakgrunden Dyner |
 | `svg/webblasare/` | Ikonerna till [QzOS/browser](https://github.com/QzOS/browser) i 90-talsstil, se nedan |
-| `svg/glod/`, `svg/gryning/` | Komponentreferenser i båda teman och deras olika lägen |
+| `svg/glod/`, `svg/gryning/`, `svg/grafit/` | Komponentreferenser i alla teman och deras olika lägen |
 | `oversikt/` | Genererade bilder över komponenter, skal och DPI-exempel |
 | [`docs/dpi.md`](docs/dpi.md) | Genererade bildpunktsmått vid 100–300 % |
 | `lekplats/mall.html` | Handredigerad källa för webblekplatsen |
@@ -169,7 +171,7 @@ bland annat i npm-paketet `@fontsource/manrope`.
 **Redigera källorna, inte genererade SVG-, CSS-, HTML- eller
 översiktsfiler för hand.** Nästa test i den verkliga implementationen
 är ett begränsat temalager för knapp, textfält, meny och titelrad, i
-båda temana vid 100, 125, 150 och 200 %, med verklig textrendering
+alla teman vid 100, 125, 150 och 200 %, med verklig textrendering
 och tangentbordsnavigering.
 
 ## Licens

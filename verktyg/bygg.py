@@ -6,7 +6,7 @@ bygg.py - bygger komponenterna ur tokens/tokens.json
 
 Skriver:
   svg/glyfer/*.svg          symbolerna, 16 u, ritade i currentColor
-  svg/<tema>/<komponent>/   varje komponent i varje läge, för glod och gryning
+  svg/<tema>/<komponent>/   varje komponent i varje läge, för glod, gryning och grafit
   tokens/<tema>.css         rollerna och måtten som CSS-variabler
   docs/dpi.md               måtten i bildpunkter vid varje skala
 
@@ -27,7 +27,7 @@ M = T["matt"]
 R = T["radie"]
 TYP = T["typ"]["stilar"]
 FONT = "Manrope, Inter, 'DejaVu Sans', sans-serif"
-TEMAN = ("glod", "gryning")
+TEMAN = ("glod", "gryning", "grafit")
 
 # ---------------------------------------------------------------- färg
 
@@ -839,7 +839,13 @@ def logo(x, y, s, fyll=None):
 
 def bakgrund(tema, w=1920, h=1080):
     """bakgrundsbilden Dyner"""
-    if tema == "glod":
+    if tema == "grafit":
+        # grafit i fjärran, och korallen kvar i solen och de närmaste dynerna
+        himmel = ("#121519", "#1C2127", "#2A3038")
+        sol = ("#FFA85D", "#EE7665", 0.9)
+        dyner = [("#2C333B", "#222830"), ("#3D454F", "#2F363E"), ("#6E5450", "#56423F"),
+                 ("#B8675A", "#94564C"), ("#E5806A", "#C96A58")]
+    elif tema == "glod":
         himmel = ("#1F1730", "#3A2443", "#5A2F4C")
         sol = ("#FFA85D", "#EE7665", 0.9)
         dyner = [("#6B3456", "#4E2A49"), ("#B24C61", "#7C3A57"), ("#E9735F", "#C2515E"),
