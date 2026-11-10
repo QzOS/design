@@ -143,11 +143,38 @@ i hörnen. Storleksgreppet i statusraden är valfritt.
 
 ## Glyferna
 
-`svg/glyfer/` har 59 symboler på ett rutnät om 16 u: 12 u levande yta,
+`svg/glyfer/` har 71 symboler på ett rutnät om 16 u: 12 u levande yta,
 streck 1,5 u med runda ändar, ritade i `currentColor`. 28 av dem är för
 kontrollerna och ersätter Retro98-typsnittets 27 tecken (`U+E100`–`U+E11A`) och kan byggas till
 ett typsnitt på samma sätt som Retro98 byggs med `build.py`. Då hintar
 libtt dem i varje storlek, som all annan text.
+
+Verktygsfältets knappar har glyfer i stället för NT:s bilder. comctl32:s
+standardbilder (`STD_*`, `ui_stdtbimages` i generic_gdi) och File
+Managers knappar får de här:
+
+| Bild | Glyf |
+|---|---|
+| `STD_CUT` | `klipp-ut` |
+| `STD_COPY` | `kopiera` |
+| `STD_PASTE` | `klistra-in` |
+| `STD_UNDO` | `angra` |
+| `STD_REDOW` | `gor-om` |
+| `STD_DELETE` | `papperskorg` |
+| `STD_FILENEW` | `ny-fil` |
+| `STD_FILEOPEN` | `oppna` |
+| `STD_FILESAVE` | `spara` |
+| `STD_PRINTPRE` | `forhandsgranska` |
+| `STD_PROPERTIES` | `reglage` |
+| `STD_HELP` | `hjalp` |
+| `STD_FIND` | `sok` |
+| `STD_REPLACE` | `ersatt` |
+| `STD_PRINT` | `skriv-ut` |
+| Upp en nivå | `pil-upp` |
+| Stora ikoner | `rutnat` |
+| Lista | `lista` |
+| Detaljer | `detaljer` |
+| Uppdatera | `starta-om` |
 
 Signalikonerna i dialogerna (info, varning, fel, fråga) är en fylld
 cirkel i signalfärgen med märket i `pa-`-färgen ovanpå.

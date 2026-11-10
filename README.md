@@ -90,7 +90,7 @@ värden**; det innebär inte att libui måste läsa JSON vid körning.
 | [`skal.md`](skal.md) | Skalets idéer, komponenter, mått och öppna frågor |
 | [`tokens/tokens.json`](tokens/tokens.json) | Källvärden för Glöd och Gryning |
 | `tokens/glod.css`, `tokens/gryning.css` | Genererade CSS-variabler |
-| `svg/glyfer/` | 59 symboler i 16 u, med `currentColor` |
+| `svg/glyfer/` | 71 symboler i 16 u, med `currentColor` |
 | `svg/appikoner/`, `svg/logo.svg`, `svg/bakgrund/` | Programikoner, QzOS-märket och bakgrunden Dyner |
 | `svg/webblasare/` | Ikonerna till [QzOS/browser](https://github.com/QzOS/browser) i 90-talsstil, se nedan |
 | `svg/glod/`, `svg/gryning/` | Komponentreferenser i båda teman och deras olika lägen |
