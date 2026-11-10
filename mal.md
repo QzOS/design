@@ -168,6 +168,12 @@ har utöver systemfärgerna: knappens fyllning i vila, hover och tryck,
 och en avstängd kontrolls fyllning (`yta-inaktiv`). I Classic har de
 samma värden som `COL_BTNFACE`.
 
+Verktygsknappen har ingen fyllning i vila. Vid hover och tryck får den
+`yta-hover` och `yta-tryck`, och när den är vald `markering` med glyfen i
+`accent-text`. Ingen av dem är en systemfärg, så de står också i
+`profilfarger`. I Classic ritas verktygsknappen med NT:s kanter och har
+inga egna färger.
+
 ## Krav på mekaniken
 
 Det här behöver finnas i generic_gdi innan målet kan nås. Inget av det
