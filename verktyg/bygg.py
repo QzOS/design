@@ -612,6 +612,19 @@ def komponenter(t):
             s += ring(t, tx - tr / 2, cy - tr / 2, tr, tr, tr / 2)
         fil(f"reglage/{lage}", f"Skjutreglage, {lage}", w + 8, tr + 8, s)
 
+    # skjutreglage med bockar under knappens band, i kant-kontroll
+    w, tr, sp = 200, M["reglage-tumme"], M["reglage-spar"]
+    bl, ba = M["reglage-bock"], M["reglage-bock-avstand"]
+    x0, cy = 4 + tr / 2, 4 + tr / 2
+    tx = x0 + (w - tr) * 0.4
+    s = rekt(x0, cy - sp / 2, w - tr, sp, sp / 2, t["spar"])
+    s += rekt(x0, cy - sp / 2, tx - x0, sp, sp / 2, t["accent"])
+    for i in range(11):
+        s += rekt(round(x0 + (w - tr) * i / 10 - .5), cy + tr / 2 + ba, M["kant"], bl, 0, t["kant-kontroll"])
+    s += (f'<circle cx="{fmt(tx)}" cy="{fmt(cy)}" r="{fmt(tr / 2 - .5)}" fill="{t["reglage-tumme"]}" '
+          f'stroke="{t["kant-kontroll"]}"/>')
+    fil("reglage/bockar", "Skjutreglage med bockar", w + 8, tr + ba + bl + 8, s)
+
     # förlopp
     fh2 = M["forlopp-h"]
     for lage in ("bestamd", "obestamd", "fel"):
@@ -1311,6 +1324,11 @@ def rund(v):
     return int(math.floor(v + 0.5))
 
 
+def centrerad(inre, yttre):
+    """ett mått centrerat i ett annat, med samma paritet så att det inte hamnar en halv bildpunkt snett"""
+    return inre + (inre - yttre) % 2
+
+
 def dpi_md():
     sk = T["enhet"]["skalor"]
     huvud = "| Mått | u | " + " | ".join(f"{int(s * 100)} %" for s in sk) + " |"
@@ -1328,6 +1346,13 @@ def dpi_md():
     for k in kanter:
         v = M[k]
         rader.append(f"| {k} | {v} | " + " | ".join(str(max(1, math.floor(v * s))) for s in sk) + " |")
+    rader += ["", "## Centrerat i ett annat mått", "",
+              "Samma paritet som det yttre måttet: skiljer den sig läggs 1 bildpunkt till.", "",
+              huvud, linje]
+    for k, yttre in (("reglage-spar", "reglage-tumme"),):
+        v = M[k]
+        rader.append(f"| {k} i {yttre} | {v} | " + " | ".join(
+            str(centrerad(rund(v * s), rund(M[yttre] * s))) for s in sk) + " |")
     rader += ["", "## Glyfstreck", "", huvud, linje,
               "| glyfstreck | 1.5 | " + " | ".join(fmt(rund(1.5 * s * 2) / 2) for s in sk) + " |"]
     rader += ["", "## Text", "", huvud, linje]
