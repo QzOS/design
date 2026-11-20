@@ -230,6 +230,13 @@ står i `profilfarger` (`toolbar.fill.*`, `toolbar.text.checked`,
 `toolbar.frame.checked`). I Classic ritas verktygsknappen med NT:s
 kanter och har inga egna färger.
 
+Hover på en listrad, trädrad, flik, headerkolumn och menyradens post
+ger posten `yta-hover`. Rullningslistens tumme är `tumme` i vila och
+`tumme-hover` när pekaren är över listan. Inget av det är en systemfärg,
+så de står i `profilfarger` som `control.fill.hover`, `scrollbar.thumb`
+och `scrollbar.thumb.hover`. Classic har ingen hover och ingen egen färg
+på tummen.
+
 ## Krav på mekaniken
 
 Det här behöver finnas i generic_gdi innan målet kan nås. Ordningen
