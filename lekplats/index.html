@@ -339,7 +339,7 @@ svg.a { flex: none; }
 .tema-gryning .skarm { --tapet: var(--tapet-gryning); }
 .tema-grafit .skarm { --tapet: var(--tapet-grafit); }
 .tema-egen .skarm { --tapet: var(--tapet-egen); }
-:focus-visible { outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(2 * var(--u)); }
+:focus-visible { outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(-2 * var(--u)); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
 /* ---- skrivbordsikonerna ---- */
@@ -437,7 +437,7 @@ svg.a { flex: none; }
 .start .sida { display: none; flex: 1 1 0; min-width: calc(200 * var(--u)); border-left: 1px solid var(--kant); margin: calc(24 * var(--u)) 0; padding: 0 calc(24 * var(--u)); flex-direction: column; gap: calc(12 * var(--u)); }
 .start.oversikt .sida { display: flex; }
 .sok { display: flex; align-items: center; gap: calc(12 * var(--u)); height: calc(40 * var(--u)); padding: 0 calc(14 * var(--u)); border-radius: 999px; background: var(--falt); border: 1px solid var(--kant-kontroll); color: var(--text-dampad); flex: none; }
-.sok:focus-within { border-color: var(--fokus); outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(2 * var(--u)); }
+.sok:focus-within { border-color: var(--fokus); outline: calc(2 * var(--u)) solid var(--fokus); outline-offset: calc(-2 * var(--u)); }
 .sok input { flex: 1; min-width: 0; border: 0; background: none; outline: none; color: var(--text); font-size: calc(14 * var(--u)); }
 .sok input::placeholder { color: var(--text-dampad); }
 .rubrik { display: flex; justify-content: space-between; align-items: center; font-size: calc(13 * var(--u)); font-weight: 700; }

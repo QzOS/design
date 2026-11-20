@@ -93,15 +93,18 @@ visar ett urval vid 100–200 %.
 | vila | inget händer | grundutseendet |
 | hover | muspekaren är över | `yta-hover`, `knapp-hover` eller `accent-hover` |
 | tryck | musknappen är nere över kontrollen | `yta-tryck`, `knapp-tryck` eller `accent-tryck` |
-| fokus | kontrollen har tangentbordsfokus och fokus kom från tangentbordet | ring 2 u bred, 2 u utanför kanten, i `fokus` |
+| fokus | kontrollen har tangentbordsfokus och fokus kom från tangentbordet | ring 2 u bred innanför kanten, i `fokus` |
 | inaktiv | kontrollen är avstängd | `yta-inaktiv` och `text-inaktiv` |
 | vald | posten är markerad | `markering` och `markering-text`, i menyer `accent` |
 | fel | värdet är ogiltigt | kant i `fel` och felikonen |
 | öppen | listan eller menyn är uppfälld | som fokus, med popupen i höjd 1 eller 2 |
 
-I listor, träd och flikar ligger fokusringen **innanför** raden, eftersom
-grannarna ligger kant i kant. Fokusringen visas när fokus kom från
-tangentbordet. Efter ett musklick visas den inte.
+Fokusringen ligger **innanför** kontrollens kant och täcker kanten. En
+kontroll i libui är ett eget fönster och kan inte rita utanför sig
+själv, och dialoger från mallar behåller mallens mått. I listor, träd
+och flikar ligger ringen innanför raden, eftersom grannarna ligger kant
+i kant. Fokusringen visas när fokus kom från tangentbordet. Efter ett
+musklick visas den inte (generic_gdi#514).
 
 ## Höjder och skuggor
 
