@@ -218,12 +218,9 @@ def rekt(x, y, w, h, r, fyll="none", kant=None, kb=1, extra=""):
 
 
 def ring(t, x, y, w, h, r):
-    """fokusringen: 2 u bred, 2 u utanför kanten"""
-    a, b = M["fokusavstand"], M["fokusring"]
-    o = a + b / 2
-    return (f'<rect x="{fmt(x - o)}" y="{fmt(y - o)}" width="{fmt(w + 2 * o)}" '
-            f'height="{fmt(h + 2 * o)}" rx="{fmt(r + o)}" fill="none" '
-            f'stroke="{t["fokus"]}" stroke-width="{fmt(b)}"/>')
+    """fokusringen: 2 u bred, innanför kanten, eftersom en kontroll i libui
+    är ett eget fönster och inte kan rita utanför sig själv"""
+    return inre_ring(t, x, y, w, h, r)
 
 
 def inre_ring(t, x, y, w, h, r):
