@@ -232,10 +232,11 @@ kanter och har inga egna färger.
 
 Hover på en listrad, trädrad, flik, headerkolumn och menyradens post
 ger posten `yta-hover`. Rullningslistens tumme är `tumme` i vila och
-`tumme-hover` när pekaren är över listan. Inget av det är en systemfärg,
-så de står i `profilfarger` som `control.fill.hover`, `scrollbar.thumb`
-och `scrollbar.thumb.hover`. Classic har ingen hover och ingen egen färg
-på tummen.
+under hover och `tumme-hover` när den dras. Under hover och drag ligger
+tummen i ett rundat spår i `yta-sankt`. Inget av det är en systemfärg,
+så de står i `profilfarger` som `control.fill.hover`, `scrollbar.thumb`,
+`scrollbar.thumb.hover` och `scrollbar.track`. Classic har ingen hover
+och ingen egen färg på tummen.
 
 ## Krav på mekaniken
 
